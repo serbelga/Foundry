@@ -74,7 +74,7 @@ fun MainScreen(
                         )
                     }
                 )
-                if (mainViewModel.mainUiState.isLoadingFonts) {
+                if (mainViewModel.mainUiState.isFetchingFonts) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 }
             }

@@ -15,7 +15,7 @@ class MainViewModel(
     private val fetchFontsUseCase: FetchFontsUseCase
 ) : ViewModel() {
 
-    var mainUiState: MainUiState by mutableStateOf(MainUiState(isLoadingFonts = true))
+    var mainUiState: MainUiState by mutableStateOf(MainUiState(isFetchingFonts = true))
         private set
 
     init {
@@ -26,12 +26,12 @@ class MainViewModel(
         delay(2000)
         fetchFontsUseCase().doIfSuccess { fonts ->
             mainUiState = mainUiState.copy(
-                isLoadingFonts = false,
+                isFetchingFonts = false,
                 fonts = fonts
             )
         }.doIfError {
             mainUiState = mainUiState.copy(
-                isLoadingFonts = false,
+                isFetchingFonts = false,
                 fonts = emptyList()
             )
         }
