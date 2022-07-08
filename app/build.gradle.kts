@@ -59,15 +59,14 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("androidx.activity:activity-compose:1.4.0")
-
+    implementation(libs.androidx.activityCompose)
     implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.compose.ui.uiTextGoogleFonts)
     implementation(libs.androidx.compose.ui.toolingPreview)
+    implementation(libs.androidx.coreKtx)
+    implementation(libs.androidx.lifecycle.runtime)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

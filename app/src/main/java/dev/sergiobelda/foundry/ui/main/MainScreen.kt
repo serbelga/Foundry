@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.TextFields
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +20,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -39,15 +42,14 @@ import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
+import dev.sergiobelda.foundry.domain.model.FontModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
-fun MainScreen(
-    mainViewModel: MainViewModel = getViewModel()
-) {
-    var selected by remember { mutableStateOf(0) }
+fun MainScreen(mainViewModel: MainViewModel = getViewModel()) {
+    var navigationView by remember { mutableStateOf(NavigationView.FONT_LIST_VIEW) }
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -59,19 +61,18 @@ fun MainScreen(
         certificates = R.array.com_google_android_gms_fonts_certs
     )
 
+    /*
     val appFontFamily = FontFamily(
         Font(googleFont = GoogleFont("Questrial"), fontProvider = provider)
     )
+    */
 
     Scaffold(
         topBar = {
             Column {
                 SmallTopAppBar(
                     title = {
-                        Text(
-                            text = stringResource(id = R.string.app_name),
-                            fontFamily = appFontFamily
-                        )
+                        Text(text = stringResource(id = R.string.app_name))
                     }
                 )
                 if (mainViewModel.mainUiState.isFetchingFonts) {
@@ -82,16 +83,16 @@ fun MainScreen(
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
-                    selected = selected == 0,
-                    onClick = { selected = 0 },
+                    selected = navigationView == NavigationView.FONT_LIST_VIEW,
+                    onClick = { navigationView = NavigationView.FONT_LIST_VIEW },
                     icon = { Icon(Icons.Rounded.TextFields, contentDescription = null) },
-                    label = { Text(text = "Fonts", fontFamily = appFontFamily) }
+                    label = { Text(text = "Fonts") }
                 )
                 NavigationBarItem(
-                    selected = selected == 1,
-                    onClick = { selected = 1 },
+                    selected = navigationView == NavigationView.FAVORITES_SCREEN,
+                    onClick = { navigationView = NavigationView.FAVORITES_SCREEN },
                     icon = { Icon(Icons.Rounded.Favorite, contentDescription = null) },
-                    label = { Text(text = "Favorites", fontFamily = appFontFamily) }
+                    label = { Text(text = "Favorites") }
                 )
             }
         },
@@ -105,47 +106,60 @@ fun MainScreen(
             }
         }
     ) { paddingValue ->
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.padding(paddingValue)
-        ) {
-            items(mainViewModel.mainUiState.fonts) {
-                val fontName = GoogleFont(it.name)
-                val fontFamily = FontFamily(
-                    Font(googleFont = fontName, fontProvider = provider)
+        when (navigationView) {
+            NavigationView.FONT_LIST_VIEW -> {
+                FontListView(
+                    listState,
+                    mainViewModel.mainUiState.fonts,
+                    provider,
+                    modifier = Modifier.padding(paddingValue)
                 )
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable { }
-                ) {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Column(modifier = Modifier.padding(12.dp)) {
-                            Text(
-                                text = it.name,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(bottom = 12.dp),
-                                fontFamily = appFontFamily
-                            )
-                            Text(
-                                text = "Almost before we knew it, we had left the ground.",
-                                fontSize = 36.sp,
-                                lineHeight = 36.sp,
-                                fontFamily = fontFamily
-                            )
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier.align(Alignment.TopEnd)
-                        ) {
-                            /*
-                            if (it.favorite) {
-                                Icon(Icons.Rounded.Favorite, contentDescription = null)
-                            } else {
-                                Icon(Icons.Rounded.FavoriteBorder, contentDescription = null)
-                            }
-                            */
+            }
+            NavigationView.FAVORITES_SCREEN -> {}
+        }
+    }
+}
+
+@OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun FontListView(
+    listState: LazyListState,
+    fonts: List<FontModel>,
+    provider: GoogleFont.Provider,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        state = listState,
+        modifier = modifier
+    ) {
+        items(fonts) {
+            val fontName = GoogleFont(it.name)
+            val fontFamily = FontFamily(
+                Font(googleFont = fontName, fontProvider = provider)
+            )
+            Card(modifier = Modifier.fillMaxWidth().padding(8.dp).clickable { }) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text(
+                            text = it.name,
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                        Text(
+                            text = "Almost before we knew it, we had left the ground.",
+                            fontSize = 36.sp,
+                            lineHeight = 36.sp,
+                            fontFamily = fontFamily
+                        )
+                    }
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    ) {
+                        if (it.isFavorite) {
+                            Icon(Icons.Rounded.Favorite, contentDescription = null)
+                        } else {
+                            Icon(Icons.Rounded.FavoriteBorder, contentDescription = null)
                         }
                     }
                 }

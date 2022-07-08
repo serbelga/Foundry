@@ -12,7 +12,7 @@ class FontsLocalDataSource(
 ) : IFontsLocalDataSource {
 
     override val fonts: Flow<Result<List<FontModel>>> = fontsDao.getFonts().map { list ->
-        Result.Success(list.map { FontModel(it.name) })
+        Result.Success(list.map { FontModel(it.name, isFavorite = true) })
     }
 
     override suspend fun insertAll(fonts: List<FontModel>) {

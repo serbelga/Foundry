@@ -11,5 +11,5 @@ class FontsRemoteDataSource(
 
     override suspend fun getGoogleFonts(): Result<List<FontModel>> = safeApiCall {
         googleFontsApiService.getGoogleFonts()
-    }.map { response -> response.items.map { FontModel(it.family) } }
+    }.map { response -> response.items.map { FontModel(it.family, isFavorite = true) } }
 }
