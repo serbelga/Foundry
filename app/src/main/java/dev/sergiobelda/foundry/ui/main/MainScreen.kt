@@ -26,6 +26,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults.pinnedScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +35,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontFamily
@@ -51,7 +53,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun MainScreen(mainViewModel: MainViewModel = getViewModel()) {
     var navigationView by remember { mutableStateOf(NavigationView.FONT_LIST_VIEW) }
-
+    val scrollBehavior = remember { pinnedScrollBehavior() }
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -63,12 +65,14 @@ fun MainScreen(mainViewModel: MainViewModel = getViewModel()) {
     )
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             Column {
                 CenterAlignedTopAppBar(
                     title = {
                         Text(text = stringResource(id = R.string.app_name), fontFamily = fontFamily)
-                    }
+                    },
+                    scrollBehavior = scrollBehavior
                 )
                 if (mainViewModel.mainUiState.isFetchingFonts) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
@@ -158,7 +162,7 @@ fun FontListView(
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                         Text(
-                            text = "Almost before we knew it, we had left the ground.",
+                            text = stringResource(id = R.string.sample_text),
                             fontSize = 36.sp,
                             lineHeight = 36.sp,
                             fontFamily = fontFamily
