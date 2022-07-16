@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface GoogleFontsApiService {
 
-    @GET("/webfonts/v1/webfonts?key=AIzaSyBBjZndjVKyaqLnTdUaDJDhfHhCvPjDnXQ")
+    @GET("/webfonts/v1/webfonts")
     suspend fun getGoogleFonts(): Response<GoogleFontsResponse>
 }

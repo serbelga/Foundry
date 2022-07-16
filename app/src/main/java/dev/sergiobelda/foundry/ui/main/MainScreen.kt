@@ -15,6 +15,7 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.TextFields
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,7 +42,8 @@ import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.FontModel
+import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.ui.theme.fontFamily
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -61,18 +62,12 @@ fun MainScreen(mainViewModel: MainViewModel = getViewModel()) {
         certificates = R.array.com_google_android_gms_fonts_certs
     )
 
-    /*
-    val appFontFamily = FontFamily(
-        Font(googleFont = GoogleFont("Questrial"), fontProvider = provider)
-    )
-    */
-
     Scaffold(
         topBar = {
             Column {
-                SmallTopAppBar(
+                CenterAlignedTopAppBar(
                     title = {
-                        Text(text = stringResource(id = R.string.app_name))
+                        Text(text = stringResource(id = R.string.app_name), fontFamily = fontFamily)
                     }
                 )
                 if (mainViewModel.mainUiState.isFetchingFonts) {
@@ -86,13 +81,13 @@ fun MainScreen(mainViewModel: MainViewModel = getViewModel()) {
                     selected = navigationView == NavigationView.FONT_LIST_VIEW,
                     onClick = { navigationView = NavigationView.FONT_LIST_VIEW },
                     icon = { Icon(Icons.Rounded.TextFields, contentDescription = null) },
-                    label = { Text(text = "Fonts") }
+                    label = { Text(text = "Fonts", fontFamily = fontFamily) }
                 )
                 NavigationBarItem(
                     selected = navigationView == NavigationView.FAVORITES_SCREEN,
                     onClick = { navigationView = NavigationView.FAVORITES_SCREEN },
                     icon = { Icon(Icons.Rounded.Favorite, contentDescription = null) },
-                    label = { Text(text = "Favorites") }
+                    label = { Text(text = "Favorites", fontFamily = fontFamily) }
                 )
             }
         },
@@ -110,22 +105,35 @@ fun MainScreen(mainViewModel: MainViewModel = getViewModel()) {
             NavigationView.FONT_LIST_VIEW -> {
                 FontListView(
                     listState,
-                    mainViewModel.mainUiState.fonts,
+                    mainViewModel.mainUiState.fontItems,
                     provider,
+                    onFavoriteClick = { mainViewModel.updateFontFavoriteState(it) },
                     modifier = Modifier.padding(paddingValue)
                 )
             }
-            NavigationView.FAVORITES_SCREEN -> {}
+            NavigationView.FAVORITES_SCREEN -> {
+                FontListView(
+                    listState,
+                    mainViewModel.mainUiState.favoriteFontItems,
+                    provider,
+                    onFavoriteClick = { mainViewModel.updateFontFavoriteState(it) },
+                    modifier = Modifier.padding(paddingValue)
+                )
+            }
         }
     }
 }
 
-@OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalTextApi::class,
+    ExperimentalMaterial3Api::class
+)
 @Composable
 fun FontListView(
     listState: LazyListState,
-    fonts: List<FontModel>,
+    fonts: List<FontItemModel>,
     provider: GoogleFont.Provider,
+    onFavoriteClick: (FontItemModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -133,15 +141,19 @@ fun FontListView(
         modifier = modifier
     ) {
         items(fonts) {
-            val fontName = GoogleFont(it.name)
+            val fontName = GoogleFont(it.fontModel.name)
             val fontFamily = FontFamily(
                 Font(googleFont = fontName, fontProvider = provider)
             )
-            Card(modifier = Modifier.fillMaxWidth().padding(8.dp).clickable { }) {
+            Card(modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .clickable { }
+            ) {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
-                            text = it.name,
+                            text = it.fontModel.name,
                             style = MaterialTheme.typography.labelMedium,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
@@ -153,7 +165,7 @@ fun FontListView(
                         )
                     }
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { onFavoriteClick(it) },
                         modifier = Modifier.align(Alignment.TopEnd)
                     ) {
                         if (it.isFavorite) {

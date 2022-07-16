@@ -1,9 +1,9 @@
 package dev.sergiobelda.foundry.di
 
-import dev.sergiobelda.foundry.data.repository.FontsRepository
-import dev.sergiobelda.foundry.domain.repository.IFontsRepository
+import dev.sergiobelda.foundry.data.repository.FontRepository
+import dev.sergiobelda.foundry.domain.repository.IFontRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<IFontsRepository> { FontsRepository(get(), get()) }
+    single<IFontRepository> { FontRepository(get(), get()) }
 }

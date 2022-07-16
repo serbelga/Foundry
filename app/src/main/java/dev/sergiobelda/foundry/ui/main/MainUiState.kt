@@ -1,8 +1,9 @@
 package dev.sergiobelda.foundry.ui.main
 
-import dev.sergiobelda.foundry.domain.model.FontModel
+import dev.sergiobelda.foundry.domain.model.FontItemModel
 
 data class MainUiState(
     val isFetchingFonts: Boolean = false,
-    val fonts: List<FontModel> = emptyList()
+    val fontItems: List<FontItemModel> = emptyList(),
+    val favoriteFontItems: List<FontItemModel> = emptyList()
 )
