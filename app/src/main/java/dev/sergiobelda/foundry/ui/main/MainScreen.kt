@@ -31,7 +31,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.pinnedScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +50,6 @@ import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.domain.model.FontItemModel
 import dev.sergiobelda.foundry.ui.theme.fontFamily
 import dev.sergiobelda.foundry.ui.theme.pacificoFontFamily
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -162,14 +160,6 @@ fun FontListView(
 
             val avdHeartFill =
                 AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_fill)
-            val avdHeartBreak =
-                AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_break)
-
-            var atEnd by remember {
-                mutableStateOf(false)
-            }
-
-            val scope = rememberCoroutineScope()
 
             Card(
                 modifier = Modifier
@@ -193,34 +183,20 @@ fun FontListView(
                     }
                     IconButton(
                         onClick = {
-                            scope.launch {
-                                atEnd = true
-                                delay(900)
-                                onFavoriteClick(it)
-                                atEnd = false
-                            }
+                            onFavoriteClick(it)
                         },
                         modifier = Modifier.align(Alignment.TopEnd)
                     ) {
-                        if (it.isFavorite) {
-                            Icon(
-                                painter = rememberAnimatedVectorPainter(
-                                    avdHeartBreak,
-                                    atEnd
-                                ),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        } else {
-                            Icon(
-                                painter = rememberAnimatedVectorPainter(
-                                    avdHeartFill,
-                                    atEnd
-                                ),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        }
+                        Icon(
+                            painter = rememberAnimatedVectorPainter(
+                                avdHeartFill,
+                                it.isFavorite
+                            ),
+                            contentDescription = null,
+                            tint = if (it.isFavorite) {
+                                MaterialTheme.colorScheme.error
+                            } else MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
             }
