@@ -1,5 +1,9 @@
 package dev.sergiobelda.foundry.ui.main
 
+import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
+import androidx.compose.animation.graphics.res.animatedVectorResource
+import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
+import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +16,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.TextFields
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -28,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.pinnedScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +50,8 @@ import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.domain.model.FontItemModel
 import dev.sergiobelda.foundry.ui.theme.fontFamily
+import dev.sergiobelda.foundry.ui.theme.pacificoFontFamily
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -70,7 +76,10 @@ fun MainScreen(mainViewModel: MainViewModel = getViewModel()) {
             Column {
                 CenterAlignedTopAppBar(
                     title = {
-                        Text(text = stringResource(id = R.string.app_name), fontFamily = fontFamily)
+                        Text(
+                            text = stringResource(id = R.string.app_name),
+                            fontFamily = pacificoFontFamily
+                        )
                     },
                     scrollBehavior = scrollBehavior
                 )
@@ -130,7 +139,8 @@ fun MainScreen(mainViewModel: MainViewModel = getViewModel()) {
 
 @OptIn(
     ExperimentalTextApi::class,
-    ExperimentalMaterial3Api::class
+    ExperimentalMaterial3Api::class,
+    ExperimentalAnimationGraphicsApi::class
 )
 @Composable
 fun FontListView(
@@ -149,10 +159,23 @@ fun FontListView(
             val fontFamily = FontFamily(
                 Font(googleFont = fontName, fontProvider = provider)
             )
-            Card(modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .clickable { }
+
+            val avdHeartFill =
+                AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_fill)
+            val avdHeartBreak =
+                AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_break)
+
+            var atEnd by remember {
+                mutableStateOf(false)
+            }
+
+            val scope = rememberCoroutineScope()
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .clickable { }
             ) {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(12.dp)) {
@@ -169,13 +192,34 @@ fun FontListView(
                         )
                     }
                     IconButton(
-                        onClick = { onFavoriteClick(it) },
+                        onClick = {
+                            scope.launch {
+                                atEnd = true
+                                delay(900)
+                                onFavoriteClick(it)
+                                atEnd = false
+                            }
+                        },
                         modifier = Modifier.align(Alignment.TopEnd)
                     ) {
                         if (it.isFavorite) {
-                            Icon(Icons.Rounded.Favorite, contentDescription = null)
+                            Icon(
+                                painter = rememberAnimatedVectorPainter(
+                                    avdHeartBreak,
+                                    atEnd
+                                ),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error
+                            )
                         } else {
-                            Icon(Icons.Rounded.FavoriteBorder, contentDescription = null)
+                            Icon(
+                                painter = rememberAnimatedVectorPainter(
+                                    avdHeartFill,
+                                    atEnd
+                                ),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error
+                            )
                         }
                     }
                 }

@@ -22,6 +22,7 @@ androidx-room-roomRuntime = { module = "androidx.room:room-runtime", version.ref
 androidx-room-roomTesting = { module = "androidx.room:room-testing", version.ref = "room" }
 
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+androidx-compose-animation-graphics = { module = "androidx.compose.animation:animation-graphics", version.ref = "compose" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 androidx-compose-material-iconsExtended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }

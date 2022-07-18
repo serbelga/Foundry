@@ -11,4 +11,8 @@ val fontFamily = FontFamily(
     Font(R.font.lexend_regular, FontWeight.W400)
 )
 
+val pacificoFontFamily = FontFamily(
+    Font(R.font.pacifico_regular, FontWeight.W400)
+)
+
 val Typography = Typography()
