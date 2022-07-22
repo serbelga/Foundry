@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Foundry</string>
     <string name="sample_text">Almost before we knew it, we had left the ground.</string>
+    <string name="fonts">Fonts</string>
+    <string name="favorites">Favorites</string>
 </resources>

@@ -1,4 +1,4 @@
-package dev.sergiobelda.foundry.ui.main
+package dev.sergiobelda.foundry.ui.fonts
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,14 +12,14 @@ import dev.sergiobelda.foundry.domain.usecase.InsertFavoriteFontUseCase
 import dev.sergiobelda.foundry.domain.usecase.RemoveFavoriteFontUseCase
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class FontsViewModel(
     private val fetchFontsUseCase: FetchFontsUseCase,
     private val getFontItemsUseCase: GetFontItemsUseCase,
     private val insertFavoriteFontUseCase: InsertFavoriteFontUseCase,
     private val removeFavoriteFontUseCase: RemoveFavoriteFontUseCase
 ) : ViewModel() {
 
-    var mainUiState: MainUiState by mutableStateOf(MainUiState(isFetchingFonts = true))
+    var fontsUiState: FontsUiState by mutableStateOf(FontsUiState(isFetchingFonts = true))
         private set
 
     init {
@@ -29,16 +29,15 @@ class MainViewModel(
 
     private fun fetchFonts() = viewModelScope.launch {
         fetchFontsUseCase()
-        mainUiState = mainUiState.copy(
+        fontsUiState = fontsUiState.copy(
             isFetchingFonts = false
         )
     }
 
     private fun getFontItems() = viewModelScope.launch {
         getFontItemsUseCase().collect { fontItems ->
-            mainUiState = mainUiState.copy(
-                fontItems = fontItems,
-                favoriteFontItems = fontItems.filter { it.isFavorite }
+            fontsUiState = fontsUiState.copy(
+                fontItems = fontItems
             )
         }
     }
