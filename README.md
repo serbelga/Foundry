@@ -1,6 +1,13 @@
-## Foundry
+# Foundry
 
-### Setup
+A Jetpack Compose app using Downloadable Google Fonts.
+
+</br>
+<p align="center">
+<img width=320 src="./screenshots/home.png" />
+</p>
+
+## Setup
 
 1. Create a `local.properties` file in root directory.
 2. Add:
