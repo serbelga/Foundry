@@ -1,5 +1,9 @@
 package dev.sergiobelda.foundry.ui.fonts
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,11 +29,12 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.ui.components.FontListView
+import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import dev.sergiobelda.foundry.ui.theme.pacificoFontFamily
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun FontsScreen(fontsViewModel: FontsViewModel = getViewModel()) {
     val provider = GoogleFont.Provider(
@@ -62,12 +67,18 @@ fun FontsScreen(fontsViewModel: FontsViewModel = getViewModel()) {
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    coroutineScope.launch { listState.animateScrollToItem(0) }
-                }
+            AnimatedVisibility(
+                visible = listState.firstVisibleItemIndex >= FAB_VISIBLE_ITEM_INDEX,
+                enter = scaleIn(),
+                exit = scaleOut()
             ) {
-                Icon(Icons.Rounded.ArrowUpward, contentDescription = null)
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch { listState.animateScrollToItem(0) }
+                    }
+                ) {
+                    Icon(Icons.Rounded.ArrowUpward, contentDescription = null)
+                }
             }
         }
     ) { paddingValue ->

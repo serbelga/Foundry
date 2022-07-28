@@ -26,7 +26,6 @@ import dev.sergiobelda.foundry.navigation.FavoritesDestination
 import dev.sergiobelda.foundry.navigation.FontsDestination
 import dev.sergiobelda.foundry.navigation.FoundryNavHost
 import dev.sergiobelda.foundry.navigation.TopLevelDestination
-import dev.sergiobelda.foundry.ui.theme.fontFamily
 
 sealed class NavigationItem(
     val destination: Destination,
@@ -69,8 +68,7 @@ fun MainScreen(navController: NavHostController, action: Action) {
                         icon = { Icon(navigationItem.imageVector, contentDescription = null) },
                         label = {
                             Text(
-                                text = stringResource(id = navigationItem.stringResourceId),
-                                fontFamily = fontFamily
+                                text = stringResource(id = navigationItem.stringResourceId)
                             )
                         }
                     )
