@@ -4,6 +4,18 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.7.0" apply false
 }
 
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath(libs.spotless.gradlePlugin)
+    }
+}
+
 subprojects {
     apply {
         from("${rootDir}/ktlint.gradle.kts")

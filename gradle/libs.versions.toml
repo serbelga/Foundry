@@ -15,6 +15,7 @@ navigation = "2.4.2"
 okhttp3 = "4.9.3"
 retrofit2 = "2.9.0"
 room = "2.5.0-alpha02"
+spotless = "6.7.2"
 
 [libraries]
 androidx-room-roomCompiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -55,6 +56,9 @@ squareup-okhttp3-loggingInterceptor = { module = "com.squareup.okhttp3:logging-i
 squareup-retrofit2-converterMoshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit2" }
 squareup-retrofit2-converterScalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit2" }
 squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit2" }
+
+
+spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

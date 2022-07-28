@@ -6,6 +6,18 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+apply(plugin = "com.diffplug.spotless")
+
+
+configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    kotlin {
+        target("**/*.kt")
+        targetExclude("**/build/**/*.kt")
+        licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+    }
+}
+
+
 val publicApiKey: String = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(
     rootDir
 ).getProperty("google_fonts_api_key") ?: "\"\""
