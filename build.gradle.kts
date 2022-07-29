@@ -8,7 +8,5 @@ plugins {
 
 subprojects {
     apply("${rootDir}/spotless.gradle")
-    apply {
-        from("${rootDir}/ktlint.gradle.kts")
-    }
+    apply("${rootDir}/ktlint.gradle.kts")
 }
