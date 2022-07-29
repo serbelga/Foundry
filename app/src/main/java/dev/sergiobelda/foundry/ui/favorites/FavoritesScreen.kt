@@ -29,6 +29,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -70,7 +71,8 @@ fun FavoritesScreen(favoritesViewModel: FavoritesViewModel = getViewModel()) {
                     title = {
                         Text(
                             text = stringResource(id = R.string.app_name),
-                            fontFamily = pacificoFontFamily
+                            fontFamily = pacificoFontFamily,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     },
                     scrollBehavior = scrollBehavior
