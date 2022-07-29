@@ -57,8 +57,6 @@ squareup-retrofit2-converterMoshi = { module = "com.squareup.retrofit2:converter
 squareup-retrofit2-converterScalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit2" }
 squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit2" }
 
-
-spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
-
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
