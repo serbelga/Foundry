@@ -107,7 +107,7 @@ fun HomeScreen(
                         Text(
                             text = stringResource(id = R.string.app_name),
                             fontFamily = pacificoFontFamily,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = MaterialTheme.colorScheme.primary
                         )
                     },
                     scrollBehavior = scrollBehavior
