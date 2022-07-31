@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.navigation
+package dev.sergiobelda.foundry.ui.home
 
-object FavoritesDestination : Destination {
-    override val route: String = "favorites"
-}
+import dev.sergiobelda.foundry.domain.model.FontItemModel
+
+data class HomeUiState(
+    val isFetchingFonts: Boolean = false,
+    val fontItems: List<FontItemModel> = emptyList(),
+    val favoriteFontItems: List<FontItemModel> = emptyList()
+)
