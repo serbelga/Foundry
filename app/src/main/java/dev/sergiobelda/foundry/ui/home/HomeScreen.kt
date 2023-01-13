@@ -23,24 +23,26 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.TextFields
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -64,32 +66,24 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.googlefonts.GoogleFont
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.ui.components.FontListView
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
+import dev.sergiobelda.foundry.ui.theme.pacificoFontFamily
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
-sealed class NavigationItem(
+enum class HomeMenuNavigationItem(
     val imageVector: ImageVector,
     @StringRes val stringResourceId: Int
 ) {
-    object FontsNavigationItem :
-        NavigationItem(
-            Icons.Rounded.TextFields,
-            R.string.fonts
-        )
-
-    object FavoritesNavigationItem :
-        NavigationItem(
-            Icons.Rounded.Favorite,
-            R.string.favorites
-        )
+    FontsMenuNavigationItem(Icons.Rounded.TextFields, R.string.fonts),
+    FavoritesMenuNavigationItem(Icons.Rounded.Favorite, R.string.favorites),
+    SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings)
 }
-
-val navigationItems =
-    listOf(NavigationItem.FontsNavigationItem, NavigationItem.FavoritesNavigationItem)
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class, ExperimentalAnimationApi::class)
 @Composable
@@ -102,7 +96,7 @@ fun HomeScreen(
         certificates = R.array.com_google_android_gms_fonts_certs
     )
 
-    var currentNavigationItem: NavigationItem by remember { mutableStateOf(NavigationItem.FontsNavigationItem) }
+    var currentHomeMenuNavigationItem: HomeMenuNavigationItem by remember { mutableStateOf(HomeMenuNavigationItem.FontsMenuNavigationItem) }
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     val fontsListState = rememberLazyListState()
@@ -122,49 +116,25 @@ fun HomeScreen(
     }
     ModalNavigationDrawer(
         drawerContent = {
-            ModalDrawerSheet {
-                LazyColumn {
-                    items(navigationItems) {
-                        NavigationDrawerItem(
-                            icon = {
-                                Image(
-                                    imageVector = it.imageVector,
-                                    contentDescription = null
-                                )
-                            },
-                            label = { Text(text = stringResource(id = it.stringResourceId)) },
-                            selected = currentNavigationItem == it,
-                            onClick = {
-                                currentNavigationItem = it
-                                coroutineScope.launch { drawerState.close() }
-                            }
-                        )
+            DrawerContent(
+                homeMenuNavigationItemSelected = currentHomeMenuNavigationItem,
+                onHomeMenuNavigationItemClick = {
+                    when (it) {
+                        HomeMenuNavigationItem.FontsMenuNavigationItem -> currentHomeMenuNavigationItem = it
+                        HomeMenuNavigationItem.FavoritesMenuNavigationItem -> currentHomeMenuNavigationItem = it
+                        HomeMenuNavigationItem.SettingsMenuNavigationItem -> {
+                            // TODO: Navigate to Settings
+                        }
                     }
+                    coroutineScope.launch { drawerState.close() }
                 }
-            }
+            )
         },
         drawerState = drawerState
     ) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
-                /*
-                Column {
-                    CenterAlignedTopAppBar(
-                        title = {
-                            Text(
-                                text = stringResource(id = R.string.app_name),
-                                fontFamily = pacificoFontFamily,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        },
-                        scrollBehavior = scrollBehavior
-                    )
-                    if (fontsViewModel.homeUiState.isFetchingFonts) {
-                        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                    }
-                }
-                */
                 SearchBar(
                     query = searchText,
                     onQueryChange = { searchText = it },
@@ -196,10 +166,6 @@ fun HomeScreen(
                             IconButton(onClick = { searchText = "" }) {
                                 Icon(Icons.Rounded.Clear, contentDescription = null)
                             }
-                        } else {
-                            IconButton(onClick = { closeSearchBar() }) {
-                                Icon(Icons.Rounded.MoreVert, contentDescription = null)
-                            }
                         }
                     },
                     modifier = Modifier.padding(0.dp)
@@ -220,27 +186,9 @@ fun HomeScreen(
                     }
                 }
             },
-            bottomBar = {
-                /*
-                NavigationBar {
-                    navigationItems.forEach { navigationItem ->
-                        NavigationBarItem(
-                            selected = currentNavigationItem == navigationItem,
-                            onClick = { currentNavigationItem = navigationItem },
-                            icon = { Icon(navigationItem.imageVector, contentDescription = null) },
-                            label = {
-                                Text(
-                                    text = stringResource(id = navigationItem.stringResourceId)
-                                )
-                            }
-                        )
-                    }
-                }
-                */
-            },
             floatingActionButton = {
                 AnimatedVisibility(
-                    visible = if (currentNavigationItem == NavigationItem.FontsNavigationItem) {
+                    visible = if (currentHomeMenuNavigationItem == HomeMenuNavigationItem.FontsMenuNavigationItem) {
                         fontsListState
                     } else {
                         favoritesListState
@@ -251,7 +199,7 @@ fun HomeScreen(
                     FloatingActionButton(
                         onClick = {
                             coroutineScope.launch {
-                                if (currentNavigationItem == NavigationItem.FontsNavigationItem) {
+                                if (currentHomeMenuNavigationItem == HomeMenuNavigationItem.FontsMenuNavigationItem) {
                                     fontsListState
                                 } else {
                                     favoritesListState
@@ -264,8 +212,8 @@ fun HomeScreen(
                 }
             }
         ) { paddingValues ->
-            when (currentNavigationItem) {
-                is NavigationItem.FontsNavigationItem -> {
+            when (currentHomeMenuNavigationItem) {
+                HomeMenuNavigationItem.FontsMenuNavigationItem -> {
                     FontListView(
                         fontsListState,
                         fontsViewModel.homeUiState.fontItems,
@@ -274,8 +222,7 @@ fun HomeScreen(
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
-
-                is NavigationItem.FavoritesNavigationItem -> {
+                HomeMenuNavigationItem.FavoritesMenuNavigationItem -> {
                     FontListView(
                         favoritesListState,
                         fontsViewModel.homeUiState.favoriteFontItems,
@@ -284,7 +231,83 @@ fun HomeScreen(
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
+                else -> {}
             }
         }
     }
 }
+
+@Composable
+private fun DrawerContent(
+    onHomeMenuNavigationItemClick: (HomeMenuNavigationItem) -> Unit,
+    homeMenuNavigationItemSelected: HomeMenuNavigationItem
+) {
+    ModalDrawerSheet {
+        Text(
+            text = stringResource(id = R.string.app_name),
+            fontFamily = pacificoFontFamily,
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 24.sp,
+            modifier = Modifier.padding(
+                start = 24.dp,
+                top = 8.dp,
+                end = 8.dp,
+                bottom = 8.dp
+            )
+        )
+        Divider()
+        HomeMenuSpacer()
+        HomeMenuNavigationDrawerItem(
+            homeMenuNavigationItem = HomeMenuNavigationItem.FontsMenuNavigationItem,
+            onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.FontsMenuNavigationItem) },
+            selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FontsMenuNavigationItem
+        )
+        HomeMenuNavigationDrawerItem(
+            homeMenuNavigationItem = HomeMenuNavigationItem.FavoritesMenuNavigationItem,
+            onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.FavoritesMenuNavigationItem) },
+            selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FavoritesMenuNavigationItem
+        )
+        HomeMenuSpacer()
+        Divider(modifier = Modifier.padding(horizontal = HomeMenuDividerHorizontalPadding))
+        HomeMenuSpacer()
+        HomeMenuNavigationDrawerItem(
+            homeMenuNavigationItem = HomeMenuNavigationItem.SettingsMenuNavigationItem,
+            onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.SettingsMenuNavigationItem) }
+        )
+    }
+}
+
+@Composable
+private fun HomeMenuSpacer() {
+    Spacer(modifier = Modifier.height(HomeMenuSpacerHeight))
+}
+
+@Composable
+private fun HomeMenuNavigationDrawerItem(
+    homeMenuNavigationItem: HomeMenuNavigationItem,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    selected: Boolean = false
+) {
+    NavigationDrawerItem(
+        icon = {
+            Image(
+                imageVector = homeMenuNavigationItem.imageVector,
+                contentDescription = null
+            )
+        },
+        label = {
+            Text(
+                text = stringResource(id = homeMenuNavigationItem.stringResourceId),
+                style = MaterialTheme.typography.labelLarge
+            )
+        },
+        selected = selected,
+        onClick = onClick,
+        modifier = modifier.padding(start = HomeMenuNavigationDrawerItemPadding, end = HomeMenuNavigationDrawerItemPadding)
+    )
+}
+
+private val HomeMenuDividerHorizontalPadding: Dp = 28.dp
+private val HomeMenuSpacerHeight: Dp = 12.dp
+private val HomeMenuNavigationDrawerItemPadding: Dp = 8.dp
