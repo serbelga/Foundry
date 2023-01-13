@@ -12,12 +12,12 @@ val publicApiKey: String = com.android.build.gradle.internal.cxx.configure.gradl
 
 android {
     namespace = "dev.sergiobelda.foundry"
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "dev.sergiobelda.foundry"
         minSdk = 24
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -34,7 +34,10 @@ android {
         release {
             buildConfigField("String", "GOOGLE_FONTS_API_KEY", publicApiKey)
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         lint {
             abortOnError = false
@@ -42,12 +45,13 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
-                targetCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -63,12 +67,15 @@ android {
 dependencies {
 
     implementation(libs.androidx.activityCompose)
+
+    implementation(platform(libs.androidx.compose.composeBom))
     implementation(libs.androidx.compose.animation.graphics)
     implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.compose.ui.uiTextGoogleFonts)
     implementation(libs.androidx.compose.ui.toolingPreview)
+
     implementation(libs.androidx.coreKtx)
     implementation(libs.androidx.lifecycle.runtime)
 
