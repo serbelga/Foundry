@@ -291,10 +291,7 @@ private fun HomeMenuNavigationDrawerItem(
 ) {
     NavigationDrawerItem(
         icon = {
-            Image(
-                imageVector = homeMenuNavigationItem.imageVector,
-                contentDescription = null
-            )
+            Icon(imageVector = homeMenuNavigationItem.imageVector, contentDescription = null)
         },
         label = {
             Text(

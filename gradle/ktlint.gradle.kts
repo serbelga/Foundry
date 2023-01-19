@@ -1,8 +1,8 @@
 val ktlint by configurations.creating
 
 dependencies {
-    val libs = rootProject.extensions.getByType<VersionCatalogsExtension>().named("libs")
-    ktlint(libs.findDependency("ktlint").get()) {
+    val libs = rootProject.extensions.getByName("libs") as org.gradle.accessors.dm.LibrariesForLibs
+    ktlint(libs.ktlint) {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }
@@ -18,7 +18,7 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
 
     description = "Check Kotlin code style."
     classpath = ktlint
-    main = "com.pinterest.ktlint.Main"
+    mainClass.set("com.pinterest.ktlint.Main")
     args = listOf("src/**/*.kt")
 }
 
@@ -28,6 +28,6 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
 
     description = "Fix Kotlin code style deviations."
     classpath = ktlint
-    main = "com.pinterest.ktlint.Main"
+    mainClass.set("com.pinterest.ktlint.Main")
     args = listOf("-F", "src/**/*.kt")
 }
