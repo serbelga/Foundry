@@ -19,9 +19,12 @@ package dev.sergiobelda.foundry.ui.home
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
+import androidx.compose.animation.graphics.res.animatedVectorResource
+import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
+import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -29,11 +32,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.TextFields
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
@@ -85,7 +86,10 @@ enum class HomeMenuNavigationItem(
     SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings)
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class, ExperimentalAnimationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalTextApi::class, ExperimentalAnimationApi::class,
+    ExperimentalAnimationGraphicsApi::class
+)
 @Composable
 fun HomeScreen(
     fontsViewModel: HomeViewModel = getViewModel()
@@ -96,7 +100,11 @@ fun HomeScreen(
         certificates = R.array.com_google_android_gms_fonts_certs
     )
 
-    var currentHomeMenuNavigationItem: HomeMenuNavigationItem by remember { mutableStateOf(HomeMenuNavigationItem.FontsMenuNavigationItem) }
+    var currentHomeMenuNavigationItem: HomeMenuNavigationItem by remember {
+        mutableStateOf(
+            HomeMenuNavigationItem.FontsMenuNavigationItem
+        )
+    }
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     val fontsListState = rememberLazyListState()
@@ -105,9 +113,13 @@ fun HomeScreen(
 
     var searchText by rememberSaveable { mutableStateOf("") }
     var active by rememberSaveable { mutableStateOf(false) }
+    val avdMenuToArrowBack =
+        AnimatedImageVector.animatedVectorResource(R.drawable.avd_menu_to_arrow_back)
+    val avdMenuToArrowBackPainter = rememberAnimatedVectorPainter(avdMenuToArrowBack, active)
     val focusManager = LocalFocusManager.current
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+
 
     fun closeSearchBar() {
         focusManager.clearFocus()
@@ -120,8 +132,12 @@ fun HomeScreen(
                 homeMenuNavigationItemSelected = currentHomeMenuNavigationItem,
                 onHomeMenuNavigationItemClick = {
                     when (it) {
-                        HomeMenuNavigationItem.FontsMenuNavigationItem -> currentHomeMenuNavigationItem = it
-                        HomeMenuNavigationItem.FavoritesMenuNavigationItem -> currentHomeMenuNavigationItem = it
+                        HomeMenuNavigationItem.FontsMenuNavigationItem -> currentHomeMenuNavigationItem =
+                            it
+
+                        HomeMenuNavigationItem.FavoritesMenuNavigationItem -> currentHomeMenuNavigationItem =
+                            it
+
                         HomeMenuNavigationItem.SettingsMenuNavigationItem -> {
                             // TODO: Navigate to Settings
                         }
@@ -148,7 +164,7 @@ fun HomeScreen(
                     leadingIcon = {
                         if (active) {
                             IconButton(onClick = { closeSearchBar() }) {
-                                Icon(Icons.Rounded.ArrowBack, contentDescription = null)
+                                Icon(painter = avdMenuToArrowBackPainter, contentDescription = null)
                             }
                         } else {
                             IconButton(
@@ -157,7 +173,7 @@ fun HomeScreen(
                                     closeSearchBar()
                                 }
                             ) {
-                                Icon(Icons.Rounded.Menu, contentDescription = null)
+                                Icon(painter = avdMenuToArrowBackPainter, contentDescription = null)
                             }
                         }
                     },
@@ -222,6 +238,7 @@ fun HomeScreen(
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
+
                 HomeMenuNavigationItem.FavoritesMenuNavigationItem -> {
                     FontListView(
                         favoritesListState,
@@ -231,6 +248,7 @@ fun HomeScreen(
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
+
                 else -> {}
             }
         }
@@ -301,7 +319,10 @@ private fun HomeMenuNavigationDrawerItem(
         },
         selected = selected,
         onClick = onClick,
-        modifier = modifier.padding(start = HomeMenuNavigationDrawerItemPadding, end = HomeMenuNavigationDrawerItemPadding)
+        modifier = modifier.padding(
+            start = HomeMenuNavigationDrawerItemPadding,
+            end = HomeMenuNavigationDrawerItemPadding
+        )
     )
 }
 
