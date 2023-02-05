@@ -17,7 +17,7 @@ navigation = "2.6.0-alpha04"
 okhttp3 = "4.10.0"
 retrofit2 = "2.9.0"
 room = "2.5.0"
-spotless = "6.14.0"
+spotless = "6.14.1"
 
 [libraries]
 androidx-room-roomCompiler = { module = "androidx.room:room-compiler", version.ref = "room" }
