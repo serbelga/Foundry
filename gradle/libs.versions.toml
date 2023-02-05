@@ -5,7 +5,8 @@ androidGradlePlugin = "8.1.0-alpha02"
 composeBom = "2023.01.00"
 composeCompiler = "1.4.0"
 junit = "4.13.2"
-koin = "3.2.0"
+koin = "3.3.2"
+koinCompose = "3.4.1"
 kotlin = "1.8.0"
 ksp = "1.8.0-1.0.8"
 ktlint = "0.48.2"
@@ -44,7 +45,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 junit = { module = "junit:junit", version.ref = "junit" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinCompose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-logger = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
