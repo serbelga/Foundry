@@ -1,5 +1,5 @@
 [versions]
-activity = "1.7.0"
+activity = "1.7.2"
 androidCore = "1.10.0"
 androidGradlePlugin = "8.1.0-alpha02"
 composeBom = "2023.04.00"
