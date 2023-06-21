@@ -2,7 +2,7 @@
 activity = "1.7.0"
 androidCore = "1.10.0"
 androidGradlePlugin = "8.1.0-alpha02"
-composeBom = "2023.04.00"
+composeBom = "2023.06.01"
 composeCompiler = "1.4.3"
 junit = "4.13.2"
 koin = "3.4.0"
