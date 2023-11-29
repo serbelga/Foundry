@@ -16,7 +16,7 @@ moshi = "1.14.0"
 navigation = "2.6.0"
 okhttp3 = "4.10.0"
 retrofit2 = "2.9.0"
-room = "2.5.1"
+room = "2.6.1"
 spotless = "6.18.0"
 
 [libraries]
