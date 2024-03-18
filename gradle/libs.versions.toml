@@ -1,7 +1,7 @@
 [versions]
 activity = "1.7.2"
 androidCore = "1.10.0"
-androidGradlePlugin = "8.1.0-alpha02"
+androidGradlePlugin = "8.3.1"
 composeBom = "2023.06.01"
 composeCompiler = "1.4.3"
 junit = "4.13.2"
