@@ -2,22 +2,21 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
 }
 
 val publicApiKey: String = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(
-    rootDir
+    rootDir, providers
 ).getProperty("google_fonts_api_key") ?: "\"\""
 
 android {
     namespace = "dev.sergiobelda.foundry"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "dev.sergiobelda.foundry"
         minSdk = 24
-        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -54,10 +53,7 @@ android {
         buildConfig = true
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -65,7 +61,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.activityCompose)
 
     implementation(platform(libs.androidx.compose.composeBom))
@@ -84,7 +79,7 @@ dependencies {
     testImplementation(libs.junit)
 
     implementation(libs.squareup.moshi.moshi)
-    kapt(libs.squareup.moshi.moshiKotlinCodegen)
+    ksp(libs.squareup.moshi.moshiKotlinCodegen)
     implementation(libs.squareup.okhttp3.okhttp)
     implementation(libs.squareup.okhttp3.loggingInterceptor)
     implementation(libs.squareup.retrofit2.converterMoshi)
