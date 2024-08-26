@@ -16,46 +16,52 @@
 
 package dev.sergiobelda.foundry.data.localdatasource
 
-import dev.sergiobelda.foundry.data.database.dao.SavedFontsDao
-import dev.sergiobelda.foundry.data.database.dao.GoogleFontsDao
+import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
+import dev.sergiobelda.foundry.data.database.dao.SavedFontDao
 import dev.sergiobelda.foundry.data.database.entity.SavedFontEntity
-import dev.sergiobelda.foundry.data.database.entity.GoogleFontEntity
-import dev.sergiobelda.foundry.domain.model.SavedFontModel
-import dev.sergiobelda.foundry.domain.model.GoogleFontModel
+import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyEntity
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyModel
+import dev.sergiobelda.foundry.domain.model.GoogleFontFamilyModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class FontLocalDataSource(
-    private val savedFontsDao: SavedFontsDao,
-    private val googleFontsDao: GoogleFontsDao,
+    private val savedFontDao: SavedFontDao,
+    private val fontFamilyDao: FontFamilyDao
 ) : IFontLocalDataSource {
-    // TODO: Create mapper
-    override val savedFonts: Flow<List<SavedFontModel>> =
-        savedFontsDao.getSavedFonts().map { list ->
-            list.map { SavedFontModel(it.name) }
+
+    override fun getFontItems(saved: Boolean): Flow<List<FontFamilyItemModel>> =
+        fontFamilyDao.getFontItems().map { list ->
+            // TODO: Create mapper
+            list.map {
+                FontFamilyItemModel(
+                    GoogleFontFamilyModel(
+                        name = it.fontFamilyEntity.name,
+                        category = it.fontFamilyEntity.category
+                    ),
+                    isSaved = it.saved
+                )
+            }
         }
 
-    // TODO: Create mapper
-    override val googleFonts: Flow<List<GoogleFontModel>> =
-        googleFontsDao.getGoogleFonts().map { list ->
-            list.map { GoogleFontModel(name = it.family, category = it.category) }
+    override suspend fun insertFonts(fonts: List<FontFamilyModel>) {
+        fonts.forEach {
+            fontFamilyDao.insert(
+                it.toFontFamilyEntity()
+            )
         }
-
-    override suspend fun insertGoogleFonts(googleFonts: List<GoogleFontModel>) {
-        googleFontsDao.insertAll(
-            googleFonts.map { GoogleFontEntity(family = it.name, category = it.category) },
-        )
     }
 
     override suspend fun removeSavedFont(name: String) {
-        savedFontsDao.deleteByName(name = name)
+        savedFontDao.deleteByName(name = name)
     }
 
     override suspend fun saveFont(name: String) {
-        savedFontsDao.insert(SavedFontEntity(name = name))
+        savedFontDao.insert(SavedFontEntity(name = name))
     }
 
     override suspend fun clearAllSavedFonts() {
-        savedFontsDao.clearAll()
+        savedFontDao.clearAll()
     }
 }

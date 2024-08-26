@@ -16,7 +16,7 @@
 
 package dev.sergiobelda.foundry.domain.repository
 
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import kotlinx.coroutines.flow.Flow
 
 interface IFontRepository {
@@ -26,5 +26,5 @@ interface IFontRepository {
 
     suspend fun saveFont(name: String)
 
-    fun getFontItems(): Flow<List<FontItemModel>>
+    fun getFontItems(saved: Boolean): Flow<List<FontFamilyItemModel>>
 }

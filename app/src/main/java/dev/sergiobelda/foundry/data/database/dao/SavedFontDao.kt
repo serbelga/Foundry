@@ -20,17 +20,20 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import dev.sergiobelda.foundry.data.database.entity.GoogleFontEntity
+import dev.sergiobelda.foundry.data.database.entity.SavedFontEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface GoogleFontsDao {
-    @Query("SELECT * FROM GoogleFonts")
-    fun getGoogleFonts(): Flow<List<GoogleFontEntity>>
+interface SavedFontDao {
+    @Query("SELECT * FROM SavedFont")
+    fun getSavedFonts(): Flow<List<SavedFontEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(googleFontEntity: GoogleFontEntity)
+    suspend fun insert(vararg font: SavedFontEntity)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAll(googleFontEntities: List<GoogleFontEntity>)
+    @Query("DELETE FROM SavedFont WHERE name = :name")
+    suspend fun deleteByName(name: String)
+
+    @Query("DELETE FROM SavedFont")
+    suspend fun clearAll()
 }

@@ -18,22 +18,20 @@ package dev.sergiobelda.foundry.data.repository
 
 import dev.sergiobelda.foundry.data.localdatasource.IFontLocalDataSource
 import dev.sergiobelda.foundry.data.remotedatasource.IFontRemoteDataSource
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.repository.IFontRepository
 import dev.sergiobelda.foundry.domain.result.doIfSuccess
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 
 class FontRepository(
     private val fontRemoteDataSource: IFontRemoteDataSource,
     private val fontLocalDataSource: IFontLocalDataSource,
 ) : IFontRepository {
     override suspend fun fetchFonts() {
-        // TODO: Rename to getFonts and pass a query to fetch from different sources?
-        val googleFonts = fontRemoteDataSource.getGoogleFonts()
-        googleFonts.doIfSuccess {
+        val result = fontRemoteDataSource.getFonts()
+        result.doIfSuccess {
             // TODO: Remove and insertAll?
-            fontLocalDataSource.insertGoogleFonts(it)
+            fontLocalDataSource.insertFonts(it)
         }
     }
 
@@ -45,13 +43,6 @@ class FontRepository(
         fontLocalDataSource.saveFont(name = name)
     }
 
-    override fun getFontItems(): Flow<List<FontItemModel>> =
-        fontLocalDataSource.googleFonts.combine(fontLocalDataSource.savedFonts) { googleFonts, savedFonts ->
-            googleFonts.map { googleFont ->
-                FontItemModel(
-                    googleFont,
-                    isSaved = savedFonts.any { it.name == googleFont.name },
-                )
-            }
-        }
+    override fun getFontItems(saved: Boolean): Flow<List<FontFamilyItemModel>> =
+        fontLocalDataSource.getFontItems(saved = saved)
 }

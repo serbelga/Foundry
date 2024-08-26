@@ -65,7 +65,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.components.FontListView
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import dev.sergiobelda.foundry.ui.theme.pacificoFontFamily
@@ -94,7 +94,7 @@ fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
         drawerState = drawerState,
     ) {
         HomeContent(
-            fonts = fontsViewModel.homeState.fonts,
+            fonts = fontsViewModel.homeState.fontItems,
             updateFontSavedState = {
                 fontsViewModel.updateFontSavedState(it)
             }
@@ -105,8 +105,8 @@ fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
 @Composable
 private fun HomeContent(
-    fonts: List<FontItemModel>,
-    updateFontSavedState: (FontItemModel) -> Unit,
+    fonts: List<FontFamilyItemModel>,
+    updateFontSavedState: (FontFamilyItemModel) -> Unit,
 ) {
     val provider =
         GoogleFont.Provider(

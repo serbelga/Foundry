@@ -16,6 +16,7 @@
 
 package dev.sergiobelda.foundry.domain.model
 
-interface FontModel {
-    val name: String
-}
+data class GoogleFontFamilyModel(
+    override val name: String,
+    val category: String,
+) : FontFamilyModel

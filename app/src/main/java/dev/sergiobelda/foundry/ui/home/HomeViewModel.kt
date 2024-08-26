@@ -21,7 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontItemsUseCase
 import dev.sergiobelda.foundry.domain.usecase.SaveFontUseCase
@@ -54,21 +54,21 @@ class HomeViewModel(
 
     private fun getFontItems() =
         viewModelScope.launch {
-            getFontItemsUseCase().collect { fontItems ->
-                homeState =
-                    homeState.copy(
-                        fontItems = fontItems.toPersistentList(),
-                        savedFontItems = fontItems.filter { it.isSaved }.toPersistentList(),
-                    )
+            getFontItemsUseCase(
+                saved = homeState.isSavedFontsSelected
+            ).collect { fontItems ->
+                homeState = homeState.copy(
+                    fontItems = fontItems.toPersistentList(),
+                )
             }
         }
 
-    fun updateFontSavedState(fontItemModel: FontItemModel) =
+    fun updateFontSavedState(fontFamilyItemModel: FontFamilyItemModel) =
         viewModelScope.launch {
-            if (fontItemModel.isSaved) {
-                removeSavedFontUseCase.invoke(name = fontItemModel.fontModel.name)
+            if (fontFamilyItemModel.isSaved) {
+                removeSavedFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.name)
             } else {
-                saveFontUseCase.invoke(name = fontItemModel.fontModel.name)
+                saveFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.name)
             }
         }
 }

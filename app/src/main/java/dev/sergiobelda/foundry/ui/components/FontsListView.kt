@@ -44,14 +44,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 
 @Composable
 fun FontListView(
     listState: LazyListState,
-    fonts: List<FontItemModel>,
+    fonts: List<FontFamilyItemModel>,
     provider: GoogleFont.Provider,
-    onSaveClick: (FontItemModel) -> Unit,
+    onSaveClick: (FontFamilyItemModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -59,7 +59,7 @@ fun FontListView(
         modifier = modifier,
     ) {
         items(fonts) {
-            val fontName = GoogleFont(it.fontModel.name)
+            val fontName = GoogleFont(it.fontFamilyModel.name)
             val fontFamily =
                 FontFamily(
                     Font(googleFont = fontName, fontProvider = provider),
@@ -77,7 +77,7 @@ fun FontListView(
 @OptIn(ExperimentalAnimationGraphicsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun FontCard(
-    fontItemModel: FontItemModel,
+    fontFamilyItemModel: FontFamilyItemModel,
     fontFamily: FontFamily,
     onSaveClick: () -> Unit,
 ) {
@@ -94,7 +94,7 @@ fun FontCard(
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(
-                    text = fontItemModel.fontModel.name,
+                    text = fontFamilyItemModel.fontFamilyModel.name,
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.padding(bottom = 12.dp),
                 )
@@ -114,11 +114,11 @@ fun FontCard(
                     painter =
                         rememberAnimatedVectorPainter(
                             avdHeartFill,
-                            fontItemModel.isSaved,
+                            fontFamilyItemModel.isSaved,
                         ),
                     contentDescription = null,
                     tint =
-                        if (fontItemModel.isSaved) {
+                        if (fontFamilyItemModel.isSaved) {
                             MaterialTheme.colorScheme.error
                         } else {
                             MaterialTheme.colorScheme.onSurface

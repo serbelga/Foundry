@@ -16,7 +16,7 @@
 
 package dev.sergiobelda.foundry.domain.model
 
-data class FontItemModel(
-    val fontModel: FontModel,
+data class FontFamilyItemModel(
+    val fontFamilyModel: FontFamilyModel,
     val isSaved: Boolean,
 )

@@ -16,16 +16,15 @@
 
 package dev.sergiobelda.foundry.data.localdatasource
 
-import dev.sergiobelda.foundry.domain.model.SavedFontModel
-import dev.sergiobelda.foundry.domain.model.GoogleFontModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 import kotlinx.coroutines.flow.Flow
 
 interface IFontLocalDataSource {
-    val savedFonts: Flow<List<SavedFontModel>>
 
-    val googleFonts: Flow<List<GoogleFontModel>>
+    fun getFontItems(saved: Boolean): Flow<List<FontFamilyItemModel>>
 
-    suspend fun insertGoogleFonts(googleFonts: List<GoogleFontModel>)
+    suspend fun insertFonts(fonts: List<FontFamilyModel>)
 
     suspend fun removeSavedFont(name: String)
 
