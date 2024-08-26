@@ -18,7 +18,6 @@ package dev.sergiobelda.foundry.ui.home
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
@@ -36,10 +35,10 @@ import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.TextFields
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -66,7 +65,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -89,8 +87,6 @@ enum class HomeMenuNavigationItem(
 
 @OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalTextApi::class,
-    ExperimentalAnimationApi::class,
     ExperimentalAnimationGraphicsApi::class,
 )
 @Composable
@@ -181,7 +177,10 @@ fun HomeScreen(fontsViewModel: HomeViewModel = getViewModel()) {
                             leadingIcon = {
                                 if (active) {
                                     IconButton(onClick = { closeSearchBar() }) {
-                                        Icon(painter = avdMenuToArrowBackPainter, contentDescription = null)
+                                        Icon(
+                                            painter = avdMenuToArrowBackPainter,
+                                            contentDescription = null,
+                                        )
                                     }
                                 } else {
                                     IconButton(
@@ -190,7 +189,10 @@ fun HomeScreen(fontsViewModel: HomeViewModel = getViewModel()) {
                                             closeSearchBar()
                                         },
                                     ) {
-                                        Icon(painter = avdMenuToArrowBackPainter, contentDescription = null)
+                                        Icon(
+                                            painter = avdMenuToArrowBackPainter,
+                                            contentDescription = null,
+                                        )
                                     }
                                 }
                             },
@@ -280,7 +282,7 @@ private fun DrawerContent(
                     bottom = 8.dp,
                 ),
         )
-        Divider()
+        HorizontalDivider()
         HomeMenuSpacer()
         HomeMenuNavigationDrawerItem(
             homeMenuNavigationItem = HomeMenuNavigationItem.FontsMenuNavigationItem,
@@ -293,7 +295,7 @@ private fun DrawerContent(
             selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FavoritesMenuNavigationItem,
         )
         HomeMenuSpacer()
-        Divider(modifier = Modifier.padding(horizontal = HomeMenuDividerHorizontalPadding))
+        HorizontalDivider(modifier = Modifier.padding(horizontal = HomeMenuDividerHorizontalPadding))
         HomeMenuSpacer()
         HomeMenuNavigationDrawerItem(
             homeMenuNavigationItem = HomeMenuNavigationItem.SettingsMenuNavigationItem,
