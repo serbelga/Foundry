@@ -26,6 +26,7 @@ import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontItemsUseCase
 import dev.sergiobelda.foundry.domain.usecase.InsertFavoriteFontUseCase
 import dev.sergiobelda.foundry.domain.usecase.RemoveFavoriteFontUseCase
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -34,7 +35,7 @@ class HomeViewModel(
     private val insertFavoriteFontUseCase: InsertFavoriteFontUseCase,
     private val removeFavoriteFontUseCase: RemoveFavoriteFontUseCase,
 ) : ViewModel() {
-    var homeUiState: HomeUiState by mutableStateOf(HomeUiState(isFetchingFonts = true))
+    var homeState: HomeState by mutableStateOf(HomeState(isLoadingFonts = true))
         private set
 
     init {
@@ -45,19 +46,19 @@ class HomeViewModel(
     private fun fetchFonts() =
         viewModelScope.launch {
             fetchFontsUseCase()
-            homeUiState =
-                homeUiState.copy(
-                    isFetchingFonts = false,
+            homeState =
+                homeState.copy(
+                    isLoadingFonts = false,
                 )
         }
 
     private fun getFontItems() =
         viewModelScope.launch {
             getFontItemsUseCase().collect { fontItems ->
-                homeUiState =
-                    homeUiState.copy(
-                        fontItems = fontItems,
-                        favoriteFontItems = fontItems.filter { it.isFavorite },
+                homeState =
+                    homeState.copy(
+                        fontItems = fontItems.toPersistentList(),
+                        favoriteFontItems = fontItems.filter { it.isFavorite }.toPersistentList(),
                     )
             }
         }

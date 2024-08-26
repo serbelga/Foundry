@@ -16,7 +16,6 @@
 
 package dev.sergiobelda.foundry.ui.home
 
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
@@ -30,11 +29,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Clear
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.TextFields
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -61,7 +57,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -70,41 +65,59 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
+import dev.sergiobelda.foundry.domain.model.FontItemModel
 import dev.sergiobelda.foundry.ui.components.FontListView
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import dev.sergiobelda.foundry.ui.theme.pacificoFontFamily
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
-enum class HomeMenuNavigationItem(
-    val imageVector: ImageVector,
-    @StringRes val stringResourceId: Int,
-) {
-    FontsMenuNavigationItem(Icons.Rounded.TextFields, R.string.fonts),
-    FavoritesMenuNavigationItem(Icons.Rounded.Favorite, R.string.favorites),
-    SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings),
+@Composable
+fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
+    var currentHomeMenuNavigationItem: HomeMenuNavigationItem by remember {
+        mutableStateOf(
+            HomeMenuNavigationItem.FontsMenuNavigationItem,
+        )
+    }
+    val coroutineScope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    ModalNavigationDrawer(
+        drawerContent = {
+            HomeDrawerContent(
+                homeMenuNavigationItemSelected = currentHomeMenuNavigationItem,
+                onHomeMenuNavigationItemClick = {
+                    coroutineScope.launch { drawerState.close() }
+                },
+            )
+        },
+        drawerState = drawerState,
+    ) {
+        HomeContent(
+            fonts = fontsViewModel.homeState.fonts,
+            updateFontFavoriteState = {
+                fontsViewModel.updateFontFavoriteState(it)
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
 @Composable
-fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
+private fun HomeContent(
+    fonts: List<FontItemModel>,
+    updateFontFavoriteState: (FontItemModel) -> Unit,
+) {
     val provider =
         GoogleFont.Provider(
             providerAuthority = "com.google.android.gms.fonts",
             providerPackage = "com.google.android.gms",
             certificates = R.array.com_google_android_gms_fonts_certs,
         )
-
-    var currentHomeMenuNavigationItem: HomeMenuNavigationItem by remember {
-        mutableStateOf(
-            HomeMenuNavigationItem.FontsMenuNavigationItem,
-        )
-    }
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    val fontsListState = rememberLazyListState()
-    val favoritesListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+
+    val lazyListState = rememberLazyListState()
 
     var searchText by rememberSaveable { mutableStateOf("") }
     var active by rememberSaveable { mutableStateOf(false) }
@@ -115,153 +128,104 @@ fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
 
     val fabVisible by remember {
         derivedStateOf {
-            if (currentHomeMenuNavigationItem == HomeMenuNavigationItem.FontsMenuNavigationItem) {
-                fontsListState
-            } else {
-                favoritesListState
-            }.firstVisibleItemIndex >= FAB_VISIBLE_ITEM_INDEX
+            lazyListState.firstVisibleItemIndex >= FAB_VISIBLE_ITEM_INDEX
         }
     }
 
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
 
     fun closeSearchBar() {
         focusManager.clearFocus()
         active = false
         searchText = ""
     }
-    ModalNavigationDrawer(
-        drawerContent = {
-            DrawerContent(
-                homeMenuNavigationItemSelected = currentHomeMenuNavigationItem,
-                onHomeMenuNavigationItemClick = {
-                    when (it) {
-                        HomeMenuNavigationItem.FontsMenuNavigationItem ->
-                            currentHomeMenuNavigationItem =
-                                it
-
-                        HomeMenuNavigationItem.FavoritesMenuNavigationItem ->
-                            currentHomeMenuNavigationItem =
-                                it
-
-                        HomeMenuNavigationItem.SettingsMenuNavigationItem -> {
-                            // TODO: Navigate to Settings
-                        }
-                    }
-                    coroutineScope.launch { drawerState.close() }
-                },
-            )
-        },
-        drawerState = drawerState,
-    ) {
-        Scaffold(
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = {
-                val onActiveChange: (Boolean) -> Unit = {
-                    active = it
-                    if (!active) focusManager.clearFocus()
-                }
-                SearchBar(
-                    inputField = {
-                        SearchBarDefaults.InputField(
-                            query = searchText,
-                            onQueryChange = { searchText = it },
-                            onSearch = { closeSearchBar() },
-                            expanded = active,
-                            onExpandedChange = onActiveChange,
-                            enabled = true,
-                            placeholder = { Text(stringResource(id = R.string.search_fonts)) },
-                            leadingIcon = {
-                                if (active) {
-                                    IconButton(onClick = { closeSearchBar() }) {
-                                        Icon(
-                                            painter = avdMenuToArrowBackPainter,
-                                            contentDescription = null,
-                                        )
-                                    }
-                                } else {
-                                    IconButton(
-                                        onClick = {
-                                            coroutineScope.launch { drawerState.open() }
-                                            closeSearchBar()
-                                        },
-                                    ) {
-                                        Icon(
-                                            painter = avdMenuToArrowBackPainter,
-                                            contentDescription = null,
-                                        )
-                                    }
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            val onActiveChange: (Boolean) -> Unit = {
+                active = it
+                if (!active) focusManager.clearFocus()
+            }
+            SearchBar(
+                inputField = {
+                    SearchBarDefaults.InputField(
+                        query = searchText,
+                        onQueryChange = { searchText = it },
+                        onSearch = { closeSearchBar() },
+                        expanded = active,
+                        onExpandedChange = onActiveChange,
+                        enabled = true,
+                        placeholder = { Text(stringResource(id = R.string.search_fonts)) },
+                        leadingIcon = {
+                            if (active) {
+                                IconButton(onClick = { closeSearchBar() }) {
+                                    Icon(
+                                        painter = avdMenuToArrowBackPainter,
+                                        contentDescription = null,
+                                    )
                                 }
-                            },
-                            trailingIcon = {
-                                if (active) {
-                                    IconButton(onClick = { searchText = "" }) {
-                                        Icon(Icons.Rounded.Clear, contentDescription = null)
-                                    }
+                            } else {
+                                IconButton(
+                                    onClick = {
+                                        // coroutineScope.launch { drawerState.open() }
+                                        closeSearchBar()
+                                    },
+                                ) {
+                                    Icon(
+                                        painter = avdMenuToArrowBackPainter,
+                                        contentDescription = null,
+                                    )
                                 }
-                            },
-                            interactionSource = null,
-                        )
-                    },
-                    expanded = active,
-                    onExpandedChange = onActiveChange,
-                    modifier =
-                        Modifier
-                            .fillMaxWidth(),
-                    content = {},
-                )
-            },
-            floatingActionButton = {
-                AnimatedVisibility(
-                    visible = fabVisible,
-                    enter = scaleIn(),
-                    exit = scaleOut(),
-                ) {
-                    FloatingActionButton(
-                        onClick = {
-                            coroutineScope.launch {
-                                if (currentHomeMenuNavigationItem == HomeMenuNavigationItem.FontsMenuNavigationItem) {
-                                    fontsListState
-                                } else {
-                                    favoritesListState
-                                }.animateScrollToItem(0)
                             }
                         },
-                    ) {
-                        Icon(Icons.Rounded.ArrowUpward, contentDescription = null)
-                    }
-                }
-            },
-        ) { paddingValues ->
-            when (currentHomeMenuNavigationItem) {
-                HomeMenuNavigationItem.FontsMenuNavigationItem -> {
-                    FontListView(
-                        fontsListState,
-                        fontsViewModel.homeUiState.fontItems,
-                        provider,
-                        onFavoriteClick = { fontsViewModel.updateFontFavoriteState(it) },
-                        modifier = Modifier.padding(paddingValues),
+                        trailingIcon = {
+                            if (active) {
+                                IconButton(onClick = { searchText = "" }) {
+                                    Icon(Icons.Rounded.Clear, contentDescription = null)
+                                }
+                            }
+                        },
+                        interactionSource = null,
                     )
+                },
+                expanded = active,
+                onExpandedChange = onActiveChange,
+                modifier =
+                Modifier
+                    .fillMaxWidth(),
+                content = {},
+            )
+        },
+        floatingActionButton = {
+            AnimatedVisibility(
+                visible = fabVisible,
+                enter = scaleIn(),
+                exit = scaleOut(),
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            lazyListState.animateScrollToItem(0)
+                        }
+                    },
+                ) {
+                    Icon(Icons.Rounded.ArrowUpward, contentDescription = null)
                 }
-
-                HomeMenuNavigationItem.FavoritesMenuNavigationItem -> {
-                    FontListView(
-                        favoritesListState,
-                        fontsViewModel.homeUiState.favoriteFontItems,
-                        provider,
-                        onFavoriteClick = { fontsViewModel.updateFontFavoriteState(it) },
-                        modifier = Modifier.padding(paddingValues),
-                    )
-                }
-
-                else -> {}
             }
-        }
+        },
+    ) { paddingValues ->
+        FontListView(
+            lazyListState,
+            fonts,
+            provider,
+            onFavoriteClick = { updateFontFavoriteState(it) },
+            modifier = Modifier.padding(paddingValues),
+        )
     }
 }
 
 @Composable
-private fun DrawerContent(
+private fun HomeDrawerContent(
     onHomeMenuNavigationItemClick: (HomeMenuNavigationItem) -> Unit,
     homeMenuNavigationItemSelected: HomeMenuNavigationItem,
 ) {
@@ -297,6 +261,7 @@ private fun DrawerContent(
         HomeMenuNavigationDrawerItem(
             homeMenuNavigationItem = HomeMenuNavigationItem.SettingsMenuNavigationItem,
             onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.SettingsMenuNavigationItem) },
+            selected = false
         )
     }
 }

@@ -17,9 +17,16 @@
 package dev.sergiobelda.foundry.ui.home
 
 import dev.sergiobelda.foundry.domain.model.FontItemModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
-data class HomeUiState(
-    val isFetchingFonts: Boolean = false,
-    val fontItems: List<FontItemModel> = emptyList(),
-    val favoriteFontItems: List<FontItemModel> = emptyList(),
-)
+data class HomeState(
+    val isLoadingFonts: Boolean = false,
+    val isSavedFontsSelected: Boolean = false,
+    private val fontItems: ImmutableList<FontItemModel> = persistentListOf(),
+    private val favoriteFontItems: ImmutableList<FontItemModel> = persistentListOf(),
+) {
+
+    val fonts: ImmutableList<FontItemModel>
+        get() = if (isSavedFontsSelected) favoriteFontItems else fontItems
+}
