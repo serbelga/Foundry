@@ -1,12 +1,15 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("dev.sergiobelda.gradle.spotless")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
 }
 
-val publicApiKey: String = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(
+val publicApiKey: String = gradleLocalProperties(
     rootDir, providers
 ).getProperty("google_fonts_api_key") ?: "\"\""
 
@@ -42,12 +45,8 @@ android {
             abortOnError = false
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        jvmToolchain(17)
     }
     buildFeatures {
         buildConfig = true

@@ -7,7 +7,6 @@ junit = "4.13.2"
 koin = "3.5.6"
 kotlin = "2.0.20"
 ksp = "2.0.20-1.0.24"
-ktlint = "0.51.0-FINAL"
 lifecycle = "2.8.4"
 material3 = "1.3.0-rc01"
 moshi = "1.15.1"
@@ -18,6 +17,8 @@ room = "2.6.1"
 spotless = "6.25.0"
 
 [libraries]
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+
 androidx-room-roomCompiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-roomKtx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-roomPaging = { module = "androidx.room:room-paging", version.ref = "room" }
@@ -44,7 +45,9 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 
-ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 squareup-moshi-moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 squareup-moshi-moshiKotlinCodegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
@@ -60,4 +63,3 @@ androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugi
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

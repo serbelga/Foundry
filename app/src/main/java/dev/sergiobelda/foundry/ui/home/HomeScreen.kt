@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda Galbis
+ * Copyright 2022 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ import dev.sergiobelda.foundry.ui.components.FontListView
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import dev.sergiobelda.foundry.ui.theme.pacificoFontFamily
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import org.koin.compose.koinInject
 
 enum class HomeMenuNavigationItem(
     val imageVector: ImageVector,
@@ -85,12 +85,9 @@ enum class HomeMenuNavigationItem(
     SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings),
 }
 
-@OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalAnimationGraphicsApi::class,
-)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
 @Composable
-fun HomeScreen(fontsViewModel: HomeViewModel = getViewModel()) {
+fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
     val provider =
         GoogleFont.Provider(
             providerAuthority = "com.google.android.gms.fonts",
