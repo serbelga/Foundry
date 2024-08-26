@@ -21,5 +21,5 @@ import dev.sergiobelda.foundry.domain.model.FontItemModel
 data class HomeUiState(
     val isFetchingFonts: Boolean = false,
     val fontItems: List<FontItemModel> = emptyList(),
-    val favoriteFontItems: List<FontItemModel> = emptyList()
+    val favoriteFontItems: List<FontItemModel> = emptyList(),
 )

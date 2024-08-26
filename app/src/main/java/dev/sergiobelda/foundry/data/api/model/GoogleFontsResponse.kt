@@ -20,5 +20,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class GoogleFontsResponse(
-    val items: List<GoogleFontApiModel>
+    val items: List<GoogleFontApiModel>,
 )

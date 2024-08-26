@@ -26,9 +26,8 @@ import kotlinx.coroutines.flow.combine
 
 class FontRepository(
     private val fontRemoteDataSource: IFontRemoteDataSource,
-    private val fontLocalDataSource: IFontLocalDataSource
+    private val fontLocalDataSource: IFontLocalDataSource,
 ) : IFontRepository {
-
     override suspend fun fetchFonts() {
         val googleFonts = fontRemoteDataSource.getGoogleFonts()
         googleFonts.doIfSuccess {
@@ -49,7 +48,7 @@ class FontRepository(
             googleFonts.map { googleFont ->
                 FontItemModel(
                     googleFont,
-                    isFavorite = favoriteFonts.any { it.name == googleFont.name }
+                    isFavorite = favoriteFonts.any { it.name == googleFont.name },
                 )
             }
         }

@@ -32,9 +32,8 @@ class HomeViewModel(
     private val fetchFontsUseCase: FetchFontsUseCase,
     private val getFontItemsUseCase: GetFontItemsUseCase,
     private val insertFavoriteFontUseCase: InsertFavoriteFontUseCase,
-    private val removeFavoriteFontUseCase: RemoveFavoriteFontUseCase
+    private val removeFavoriteFontUseCase: RemoveFavoriteFontUseCase,
 ) : ViewModel() {
-
     var homeUiState: HomeUiState by mutableStateOf(HomeUiState(isFetchingFonts = true))
         private set
 
@@ -43,27 +42,32 @@ class HomeViewModel(
         getFontItems()
     }
 
-    private fun fetchFonts() = viewModelScope.launch {
-        fetchFontsUseCase()
-        homeUiState = homeUiState.copy(
-            isFetchingFonts = false
-        )
-    }
-
-    private fun getFontItems() = viewModelScope.launch {
-        getFontItemsUseCase().collect { fontItems ->
-            homeUiState = homeUiState.copy(
-                fontItems = fontItems,
-                favoriteFontItems = fontItems.filter { it.isFavorite }
-            )
+    private fun fetchFonts() =
+        viewModelScope.launch {
+            fetchFontsUseCase()
+            homeUiState =
+                homeUiState.copy(
+                    isFetchingFonts = false,
+                )
         }
-    }
 
-    fun updateFontFavoriteState(fontItemModel: FontItemModel) = viewModelScope.launch {
-        if (fontItemModel.isFavorite) {
-            removeFavoriteFontUseCase.invoke(favoriteFont = fontItemModel.fontModel.name)
-        } else {
-            insertFavoriteFontUseCase.invoke(favoriteFont = fontItemModel.fontModel.name)
+    private fun getFontItems() =
+        viewModelScope.launch {
+            getFontItemsUseCase().collect { fontItems ->
+                homeUiState =
+                    homeUiState.copy(
+                        fontItems = fontItems,
+                        favoriteFontItems = fontItems.filter { it.isFavorite },
+                    )
+            }
         }
-    }
+
+    fun updateFontFavoriteState(fontItemModel: FontItemModel) =
+        viewModelScope.launch {
+            if (fontItemModel.isFavorite) {
+                removeFavoriteFontUseCase.invoke(favoriteFont = fontItemModel.fontModel.name)
+            } else {
+                insertFavoriteFontUseCase.invoke(favoriteFont = fontItemModel.fontModel.name)
+            }
+        }
 }

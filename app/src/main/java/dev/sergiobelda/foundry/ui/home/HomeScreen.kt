@@ -80,30 +80,31 @@ import org.koin.androidx.compose.getViewModel
 
 enum class HomeMenuNavigationItem(
     val imageVector: ImageVector,
-    @StringRes val stringResourceId: Int
+    @StringRes val stringResourceId: Int,
 ) {
     FontsMenuNavigationItem(Icons.Rounded.TextFields, R.string.fonts),
     FavoritesMenuNavigationItem(Icons.Rounded.Favorite, R.string.favorites),
-    SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings)
+    SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings),
 }
 
 @OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalTextApi::class, ExperimentalAnimationApi::class,
-    ExperimentalAnimationGraphicsApi::class
+    ExperimentalMaterial3Api::class,
+    ExperimentalTextApi::class,
+    ExperimentalAnimationApi::class,
+    ExperimentalAnimationGraphicsApi::class,
 )
 @Composable
-fun HomeScreen(
-    fontsViewModel: HomeViewModel = getViewModel()
-) {
-    val provider = GoogleFont.Provider(
-        providerAuthority = "com.google.android.gms.fonts",
-        providerPackage = "com.google.android.gms",
-        certificates = R.array.com_google_android_gms_fonts_certs
-    )
+fun HomeScreen(fontsViewModel: HomeViewModel = getViewModel()) {
+    val provider =
+        GoogleFont.Provider(
+            providerAuthority = "com.google.android.gms.fonts",
+            providerPackage = "com.google.android.gms",
+            certificates = R.array.com_google_android_gms_fonts_certs,
+        )
 
     var currentHomeMenuNavigationItem: HomeMenuNavigationItem by remember {
         mutableStateOf(
-            HomeMenuNavigationItem.FontsMenuNavigationItem
+            HomeMenuNavigationItem.FontsMenuNavigationItem,
         )
     }
     val topAppBarState = rememberTopAppBarState()
@@ -142,21 +143,23 @@ fun HomeScreen(
                 homeMenuNavigationItemSelected = currentHomeMenuNavigationItem,
                 onHomeMenuNavigationItemClick = {
                     when (it) {
-                        HomeMenuNavigationItem.FontsMenuNavigationItem -> currentHomeMenuNavigationItem =
-                            it
+                        HomeMenuNavigationItem.FontsMenuNavigationItem ->
+                            currentHomeMenuNavigationItem =
+                                it
 
-                        HomeMenuNavigationItem.FavoritesMenuNavigationItem -> currentHomeMenuNavigationItem =
-                            it
+                        HomeMenuNavigationItem.FavoritesMenuNavigationItem ->
+                            currentHomeMenuNavigationItem =
+                                it
 
                         HomeMenuNavigationItem.SettingsMenuNavigationItem -> {
                             // TODO: Navigate to Settings
                         }
                     }
                     coroutineScope.launch { drawerState.close() }
-                }
+                },
             )
         },
-        drawerState = drawerState
+        drawerState = drawerState,
     ) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -185,7 +188,7 @@ fun HomeScreen(
                                         onClick = {
                                             coroutineScope.launch { drawerState.open() }
                                             closeSearchBar()
-                                        }
+                                        },
                                     ) {
                                         Icon(painter = avdMenuToArrowBackPainter, contentDescription = null)
                                     }
@@ -203,16 +206,17 @@ fun HomeScreen(
                     },
                     expanded = active,
                     onExpandedChange = onActiveChange,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    content = {}
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
+                    content = {},
                 )
             },
             floatingActionButton = {
                 AnimatedVisibility(
                     visible = fabVisible,
                     enter = scaleIn(),
-                    exit = scaleOut()
+                    exit = scaleOut(),
                 ) {
                     FloatingActionButton(
                         onClick = {
@@ -223,12 +227,12 @@ fun HomeScreen(
                                     favoritesListState
                                 }.animateScrollToItem(0)
                             }
-                        }
+                        },
                     ) {
                         Icon(Icons.Rounded.ArrowUpward, contentDescription = null)
                     }
                 }
-            }
+            },
         ) { paddingValues ->
             when (currentHomeMenuNavigationItem) {
                 HomeMenuNavigationItem.FontsMenuNavigationItem -> {
@@ -237,7 +241,7 @@ fun HomeScreen(
                         fontsViewModel.homeUiState.fontItems,
                         provider,
                         onFavoriteClick = { fontsViewModel.updateFontFavoriteState(it) },
-                        modifier = Modifier.padding(paddingValues)
+                        modifier = Modifier.padding(paddingValues),
                     )
                 }
 
@@ -247,7 +251,7 @@ fun HomeScreen(
                         fontsViewModel.homeUiState.favoriteFontItems,
                         provider,
                         onFavoriteClick = { fontsViewModel.updateFontFavoriteState(it) },
-                        modifier = Modifier.padding(paddingValues)
+                        modifier = Modifier.padding(paddingValues),
                     )
                 }
 
@@ -260,7 +264,7 @@ fun HomeScreen(
 @Composable
 private fun DrawerContent(
     onHomeMenuNavigationItemClick: (HomeMenuNavigationItem) -> Unit,
-    homeMenuNavigationItemSelected: HomeMenuNavigationItem
+    homeMenuNavigationItemSelected: HomeMenuNavigationItem,
 ) {
     ModalDrawerSheet {
         Text(
@@ -268,31 +272,32 @@ private fun DrawerContent(
             fontFamily = pacificoFontFamily,
             color = MaterialTheme.colorScheme.primary,
             fontSize = 24.sp,
-            modifier = Modifier.padding(
-                start = 24.dp,
-                top = 8.dp,
-                end = 8.dp,
-                bottom = 8.dp
-            )
+            modifier =
+                Modifier.padding(
+                    start = 24.dp,
+                    top = 8.dp,
+                    end = 8.dp,
+                    bottom = 8.dp,
+                ),
         )
         Divider()
         HomeMenuSpacer()
         HomeMenuNavigationDrawerItem(
             homeMenuNavigationItem = HomeMenuNavigationItem.FontsMenuNavigationItem,
             onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.FontsMenuNavigationItem) },
-            selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FontsMenuNavigationItem
+            selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FontsMenuNavigationItem,
         )
         HomeMenuNavigationDrawerItem(
             homeMenuNavigationItem = HomeMenuNavigationItem.FavoritesMenuNavigationItem,
             onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.FavoritesMenuNavigationItem) },
-            selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FavoritesMenuNavigationItem
+            selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FavoritesMenuNavigationItem,
         )
         HomeMenuSpacer()
         Divider(modifier = Modifier.padding(horizontal = HomeMenuDividerHorizontalPadding))
         HomeMenuSpacer()
         HomeMenuNavigationDrawerItem(
             homeMenuNavigationItem = HomeMenuNavigationItem.SettingsMenuNavigationItem,
-            onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.SettingsMenuNavigationItem) }
+            onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.SettingsMenuNavigationItem) },
         )
     }
 }
@@ -307,7 +312,7 @@ private fun HomeMenuNavigationDrawerItem(
     homeMenuNavigationItem: HomeMenuNavigationItem,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    selected: Boolean = false
+    selected: Boolean = false,
 ) {
     NavigationDrawerItem(
         icon = {
@@ -316,15 +321,16 @@ private fun HomeMenuNavigationDrawerItem(
         label = {
             Text(
                 text = stringResource(id = homeMenuNavigationItem.stringResourceId),
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
             )
         },
         selected = selected,
         onClick = onClick,
-        modifier = modifier.padding(
-            start = HomeMenuNavigationDrawerItemPadding,
-            end = HomeMenuNavigationDrawerItemPadding
-        )
+        modifier =
+            modifier.padding(
+                start = HomeMenuNavigationDrawerItemPadding,
+                end = HomeMenuNavigationDrawerItemPadding,
+            ),
     )
 }
 

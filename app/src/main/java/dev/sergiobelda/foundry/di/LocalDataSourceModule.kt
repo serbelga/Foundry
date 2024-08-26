@@ -18,10 +18,11 @@ package dev.sergiobelda.foundry.di
 
 import dev.sergiobelda.foundry.data.remotedatasource.FontRemoteDataSource
 import dev.sergiobelda.foundry.data.remotedatasource.IFontRemoteDataSource
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
-val remoteDataSourceModule = module {
-    single<IFontRemoteDataSource> {
-        FontRemoteDataSource(get())
+val remoteDataSourceModule =
+    module {
+        singleOf(::FontRemoteDataSource) bind IFontRemoteDataSource::class
     }
-}

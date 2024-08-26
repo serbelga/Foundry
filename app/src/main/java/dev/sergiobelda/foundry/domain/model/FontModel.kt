@@ -17,5 +17,5 @@
 package dev.sergiobelda.foundry.domain.model
 
 open class FontModel(
-    open val name: String
+    open val name: String,
 )

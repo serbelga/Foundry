@@ -18,12 +18,14 @@ package dev.sergiobelda.foundry.domain.result
 
 sealed class Result<out A> {
     data class Success<A>(val value: A) : Result<A>()
+
     data class Error(val exception: Throwable? = null) : Result<Nothing>()
 
-    fun <B> map(m: ((A) -> B)): Result<B> = when (this) {
-        is Success -> Success(m(value))
-        is Error -> Error(exception)
-    }
+    fun <B> map(m: ((A) -> B)): Result<B> =
+        when (this) {
+            is Success -> Success(m(value))
+            is Error -> Error(exception)
+        }
 }
 
 /**

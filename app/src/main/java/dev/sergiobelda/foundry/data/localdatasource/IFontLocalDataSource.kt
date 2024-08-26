@@ -21,7 +21,6 @@ import dev.sergiobelda.foundry.domain.model.GoogleFontModel
 import kotlinx.coroutines.flow.Flow
 
 interface IFontLocalDataSource {
-
     val favoriteFonts: Flow<List<FavoriteFontModel>>
 
     val googleFonts: Flow<List<GoogleFontModel>>

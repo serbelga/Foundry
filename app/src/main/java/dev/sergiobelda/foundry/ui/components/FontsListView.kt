@@ -52,22 +52,23 @@ fun FontListView(
     fonts: List<FontItemModel>,
     provider: GoogleFont.Provider,
     onFavoriteClick: (FontItemModel) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         state = listState,
-        modifier = modifier
+        modifier = modifier,
     ) {
         items(fonts) {
             val fontName = GoogleFont(it.fontModel.name)
-            val fontFamily = FontFamily(
-                Font(googleFont = fontName, fontProvider = provider)
-            )
+            val fontFamily =
+                FontFamily(
+                    Font(googleFont = fontName, fontProvider = provider),
+                )
 
             FontCard(
                 it,
                 fontFamily = fontFamily,
-                onFavoriteClick = { onFavoriteClick(it) }
+                onFavoriteClick = { onFavoriteClick(it) },
             )
         }
     }
@@ -78,45 +79,50 @@ fun FontListView(
 fun FontCard(
     fontItemModel: FontItemModel,
     fontFamily: FontFamily,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
 ) {
     val avdHeartFill =
         AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_fill)
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        onClick = {}
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+        onClick = {},
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(
                     text = fontItemModel.fontModel.name,
                     style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    modifier = Modifier.padding(bottom = 12.dp),
                 )
                 Text(
                     text = stringResource(id = R.string.sample_text),
                     fontSize = 36.sp,
                     fontFamily = fontFamily,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             IconButton(
                 onClick = onFavoriteClick,
-                modifier = Modifier.align(Alignment.TopEnd)
+                modifier = Modifier.align(Alignment.TopEnd),
             ) {
                 Icon(
-                    painter = rememberAnimatedVectorPainter(
-                        avdHeartFill,
-                        fontItemModel.isFavorite
-                    ),
+                    painter =
+                        rememberAnimatedVectorPainter(
+                            avdHeartFill,
+                            fontItemModel.isFavorite,
+                        ),
                     contentDescription = null,
-                    tint = if (fontItemModel.isFavorite) {
-                        MaterialTheme.colorScheme.error
-                    } else MaterialTheme.colorScheme.onSurface
+                    tint =
+                        if (fontItemModel.isFavorite) {
+                            MaterialTheme.colorScheme.error
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        },
                 )
             }
         }

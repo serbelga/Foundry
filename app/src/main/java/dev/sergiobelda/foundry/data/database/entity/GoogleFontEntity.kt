@@ -23,5 +23,5 @@ import androidx.room.PrimaryKey
 data class GoogleFontEntity(
     @PrimaryKey
     val family: String,
-    val category: String
+    val category: String,
 )

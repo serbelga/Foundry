@@ -24,7 +24,7 @@ interface Destination {
 }
 
 data class TopLevelDestination(
-    override val route: String
+    override val route: String,
 ) : Destination
 
 class Action(private val navController: NavHostController) {

@@ -21,9 +21,7 @@ import dev.sergiobelda.foundry.domain.repository.IFontRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetFontItemsUseCase(
-    private val fontRepository: IFontRepository
+    private val fontRepository: IFontRepository,
 ) {
-
-    operator fun invoke(): Flow<List<FontItemModel>> =
-        fontRepository.getFontItems()
+    operator fun invoke(): Flow<List<FontItemModel>> = fontRepository.getFontItems()
 }

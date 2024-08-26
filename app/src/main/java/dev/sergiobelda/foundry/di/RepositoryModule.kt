@@ -18,8 +18,11 @@ package dev.sergiobelda.foundry.di
 
 import dev.sergiobelda.foundry.data.repository.FontRepository
 import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
-val repositoryModule = module {
-    single<IFontRepository> { FontRepository(get(), get()) }
-}
+val repositoryModule =
+    module {
+        singleOf(::FontRepository) bind IFontRepository::class
+    }

@@ -24,11 +24,15 @@ import androidx.navigation.compose.composable
 import dev.sergiobelda.foundry.ui.home.HomeScreen
 
 @Composable
-fun FoundryNavHost(navController: NavHostController, action: Action, modifier: Modifier = Modifier) {
+fun FoundryNavHost(
+    navController: NavHostController,
+    action: Action,
+    modifier: Modifier = Modifier,
+) {
     NavHost(
         navController = navController,
         startDestination = HomeDestination.route,
-        modifier = modifier
+        modifier = modifier,
     ) {
         composable(HomeDestination.route) {
             HomeScreen()

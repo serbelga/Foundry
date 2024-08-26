@@ -20,19 +20,13 @@ import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontItemsUseCase
 import dev.sergiobelda.foundry.domain.usecase.InsertFavoriteFontUseCase
 import dev.sergiobelda.foundry.domain.usecase.RemoveFavoriteFontUseCase
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val useCaseModule = module {
-    single {
-        FetchFontsUseCase(get())
+val useCaseModule =
+    module {
+        singleOf(::FetchFontsUseCase)
+        singleOf(::GetFontItemsUseCase)
+        singleOf(::InsertFavoriteFontUseCase)
+        singleOf(::RemoveFavoriteFontUseCase)
     }
-    single {
-        GetFontItemsUseCase(get())
-    }
-    single {
-        InsertFavoriteFontUseCase(get())
-    }
-    single {
-        RemoveFavoriteFontUseCase(get())
-    }
-}

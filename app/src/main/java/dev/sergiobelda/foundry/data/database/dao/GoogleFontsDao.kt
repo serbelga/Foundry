@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GoogleFontsDao {
-
     @Query("SELECT * FROM GoogleFonts")
     fun getGoogleFonts(): Flow<List<GoogleFontEntity>>
 

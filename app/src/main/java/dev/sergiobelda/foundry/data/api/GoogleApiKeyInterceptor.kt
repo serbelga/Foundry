@@ -20,14 +20,14 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class GoogleApiKeyInterceptor(
-    private val privateKey: String
+    private val privateKey: String,
 ) : Interceptor {
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val newUrl = request.url.newBuilder()
-            .addQueryParameter(PARAM_KEY, privateKey)
-            .build()
+        val newUrl =
+            request.url.newBuilder()
+                .addQueryParameter(PARAM_KEY, privateKey)
+                .build()
 
         val newRequest = request.newBuilder().url(newUrl).build()
 

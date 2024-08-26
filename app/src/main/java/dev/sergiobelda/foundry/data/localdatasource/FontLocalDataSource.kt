@@ -27,9 +27,8 @@ import kotlinx.coroutines.flow.map
 
 class FontLocalDataSource(
     private val favoriteFontsDao: FavoriteFontsDao,
-    private val googleFontsDao: GoogleFontsDao
+    private val googleFontsDao: GoogleFontsDao,
 ) : IFontLocalDataSource {
-
     // TODO: Create mapper
     override val favoriteFonts: Flow<List<FavoriteFontModel>> =
         favoriteFontsDao.getFavoriteFonts().map { list ->
@@ -44,7 +43,7 @@ class FontLocalDataSource(
 
     override suspend fun insertGoogleFonts(googleFonts: List<GoogleFontModel>) {
         googleFontsDao.insertAll(
-            googleFonts.map { GoogleFontEntity(family = it.name, category = it.category) }
+            googleFonts.map { GoogleFontEntity(family = it.name, category = it.category) },
         )
     }
 

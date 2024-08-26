@@ -26,10 +26,9 @@ import dev.sergiobelda.foundry.data.database.entity.GoogleFontEntity
 @Database(
     entities = [FavoriteFontEntity::class, GoogleFontEntity::class],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
 abstract class FoundryDatabase : RoomDatabase() {
-
     abstract fun favoriteFontsDao(): FavoriteFontsDao
 
     abstract fun googleFontsDao(): GoogleFontsDao

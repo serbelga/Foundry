@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteFontsDao {
-
     @Query("SELECT * FROM FavoriteFonts")
     fun getFavoriteFonts(): Flow<List<FavoriteFontEntity>>
 
