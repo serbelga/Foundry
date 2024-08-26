@@ -20,7 +20,7 @@ import dev.sergiobelda.foundry.BuildConfig
 import dev.sergiobelda.foundry.data.api.Constants.GOOGLE_FONTS_BASE_URL
 import dev.sergiobelda.foundry.data.api.Constants.TIMEOUT
 import dev.sergiobelda.foundry.data.api.GoogleApiKeyInterceptor
-import dev.sergiobelda.foundry.data.api.service.GoogleFontsApiService
+import dev.sergiobelda.foundry.data.api.service.google.GoogleFontsApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module

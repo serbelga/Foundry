@@ -29,26 +29,28 @@ class FontRepository(
     private val fontLocalDataSource: IFontLocalDataSource,
 ) : IFontRepository {
     override suspend fun fetchFonts() {
+        // TODO: Rename to getFonts and pass a query to fetch from different sources?
         val googleFonts = fontRemoteDataSource.getGoogleFonts()
         googleFonts.doIfSuccess {
+            // TODO: Remove and insertAll?
             fontLocalDataSource.insertGoogleFonts(it)
         }
     }
 
-    override suspend fun removeFavoriteFont(favoriteFont: String) {
-        fontLocalDataSource.removeFavoriteFont(favoriteFont = favoriteFont)
+    override suspend fun removeSavedFont(name: String) {
+        fontLocalDataSource.removeSavedFont(name = name)
     }
 
-    override suspend fun insertFavoriteFont(favoriteFont: String) {
-        fontLocalDataSource.insertFavoriteFont(favoriteFont = favoriteFont)
+    override suspend fun saveFont(name: String) {
+        fontLocalDataSource.saveFont(name = name)
     }
 
     override fun getFontItems(): Flow<List<FontItemModel>> =
-        fontLocalDataSource.googleFonts.combine(fontLocalDataSource.favoriteFonts) { googleFonts, favoriteFonts ->
+        fontLocalDataSource.googleFonts.combine(fontLocalDataSource.savedFonts) { googleFonts, savedFonts ->
             googleFonts.map { googleFont ->
                 FontItemModel(
                     googleFont,
-                    isFavorite = favoriteFonts.any { it.name == googleFont.name },
+                    isSaved = savedFonts.any { it.name == googleFont.name },
                 )
             }
         }

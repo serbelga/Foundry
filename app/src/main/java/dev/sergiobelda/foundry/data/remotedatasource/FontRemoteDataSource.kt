@@ -17,7 +17,7 @@
 package dev.sergiobelda.foundry.data.remotedatasource
 
 import dev.sergiobelda.foundry.data.api.safeApiCall
-import dev.sergiobelda.foundry.data.api.service.GoogleFontsApiService
+import dev.sergiobelda.foundry.data.api.service.google.GoogleFontsApiService
 import dev.sergiobelda.foundry.domain.model.GoogleFontModel
 import dev.sergiobelda.foundry.domain.result.Result
 

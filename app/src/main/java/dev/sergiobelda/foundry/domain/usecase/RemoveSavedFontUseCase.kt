@@ -18,10 +18,10 @@ package dev.sergiobelda.foundry.domain.usecase
 
 import dev.sergiobelda.foundry.domain.repository.IFontRepository
 
-class RemoveFavoriteFontUseCase(
+class RemoveSavedFontUseCase(
     private val fontRepository: IFontRepository,
 ) {
-    suspend operator fun invoke(favoriteFont: String) {
-        fontRepository.removeFavoriteFont(favoriteFont)
+    suspend operator fun invoke(name: String) {
+        fontRepository.removeSavedFont(name)
     }
 }

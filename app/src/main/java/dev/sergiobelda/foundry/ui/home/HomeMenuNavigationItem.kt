@@ -13,6 +13,6 @@ internal enum class HomeMenuNavigationItem(
     @StringRes val stringResourceId: Int,
 ) {
     FontsMenuNavigationItem(Icons.Rounded.TextFields, R.string.fonts),
-    FavoritesMenuNavigationItem(Icons.Rounded.Favorite, R.string.favorites),
+    SavedFontsMenuNavigationItem(Icons.Rounded.Favorite, R.string.saved_fonts),
     SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings),
 }

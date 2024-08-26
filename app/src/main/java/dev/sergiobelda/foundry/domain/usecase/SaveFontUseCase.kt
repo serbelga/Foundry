@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.entity
+package dev.sergiobelda.foundry.domain.usecase
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import dev.sergiobelda.foundry.domain.repository.IFontRepository
 
-@Entity(tableName = "FavoriteFonts")
-data class FavoriteFontEntity(
-    @PrimaryKey
-    val name: String,
-)
+class SaveFontUseCase(
+    private val fontRepository: IFontRepository,
+) {
+    suspend operator fun invoke(name: String) {
+        fontRepository.saveFont(name)
+    }
+}

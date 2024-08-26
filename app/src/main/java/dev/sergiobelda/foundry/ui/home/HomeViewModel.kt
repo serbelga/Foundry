@@ -24,16 +24,16 @@ import androidx.lifecycle.viewModelScope
 import dev.sergiobelda.foundry.domain.model.FontItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontItemsUseCase
-import dev.sergiobelda.foundry.domain.usecase.InsertFavoriteFontUseCase
-import dev.sergiobelda.foundry.domain.usecase.RemoveFavoriteFontUseCase
+import dev.sergiobelda.foundry.domain.usecase.SaveFontUseCase
+import dev.sergiobelda.foundry.domain.usecase.RemoveSavedFontUseCase
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val fetchFontsUseCase: FetchFontsUseCase,
     private val getFontItemsUseCase: GetFontItemsUseCase,
-    private val insertFavoriteFontUseCase: InsertFavoriteFontUseCase,
-    private val removeFavoriteFontUseCase: RemoveFavoriteFontUseCase,
+    private val saveFontUseCase: SaveFontUseCase,
+    private val removeSavedFontUseCase: RemoveSavedFontUseCase,
 ) : ViewModel() {
     var homeState: HomeState by mutableStateOf(HomeState(isLoadingFonts = true))
         private set
@@ -58,17 +58,17 @@ class HomeViewModel(
                 homeState =
                     homeState.copy(
                         fontItems = fontItems.toPersistentList(),
-                        favoriteFontItems = fontItems.filter { it.isFavorite }.toPersistentList(),
+                        savedFontItems = fontItems.filter { it.isSaved }.toPersistentList(),
                     )
             }
         }
 
-    fun updateFontFavoriteState(fontItemModel: FontItemModel) =
+    fun updateFontSavedState(fontItemModel: FontItemModel) =
         viewModelScope.launch {
-            if (fontItemModel.isFavorite) {
-                removeFavoriteFontUseCase.invoke(favoriteFont = fontItemModel.fontModel.name)
+            if (fontItemModel.isSaved) {
+                removeSavedFontUseCase.invoke(name = fontItemModel.fontModel.name)
             } else {
-                insertFavoriteFontUseCase.invoke(favoriteFont = fontItemModel.fontModel.name)
+                saveFontUseCase.invoke(name = fontItemModel.fontModel.name)
             }
         }
 }

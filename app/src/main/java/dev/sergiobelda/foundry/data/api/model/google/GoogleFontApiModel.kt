@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.api.model
+package dev.sergiobelda.foundry.data.api.model.google
 
 import com.squareup.moshi.JsonClass
 

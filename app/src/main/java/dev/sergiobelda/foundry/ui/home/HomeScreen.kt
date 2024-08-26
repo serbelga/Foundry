@@ -95,8 +95,8 @@ fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
     ) {
         HomeContent(
             fonts = fontsViewModel.homeState.fonts,
-            updateFontFavoriteState = {
-                fontsViewModel.updateFontFavoriteState(it)
+            updateFontSavedState = {
+                fontsViewModel.updateFontSavedState(it)
             }
         )
     }
@@ -106,7 +106,7 @@ fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
 @Composable
 private fun HomeContent(
     fonts: List<FontItemModel>,
-    updateFontFavoriteState: (FontItemModel) -> Unit,
+    updateFontSavedState: (FontItemModel) -> Unit,
 ) {
     val provider =
         GoogleFont.Provider(
@@ -218,7 +218,7 @@ private fun HomeContent(
             lazyListState,
             fonts,
             provider,
-            onFavoriteClick = { updateFontFavoriteState(it) },
+            onSaveClick = { updateFontSavedState(it) },
             modifier = Modifier.padding(paddingValues),
         )
     }
@@ -251,9 +251,9 @@ private fun HomeDrawerContent(
             selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FontsMenuNavigationItem,
         )
         HomeMenuNavigationDrawerItem(
-            homeMenuNavigationItem = HomeMenuNavigationItem.FavoritesMenuNavigationItem,
-            onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.FavoritesMenuNavigationItem) },
-            selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.FavoritesMenuNavigationItem,
+            homeMenuNavigationItem = HomeMenuNavigationItem.SavedFontsMenuNavigationItem,
+            onClick = { onHomeMenuNavigationItemClick(HomeMenuNavigationItem.SavedFontsMenuNavigationItem) },
+            selected = homeMenuNavigationItemSelected == HomeMenuNavigationItem.SavedFontsMenuNavigationItem,
         )
         HomeMenuSpacer()
         HorizontalDivider(modifier = Modifier.padding(horizontal = HomeMenuDividerHorizontalPadding))

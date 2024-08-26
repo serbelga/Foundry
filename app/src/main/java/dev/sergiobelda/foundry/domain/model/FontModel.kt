@@ -16,6 +16,6 @@
 
 package dev.sergiobelda.foundry.domain.model
 
-open class FontModel(
-    open val name: String,
-)
+interface FontModel {
+    val name: String
+}

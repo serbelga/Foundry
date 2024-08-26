@@ -51,7 +51,7 @@ fun FontListView(
     listState: LazyListState,
     fonts: List<FontItemModel>,
     provider: GoogleFont.Provider,
-    onFavoriteClick: (FontItemModel) -> Unit,
+    onSaveClick: (FontItemModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -68,7 +68,7 @@ fun FontListView(
             FontCard(
                 it,
                 fontFamily = fontFamily,
-                onFavoriteClick = { onFavoriteClick(it) },
+                onSaveClick = { onSaveClick(it) },
             )
         }
     }
@@ -79,7 +79,7 @@ fun FontListView(
 fun FontCard(
     fontItemModel: FontItemModel,
     fontFamily: FontFamily,
-    onFavoriteClick: () -> Unit,
+    onSaveClick: () -> Unit,
 ) {
     val avdHeartFill =
         AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_fill)
@@ -107,18 +107,18 @@ fun FontCard(
                 )
             }
             IconButton(
-                onClick = onFavoriteClick,
+                onClick = onSaveClick,
                 modifier = Modifier.align(Alignment.TopEnd),
             ) {
                 Icon(
                     painter =
                         rememberAnimatedVectorPainter(
                             avdHeartFill,
-                            fontItemModel.isFavorite,
+                            fontItemModel.isSaved,
                         ),
                     contentDescription = null,
                     tint =
-                        if (fontItemModel.isFavorite) {
+                        if (fontItemModel.isSaved) {
                             MaterialTheme.colorScheme.error
                         } else {
                             MaterialTheme.colorScheme.onSurface

@@ -28,7 +28,7 @@ val databaseModule =
                 .build()
         }
         single {
-            get<FoundryDatabase>().favoriteFontsDao()
+            get<FoundryDatabase>().savedFontsDao()
         }
         single {
             get<FoundryDatabase>().googleFontsDao()

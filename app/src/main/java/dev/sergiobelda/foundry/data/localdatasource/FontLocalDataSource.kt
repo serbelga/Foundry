@@ -16,23 +16,23 @@
 
 package dev.sergiobelda.foundry.data.localdatasource
 
-import dev.sergiobelda.foundry.data.database.dao.FavoriteFontsDao
+import dev.sergiobelda.foundry.data.database.dao.SavedFontsDao
 import dev.sergiobelda.foundry.data.database.dao.GoogleFontsDao
-import dev.sergiobelda.foundry.data.database.entity.FavoriteFontEntity
+import dev.sergiobelda.foundry.data.database.entity.SavedFontEntity
 import dev.sergiobelda.foundry.data.database.entity.GoogleFontEntity
-import dev.sergiobelda.foundry.domain.model.FavoriteFontModel
+import dev.sergiobelda.foundry.domain.model.SavedFontModel
 import dev.sergiobelda.foundry.domain.model.GoogleFontModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class FontLocalDataSource(
-    private val favoriteFontsDao: FavoriteFontsDao,
+    private val savedFontsDao: SavedFontsDao,
     private val googleFontsDao: GoogleFontsDao,
 ) : IFontLocalDataSource {
     // TODO: Create mapper
-    override val favoriteFonts: Flow<List<FavoriteFontModel>> =
-        favoriteFontsDao.getFavoriteFonts().map { list ->
-            list.map { FavoriteFontModel(it.name) }
+    override val savedFonts: Flow<List<SavedFontModel>> =
+        savedFontsDao.getSavedFonts().map { list ->
+            list.map { SavedFontModel(it.name) }
         }
 
     // TODO: Create mapper
@@ -47,15 +47,15 @@ class FontLocalDataSource(
         )
     }
 
-    override suspend fun removeFavoriteFont(favoriteFont: String) {
-        favoriteFontsDao.deleteByName(name = favoriteFont)
+    override suspend fun removeSavedFont(name: String) {
+        savedFontsDao.deleteByName(name = name)
     }
 
-    override suspend fun insertFavoriteFont(favoriteFont: String) {
-        favoriteFontsDao.insert(FavoriteFontEntity(name = favoriteFont))
+    override suspend fun saveFont(name: String) {
+        savedFontsDao.insert(SavedFontEntity(name = name))
     }
 
-    override suspend fun clearAllFavoriteFonts() {
-        favoriteFontsDao.clearAll()
+    override suspend fun clearAllSavedFonts() {
+        savedFontsDao.clearAll()
     }
 }

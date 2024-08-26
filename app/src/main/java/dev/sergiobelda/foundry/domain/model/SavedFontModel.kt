@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.usecase
+package dev.sergiobelda.foundry.domain.model
 
-import dev.sergiobelda.foundry.domain.repository.IFontRepository
-
-class InsertFavoriteFontUseCase(
-    private val fontRepository: IFontRepository,
-) {
-    suspend operator fun invoke(favoriteFont: String) {
-        fontRepository.insertFavoriteFont(favoriteFont)
-    }
-}
+data class SavedFontModel(
+    val name: String,
+)
