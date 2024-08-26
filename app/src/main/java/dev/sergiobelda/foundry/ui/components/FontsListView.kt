@@ -20,8 +20,10 @@ import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
 import androidx.compose.animation.graphics.vector.AnimatedImageVector
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.googlefonts.Font
@@ -56,9 +59,14 @@ fun FontListView(
 ) {
     LazyColumn(
         state = listState,
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxHeight()
     ) {
-        items(fonts) {
+        items(
+            fonts,
+            key = { it.fontModel.name },
+            contentType = { it::class },
+        ) {
             val fontName = GoogleFont(it.fontModel.name)
             val fontFamily =
                 FontFamily(
@@ -69,26 +77,27 @@ fun FontListView(
                 it,
                 fontFamily = fontFamily,
                 onFavoriteClick = { onFavoriteClick(it) },
+                modifier = Modifier.animateItem()
             )
         }
     }
 }
 
-@OptIn(ExperimentalAnimationGraphicsApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
 fun FontCard(
     fontItemModel: FontItemModel,
     fontFamily: FontFamily,
     onFavoriteClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val avdHeartFill =
         AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_fill)
 
     Card(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         onClick = {},
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -112,17 +121,17 @@ fun FontCard(
             ) {
                 Icon(
                     painter =
-                        rememberAnimatedVectorPainter(
-                            avdHeartFill,
-                            fontItemModel.isFavorite,
-                        ),
+                    rememberAnimatedVectorPainter(
+                        avdHeartFill,
+                        fontItemModel.isFavorite,
+                    ),
                     contentDescription = null,
                     tint =
-                        if (fontItemModel.isFavorite) {
-                            MaterialTheme.colorScheme.error
-                        } else {
-                            MaterialTheme.colorScheme.onSurface
-                        },
+                    if (fontItemModel.isFavorite) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    },
                 )
             }
         }
