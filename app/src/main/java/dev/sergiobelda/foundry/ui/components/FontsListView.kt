@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -60,7 +61,7 @@ fun FontListView(
     ) {
         items(
             fonts,
-            key = { it.fontModel.name },
+            key = { it.fontFamilyModel.name },
             contentType = { it::class },
         ) {
             val fontName = GoogleFont(it.fontFamilyModel.name)
@@ -116,8 +117,7 @@ fun FontCard(
                 modifier = Modifier.align(Alignment.TopEnd),
             ) {
                 Icon(
-                    painter =
-                    rememberAnimatedVectorPainter(
+                    painter = rememberAnimatedVectorPainter(
                         avdHeartFill,
                         fontFamilyItemModel.isSaved,
                     ),
