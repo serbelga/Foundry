@@ -16,21 +16,24 @@
 
 package dev.sergiobelda.foundry.ui.home.components
 
-import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
-import androidx.compose.animation.graphics.res.animatedVectorResource
-import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
-import androidx.compose.animation.graphics.vector.AnimatedImageVector
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,16 +48,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.ui.provider.GoogleFontProvider
 
 @Composable
 fun FontFamilyListView(
     listState: LazyListState,
     fonts: List<FontFamilyItemModel>,
-    provider: GoogleFont.Provider,
     onSaveClick: (FontFamilyItemModel) -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     LazyColumn(
+        contentPadding = contentPadding,
         state = listState,
         modifier = modifier
             .fillMaxHeight()
@@ -65,10 +70,9 @@ fun FontFamilyListView(
             contentType = { it::class },
         ) {
             val fontName = GoogleFont(it.fontFamilyModel.name)
-            val fontFamily =
-                FontFamily(
-                    Font(googleFont = fontName, fontProvider = provider),
-                )
+            val fontFamily = FontFamily(
+                Font(googleFont = fontName, fontProvider = GoogleFontProvider.provider),
+            )
 
             FontCard(
                 it,
@@ -80,7 +84,6 @@ fun FontFamilyListView(
     }
 }
 
-@OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
 fun FontCard(
     fontFamilyItemModel: FontFamilyItemModel,
@@ -88,45 +91,48 @@ fun FontCard(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val avdHeartFill =
-        AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_fill)
-
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(horizontal = 12.dp, vertical = 6.dp),
         onClick = {},
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(12.dp)) {
-                Text(
-                    text = fontFamilyItemModel.fontFamilyModel.name,
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(bottom = 12.dp),
-                )
+            Column(
+                modifier = Modifier
+                    .padding(start = 12.dp, end = 4.dp, bottom = 12.dp, top = 4.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = fontFamilyItemModel.fontFamilyModel.name,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                    IconToggleButton(
+                        checked = fontFamilyItemModel.isSaved,
+                        onCheckedChange = { onSaveClick() }
+                    ) {
+                        Icon(
+                            imageVector = if (fontFamilyItemModel.isSaved) {
+                                Icons.Rounded.Bookmark
+                            } else {
+                                Icons.Rounded.BookmarkBorder
+                            },
+                            contentDescription = null,
+                        )
+                    }
+                }
                 Text(
                     text = stringResource(id = R.string.sample_text),
                     fontSize = 36.sp,
                     fontFamily = fontFamily,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                )
-            }
-            IconButton(
-                onClick = onSaveClick,
-                modifier = Modifier.align(Alignment.TopEnd),
-            ) {
-                Icon(
-                    painter = rememberAnimatedVectorPainter(
-                        avdHeartFill,
-                        fontFamilyItemModel.isSaved,
-                    ),
-                    contentDescription = null,
-                    tint = if (fontFamilyItemModel.isSaved) {
-                        MaterialTheme.colorScheme.error
-                    } else {
-                        MaterialTheme.colorScheme.onSurface
-                    },
                 )
             }
         }

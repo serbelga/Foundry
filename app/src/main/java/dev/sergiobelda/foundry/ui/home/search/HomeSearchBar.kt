@@ -42,7 +42,8 @@ import dev.sergiobelda.foundry.R
 @OptIn(ExperimentalAnimationGraphicsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeSearchBar(
-    onMenuIconButtonClick: () -> Unit
+    onMenuIconButtonClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var searchText by rememberSaveable { mutableStateOf("") }
     var active by rememberSaveable { mutableStateOf(false) }
@@ -103,7 +104,7 @@ internal fun HomeSearchBar(
         },
         expanded = active,
         onExpandedChange = onActiveChange,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         content = {},
     )
 }

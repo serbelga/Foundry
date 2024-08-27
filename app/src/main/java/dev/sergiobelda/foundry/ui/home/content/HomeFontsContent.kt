@@ -19,23 +19,23 @@ package dev.sergiobelda.foundry.ui.home.content
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowUpward
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
@@ -43,16 +43,12 @@ import dev.sergiobelda.foundry.ui.provider.GoogleFontProvider
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeFontsContent(
     fonts: List<FontFamilyItemModel>,
     onOpenHomeDrawerClick: () -> Unit,
     updateFontSavedState: (FontFamilyItemModel) -> Unit,
 ) {
-    val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-
     val lazyListState = rememberLazyListState()
 
     val fabVisible by remember {
@@ -64,11 +60,17 @@ internal fun HomeFontsContent(
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            HomeSearchBar(
-                onMenuIconButtonClick = onOpenHomeDrawerClick
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceContainerLow
+            ) {
+                HomeSearchBar(
+                    onMenuIconButtonClick = onOpenHomeDrawerClick,
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp)
+                        .padding(bottom = 12.dp)
+                )
+            }
         },
         floatingActionButton = {
             AnimatedVisibility(
@@ -91,9 +93,10 @@ internal fun HomeFontsContent(
         FontFamilyListView(
             lazyListState,
             fonts,
-            GoogleFontProvider.provider,
             onSaveClick = { updateFontSavedState(it) },
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .padding(paddingValues),
+            contentPadding = PaddingValues(top = 6.dp)
         )
     }
 }

@@ -105,7 +105,6 @@ internal fun HomeSavedFontsContent(
         FontFamilyListView(
             lazyListState,
             fonts,
-            GoogleFontProvider.provider,
             onSaveClick = { updateFontSavedState(it) },
             modifier = Modifier.padding(paddingValues),
         )
