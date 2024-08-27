@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.ui.home
 
-open class FontModel(
-    open val name: String,
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+
+data class HomeState(
+    val isLoadingFonts: Boolean = false,
+    val isSavedFontsSelected: Boolean = false,
+    val fontItems: ImmutableList<FontFamilyItemModel> = persistentListOf(),
 )

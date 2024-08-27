@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.home
+package dev.sergiobelda.foundry.data.api.service.google
 
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.data.api.model.google.GoogleFontsResponse
+import retrofit2.Response
+import retrofit2.http.GET
 
-data class HomeUiState(
-    val isFetchingFonts: Boolean = false,
-    val fontItems: List<FontItemModel> = emptyList(),
-    val favoriteFontItems: List<FontItemModel> = emptyList(),
-)
+interface GoogleFontsApiService {
+    @GET("/webfonts/v1/webfonts")
+    suspend fun getGoogleFonts(): Response<GoogleFontsResponse>
+}

@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.data.database.entity
 
-data class FavoriteFontModel(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "SavedFont")
+data class SavedFontEntity(
+    @PrimaryKey
     val name: String,
 )

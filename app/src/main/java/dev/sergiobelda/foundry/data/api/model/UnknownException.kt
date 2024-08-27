@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.entity
+package dev.sergiobelda.foundry.data.api.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "FavoriteFonts")
-data class FavoriteFontEntity(
-    @PrimaryKey
-    val name: String,
-)
+// TODO: Refactor
+class UnknownException : Exception()

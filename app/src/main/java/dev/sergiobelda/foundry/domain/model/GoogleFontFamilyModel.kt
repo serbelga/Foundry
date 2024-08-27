@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.api.model
+package dev.sergiobelda.foundry.domain.model
 
-import com.squareup.moshi.JsonClass
-
-@JsonClass(generateAdapter = true)
-data class GoogleFontsResponse(
-    val items: List<GoogleFontApiModel>,
-)
+data class GoogleFontFamilyModel(
+    override val name: String,
+    val category: String,
+) : FontFamilyModel

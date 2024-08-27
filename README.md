@@ -16,13 +16,6 @@ A Jetpack Compose app using Downloadable Google Fonts.
 google_fonts_api_key=YOUR_GOOGLE_FONTS_API_KEY_HERE
 ```
 
-## TODO
-
-- [ ] Create groups for favorites.
-- [ ] Filter fonts.
-- [ ] Font details.
-- [ ] Update sample text.
-
 ## License
 
 ```

@@ -16,12 +16,13 @@
 
 package dev.sergiobelda.foundry.domain.usecase
 
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import kotlinx.coroutines.flow.Flow
 
-class RemoveFavoriteFontUseCase(
+class GetFontFamilyItemsUseCase(
     private val fontRepository: IFontRepository,
 ) {
-    suspend operator fun invoke(favoriteFont: String) {
-        fontRepository.removeFavoriteFont(favoriteFont)
-    }
+    operator fun invoke(): Flow<List<FontFamilyItemModel>> =
+        fontRepository.getFontFamilyItems()
 }

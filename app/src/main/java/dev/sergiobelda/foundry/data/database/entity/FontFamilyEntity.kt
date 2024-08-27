@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,13 @@
 package dev.sergiobelda.foundry.data.database.entity
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "GoogleFonts")
-data class GoogleFontEntity(
-    @PrimaryKey
-    val family: String,
+@Entity(
+    tableName = "FontFamily",
+    primaryKeys = [ "name", "source" ]
+)
+data class FontFamilyEntity(
+    val name: String,
     val category: String,
+    val source: FontFamilySource,
 )

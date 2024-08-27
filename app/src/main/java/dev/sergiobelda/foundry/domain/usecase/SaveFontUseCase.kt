@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.api.model
+package dev.sergiobelda.foundry.domain.usecase
 
-import com.squareup.moshi.JsonClass
+import dev.sergiobelda.foundry.domain.repository.IFontRepository
 
-@JsonClass(generateAdapter = true)
-data class GoogleFontApiModel(
-    val family: String,
-    val category: String,
-)
+class SaveFontUseCase(
+    private val fontRepository: IFontRepository,
+) {
+    suspend operator fun invoke(name: String) {
+        fontRepository.saveFont(name)
+    }
+}

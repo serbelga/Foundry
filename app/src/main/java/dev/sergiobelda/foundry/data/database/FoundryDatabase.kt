@@ -18,18 +18,22 @@ package dev.sergiobelda.foundry.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import dev.sergiobelda.foundry.data.database.dao.FavoriteFontsDao
-import dev.sergiobelda.foundry.data.database.dao.GoogleFontsDao
-import dev.sergiobelda.foundry.data.database.entity.FavoriteFontEntity
-import dev.sergiobelda.foundry.data.database.entity.GoogleFontEntity
+import androidx.room.TypeConverters
+import dev.sergiobelda.foundry.data.database.converter.FontFamilySourceConverter
+import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
+import dev.sergiobelda.foundry.data.database.dao.SavedFontDao
+import dev.sergiobelda.foundry.data.database.entity.FontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.FontFamilySource
+import dev.sergiobelda.foundry.data.database.entity.SavedFontEntity
 
 @Database(
-    entities = [FavoriteFontEntity::class, GoogleFontEntity::class],
+    entities = [SavedFontEntity::class, FontFamilyEntity::class],
     version = 1,
     exportSchema = false,
 )
+@TypeConverters(FontFamilySourceConverter::class)
 abstract class FoundryDatabase : RoomDatabase() {
-    abstract fun favoriteFontsDao(): FavoriteFontsDao
+    abstract fun fontFamilyDao(): FontFamilyDao
 
-    abstract fun googleFontsDao(): GoogleFontsDao
+    abstract fun savedFontsDao(): SavedFontDao
 }

@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.di
+package dev.sergiobelda.foundry.domain.usecase
 
-import androidx.room.Room
-import dev.sergiobelda.foundry.data.database.FoundryDatabase
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
+import dev.sergiobelda.foundry.domain.repository.IFontRepository
 
-val databaseModule =
-    module {
-        single {
-            Room.databaseBuilder(androidContext(), FoundryDatabase::class.java, "FontsDatabase.db")
-                .build()
-        }
-        single {
-            get<FoundryDatabase>().savedFontsDao()
-        }
-        single {
-            get<FoundryDatabase>().fontFamilyDao()
-        }
+class RemoveSavedFontUseCase(
+    private val fontRepository: IFontRepository,
+) {
+    suspend operator fun invoke(name: String) {
+        fontRepository.removeSavedFont(name)
     }
+}

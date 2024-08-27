@@ -21,20 +21,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
-import dev.sergiobelda.foundry.domain.usecase.GetFontItemsUseCase
-import dev.sergiobelda.foundry.domain.usecase.InsertFavoriteFontUseCase
-import dev.sergiobelda.foundry.domain.usecase.RemoveFavoriteFontUseCase
+import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase
+import dev.sergiobelda.foundry.domain.usecase.SaveFontUseCase
+import dev.sergiobelda.foundry.domain.usecase.RemoveSavedFontUseCase
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val fetchFontsUseCase: FetchFontsUseCase,
-    private val getFontItemsUseCase: GetFontItemsUseCase,
-    private val insertFavoriteFontUseCase: InsertFavoriteFontUseCase,
-    private val removeFavoriteFontUseCase: RemoveFavoriteFontUseCase,
+    private val getFontFamilyItemsUseCase: GetFontFamilyItemsUseCase,
+    private val saveFontUseCase: SaveFontUseCase,
+    private val removeSavedFontUseCase: RemoveSavedFontUseCase,
 ) : ViewModel() {
-    var homeUiState: HomeUiState by mutableStateOf(HomeUiState(isFetchingFonts = true))
+    var homeState: HomeState by mutableStateOf(HomeState(isLoadingFonts = true))
         private set
 
     init {
@@ -45,29 +46,27 @@ class HomeViewModel(
     private fun fetchFonts() =
         viewModelScope.launch {
             fetchFontsUseCase()
-            homeUiState =
-                homeUiState.copy(
-                    isFetchingFonts = false,
+            homeState =
+                homeState.copy(
+                    isLoadingFonts = false,
                 )
         }
 
     private fun getFontItems() =
         viewModelScope.launch {
-            getFontItemsUseCase().collect { fontItems ->
-                homeUiState =
-                    homeUiState.copy(
-                        fontItems = fontItems,
-                        favoriteFontItems = fontItems.filter { it.isFavorite },
-                    )
+            getFontFamilyItemsUseCase().collect { fontItems ->
+                homeState = homeState.copy(
+                    fontItems = fontItems.toPersistentList(),
+                )
             }
         }
 
-    fun updateFontFavoriteState(fontItemModel: FontItemModel) =
+    fun updateFontSavedState(fontFamilyItemModel: FontFamilyItemModel) =
         viewModelScope.launch {
-            if (fontItemModel.isFavorite) {
-                removeFavoriteFontUseCase.invoke(favoriteFont = fontItemModel.fontModel.name)
+            if (fontFamilyItemModel.isSaved) {
+                removeSavedFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.name)
             } else {
-                insertFavoriteFontUseCase.invoke(favoriteFont = fontItemModel.fontModel.name)
+                saveFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.name)
             }
         }
 }

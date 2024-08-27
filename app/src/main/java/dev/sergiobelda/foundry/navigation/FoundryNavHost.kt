@@ -26,7 +26,6 @@ import dev.sergiobelda.foundry.ui.home.HomeScreen
 @Composable
 fun FoundryNavHost(
     navController: NavHostController,
-    action: Action,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
