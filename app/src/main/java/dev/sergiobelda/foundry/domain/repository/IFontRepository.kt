@@ -26,5 +26,7 @@ interface IFontRepository {
 
     suspend fun saveFont(name: String)
 
-    fun getFontItems(saved: Boolean): Flow<List<FontFamilyItemModel>>
+    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
+
+    fun getSavedFontItems(): Flow<List<FontFamilyItemModel>>
 }

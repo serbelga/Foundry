@@ -15,3 +15,13 @@ internal fun FontFamilyModel.toFontFamilyEntity(): FontFamilyEntity =
             )
         }
     }
+
+internal fun FontFamilyEntity.toFontFamilyModel(): FontFamilyModel =
+    when (source) {
+        FontFamilySource.GoogleFonts -> {
+            GoogleFontFamilyModel(
+                name = name,
+                category = category
+            )
+        }
+    }

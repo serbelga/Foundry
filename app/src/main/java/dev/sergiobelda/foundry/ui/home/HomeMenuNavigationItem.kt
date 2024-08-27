@@ -11,8 +11,9 @@ import dev.sergiobelda.foundry.R
 internal enum class HomeMenuNavigationItem(
     val imageVector: ImageVector,
     @StringRes val stringResourceId: Int,
+    val isSelectable: Boolean = true
 ) {
     FontsMenuNavigationItem(Icons.Rounded.TextFields, R.string.fonts),
     SavedFontsMenuNavigationItem(Icons.Rounded.Favorite, R.string.saved_fonts),
-    SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings),
+    SettingsMenuNavigationItem(Icons.Outlined.Settings, R.string.settings, isSelectable = false),
 }

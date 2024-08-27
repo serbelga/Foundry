@@ -21,6 +21,7 @@ import dev.sergiobelda.foundry.domain.result.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okio.IOException
 import retrofit2.Response
 
 suspend fun <T> safeApiCall(
@@ -37,7 +38,7 @@ suspend fun <T> safeApiCall(
             } else {
                 Result.Error(exception = UnknownException())
             }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             Result.Error(exception = exception)
         }
     }

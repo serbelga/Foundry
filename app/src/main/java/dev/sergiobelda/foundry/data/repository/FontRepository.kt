@@ -43,6 +43,9 @@ class FontRepository(
         fontLocalDataSource.saveFont(name = name)
     }
 
-    override fun getFontItems(saved: Boolean): Flow<List<FontFamilyItemModel>> =
-        fontLocalDataSource.getFontItems(saved = saved)
+    override fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
+        fontLocalDataSource.getFontFamilyItems()
+
+    override fun getSavedFontItems(): Flow<List<FontFamilyItemModel>> =
+        fontLocalDataSource.getSavedFontItems()
 }

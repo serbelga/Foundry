@@ -20,9 +20,9 @@ import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
 import dev.sergiobelda.foundry.data.database.dao.SavedFontDao
 import dev.sergiobelda.foundry.data.database.entity.SavedFontEntity
 import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyEntity
+import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
-import dev.sergiobelda.foundry.domain.model.GoogleFontFamilyModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -31,15 +31,23 @@ class FontLocalDataSource(
     private val fontFamilyDao: FontFamilyDao
 ) : IFontLocalDataSource {
 
-    override fun getFontItems(saved: Boolean): Flow<List<FontFamilyItemModel>> =
-        fontFamilyDao.getFontItems().map { list ->
+    override fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
+        fontFamilyDao.getFontFamilyItems().map { list ->
             // TODO: Create mapper
             list.map {
                 FontFamilyItemModel(
-                    GoogleFontFamilyModel(
-                        name = it.fontFamilyEntity.name,
-                        category = it.fontFamilyEntity.category
-                    ),
+                    fontFamilyModel = it.fontFamilyEntity.toFontFamilyModel(),
+                    isSaved = it.saved
+                )
+            }
+        }
+
+    override fun getSavedFontItems(): Flow<List<FontFamilyItemModel>> =
+        fontFamilyDao.getSavedFontItems().map { list ->
+            // TODO: Create mapper
+            list.map {
+                FontFamilyItemModel(
+                    fontFamilyModel = it.fontFamilyEntity.toFontFamilyModel(),
                     isSaved = it.saved
                 )
             }

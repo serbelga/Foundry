@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
-import dev.sergiobelda.foundry.domain.usecase.GetFontItemsUseCase
+import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase
 import dev.sergiobelda.foundry.domain.usecase.SaveFontUseCase
 import dev.sergiobelda.foundry.domain.usecase.RemoveSavedFontUseCase
 import kotlinx.collections.immutable.toPersistentList
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val fetchFontsUseCase: FetchFontsUseCase,
-    private val getFontItemsUseCase: GetFontItemsUseCase,
+    private val getFontFamilyItemsUseCase: GetFontFamilyItemsUseCase,
     private val saveFontUseCase: SaveFontUseCase,
     private val removeSavedFontUseCase: RemoveSavedFontUseCase,
 ) : ViewModel() {
@@ -54,9 +54,7 @@ class HomeViewModel(
 
     private fun getFontItems() =
         viewModelScope.launch {
-            getFontItemsUseCase(
-                saved = homeState.isSavedFontsSelected
-            ).collect { fontItems ->
+            getFontFamilyItemsUseCase().collect { fontItems ->
                 homeState = homeState.copy(
                     fontItems = fontItems.toPersistentList(),
                 )

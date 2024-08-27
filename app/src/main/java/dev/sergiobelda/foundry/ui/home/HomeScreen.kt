@@ -74,7 +74,7 @@ import org.koin.compose.koinInject
 
 @Composable
 fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
-    var currentHomeMenuNavigationItem: HomeMenuNavigationItem by remember {
+    var selectedHomeMenuNavigationItem: HomeMenuNavigationItem by remember {
         mutableStateOf(
             HomeMenuNavigationItem.FontsMenuNavigationItem,
         )
@@ -85,8 +85,22 @@ fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
     ModalNavigationDrawer(
         drawerContent = {
             HomeDrawerContent(
-                homeMenuNavigationItemSelected = currentHomeMenuNavigationItem,
+                homeMenuNavigationItemSelected = selectedHomeMenuNavigationItem,
                 onHomeMenuNavigationItemClick = {
+                    when (it) {
+                        HomeMenuNavigationItem.FontsMenuNavigationItem -> {
+
+                        }
+                        HomeMenuNavigationItem.SavedFontsMenuNavigationItem -> {
+
+                        }
+                        HomeMenuNavigationItem.SettingsMenuNavigationItem -> {
+                            // TODO: Navigate to Settings
+                        }
+                    }
+                    if (it.isSelectable) {
+                        selectedHomeMenuNavigationItem = it
+                    }
                     coroutineScope.launch { drawerState.close() }
                 },
             )
@@ -95,6 +109,7 @@ fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
     ) {
         HomeContent(
             fonts = fontsViewModel.homeState.fontItems,
+            onOpenHomeDrawerClick = { coroutineScope.launch { drawerState.open() } },
             updateFontSavedState = {
                 fontsViewModel.updateFontSavedState(it)
             }
@@ -102,10 +117,11 @@ fun HomeScreen(fontsViewModel: HomeViewModel = koinInject()) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeContent(
     fonts: List<FontFamilyItemModel>,
+    onOpenHomeDrawerClick: () -> Unit,
     updateFontSavedState: (FontFamilyItemModel) -> Unit,
 ) {
     val provider =
@@ -119,13 +135,6 @@ private fun HomeContent(
 
     val lazyListState = rememberLazyListState()
 
-    var searchText by rememberSaveable { mutableStateOf("") }
-    var active by rememberSaveable { mutableStateOf(false) }
-    val avdMenuToArrowBack =
-        AnimatedImageVector.animatedVectorResource(R.drawable.avd_menu_to_arrow_back)
-    val avdMenuToArrowBackPainter = rememberAnimatedVectorPainter(avdMenuToArrowBack, active)
-    val focusManager = LocalFocusManager.current
-
     val fabVisible by remember {
         derivedStateOf {
             lazyListState.firstVisibleItemIndex >= FAB_VISIBLE_ITEM_INDEX
@@ -134,66 +143,11 @@ private fun HomeContent(
 
     val coroutineScope = rememberCoroutineScope()
 
-    fun closeSearchBar() {
-        focusManager.clearFocus()
-        active = false
-        searchText = ""
-    }
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            val onActiveChange: (Boolean) -> Unit = {
-                active = it
-                if (!active) focusManager.clearFocus()
-            }
-            SearchBar(
-                inputField = {
-                    SearchBarDefaults.InputField(
-                        query = searchText,
-                        onQueryChange = { searchText = it },
-                        onSearch = { closeSearchBar() },
-                        expanded = active,
-                        onExpandedChange = onActiveChange,
-                        enabled = true,
-                        placeholder = { Text(stringResource(id = R.string.search_fonts)) },
-                        leadingIcon = {
-                            if (active) {
-                                IconButton(onClick = { closeSearchBar() }) {
-                                    Icon(
-                                        painter = avdMenuToArrowBackPainter,
-                                        contentDescription = null,
-                                    )
-                                }
-                            } else {
-                                IconButton(
-                                    onClick = {
-                                        // coroutineScope.launch { drawerState.open() }
-                                        closeSearchBar()
-                                    },
-                                ) {
-                                    Icon(
-                                        painter = avdMenuToArrowBackPainter,
-                                        contentDescription = null,
-                                    )
-                                }
-                            }
-                        },
-                        trailingIcon = {
-                            if (active) {
-                                IconButton(onClick = { searchText = "" }) {
-                                    Icon(Icons.Rounded.Clear, contentDescription = null)
-                                }
-                            }
-                        },
-                        interactionSource = null,
-                    )
-                },
-                expanded = active,
-                onExpandedChange = onActiveChange,
-                modifier =
-                Modifier
-                    .fillMaxWidth(),
-                content = {},
+            HomeSearchBar(
+                onMenuIconButtonClick = onOpenHomeDrawerClick
             )
         },
         floatingActionButton = {
@@ -222,6 +176,75 @@ private fun HomeContent(
             modifier = Modifier.padding(paddingValues),
         )
     }
+}
+
+@OptIn(ExperimentalAnimationGraphicsApi::class, ExperimentalMaterial3Api::class)
+@Composable
+private fun HomeSearchBar(
+    onMenuIconButtonClick: () -> Unit
+) {
+    var searchText by rememberSaveable { mutableStateOf("") }
+    var active by rememberSaveable { mutableStateOf(false) }
+    val avdMenuToArrowBack = AnimatedImageVector.animatedVectorResource(R.drawable.avd_menu_to_arrow_back)
+    val avdMenuToArrowBackPainter = rememberAnimatedVectorPainter(avdMenuToArrowBack, active)
+    val focusManager = LocalFocusManager.current
+    val onActiveChange: (Boolean) -> Unit = {
+        active = it
+        if (!active) focusManager.clearFocus()
+    }
+    fun closeSearchBar() {
+        focusManager.clearFocus()
+        active = false
+        searchText = ""
+    }
+    SearchBar(
+        inputField = {
+            SearchBarDefaults.InputField(
+                query = searchText,
+                onQueryChange = { searchText = it },
+                onSearch = { closeSearchBar() },
+                expanded = active,
+                onExpandedChange = onActiveChange,
+                placeholder = { Text(stringResource(id = R.string.search_fonts)) },
+                leadingIcon = {
+                    if (active) {
+                        IconButton(onClick = { closeSearchBar() }) {
+                            Icon(
+                                painter = avdMenuToArrowBackPainter,
+                                contentDescription = null,
+                            )
+                        }
+                    } else {
+                        IconButton(
+                            onClick = {
+                                if (active) {
+                                    closeSearchBar()
+                                } else {
+                                    onMenuIconButtonClick()
+                                }
+                            },
+                        ) {
+                            Icon(
+                                painter = avdMenuToArrowBackPainter,
+                                contentDescription = null,
+                            )
+                        }
+                    }
+                },
+                trailingIcon = {
+                    if (active) {
+                        IconButton(onClick = { searchText = "" }) {
+                            Icon(Icons.Rounded.Clear, contentDescription = null)
+                        }
+                    }
+                },
+            )
+        },
+        expanded = active,
+        onExpandedChange = onActiveChange,
+        modifier = Modifier.fillMaxWidth(),
+        content = {},
+    )
 }
 
 @Composable

@@ -22,7 +22,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface IFontLocalDataSource {
 
-    fun getFontItems(saved: Boolean): Flow<List<FontFamilyItemModel>>
+    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
+
+    fun getSavedFontItems(): Flow<List<FontFamilyItemModel>>
 
     suspend fun insertFonts(fonts: List<FontFamilyModel>)
 
