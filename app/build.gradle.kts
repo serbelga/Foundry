@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("dev.sergiobelda.gradle.spotless")
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
 }
 
@@ -94,4 +95,6 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.core)
+
+    implementation(libs.kotlin.collections.immutable)
 }

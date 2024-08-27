@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.usecase
+package dev.sergiobelda.foundry.data.api.model.google
 
-import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import com.squareup.moshi.JsonClass
 
-class InsertFavoriteFontUseCase(
-    private val fontRepository: IFontRepository,
-) {
-    suspend operator fun invoke(favoriteFont: String) {
-        fontRepository.insertFavoriteFont(favoriteFont)
-    }
-}
+@JsonClass(generateAdapter = true)
+data class GoogleFontsResponse(
+    val items: List<GoogleFontApiModel>,
+)

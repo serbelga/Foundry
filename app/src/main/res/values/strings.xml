@@ -18,7 +18,7 @@
     <string name="app_name">Foundry</string>
     <string name="sample_text">Almost before we knew it, we had left the ground.</string>
     <string name="fonts">Fonts</string>
-    <string name="favorites">Saved fonts</string>
+    <string name="saved_fonts">Saved fonts</string>
     <string name="search_fonts">Search fonts</string>
     <string name="menu">Menu</string>
     <string name="settings">Settings</string>

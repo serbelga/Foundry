@@ -16,15 +16,17 @@
 
 package dev.sergiobelda.foundry.domain.repository
 
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import kotlinx.coroutines.flow.Flow
 
 interface IFontRepository {
     suspend fun fetchFonts()
 
-    suspend fun removeFavoriteFont(favoriteFont: String)
+    suspend fun removeSavedFont(name: String)
 
-    suspend fun insertFavoriteFont(favoriteFont: String)
+    suspend fun saveFont(name: String)
 
-    fun getFontItems(): Flow<List<FontItemModel>>
+    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
+
+    fun getSavedFontItems(): Flow<List<FontFamilyItemModel>>
 }

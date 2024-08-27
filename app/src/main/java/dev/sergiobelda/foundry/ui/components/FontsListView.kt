@@ -44,14 +44,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.FontItemModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 
 @Composable
 fun FontListView(
     listState: LazyListState,
-    fonts: List<FontItemModel>,
+    fonts: List<FontFamilyItemModel>,
     provider: GoogleFont.Provider,
-    onFavoriteClick: (FontItemModel) -> Unit,
+    onSaveClick: (FontFamilyItemModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -59,7 +59,7 @@ fun FontListView(
         modifier = modifier,
     ) {
         items(fonts) {
-            val fontName = GoogleFont(it.fontModel.name)
+            val fontName = GoogleFont(it.fontFamilyModel.name)
             val fontFamily =
                 FontFamily(
                     Font(googleFont = fontName, fontProvider = provider),
@@ -68,7 +68,7 @@ fun FontListView(
             FontCard(
                 it,
                 fontFamily = fontFamily,
-                onFavoriteClick = { onFavoriteClick(it) },
+                onSaveClick = { onSaveClick(it) },
             )
         }
     }
@@ -77,9 +77,9 @@ fun FontListView(
 @OptIn(ExperimentalAnimationGraphicsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun FontCard(
-    fontItemModel: FontItemModel,
+    fontFamilyItemModel: FontFamilyItemModel,
     fontFamily: FontFamily,
-    onFavoriteClick: () -> Unit,
+    onSaveClick: () -> Unit,
 ) {
     val avdHeartFill =
         AnimatedImageVector.animatedVectorResource(R.drawable.avd_heart_fill)
@@ -94,7 +94,7 @@ fun FontCard(
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(
-                    text = fontItemModel.fontModel.name,
+                    text = fontFamilyItemModel.fontFamilyModel.name,
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.padding(bottom = 12.dp),
                 )
@@ -107,18 +107,18 @@ fun FontCard(
                 )
             }
             IconButton(
-                onClick = onFavoriteClick,
+                onClick = onSaveClick,
                 modifier = Modifier.align(Alignment.TopEnd),
             ) {
                 Icon(
                     painter =
                         rememberAnimatedVectorPainter(
                             avdHeartFill,
-                            fontItemModel.isFavorite,
+                            fontFamilyItemModel.isSaved,
                         ),
                     contentDescription = null,
                     tint =
-                        if (fontItemModel.isFavorite) {
+                        if (fontFamilyItemModel.isSaved) {
                             MaterialTheme.colorScheme.error
                         } else {
                             MaterialTheme.colorScheme.onSurface

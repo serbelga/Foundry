@@ -27,8 +27,7 @@ import dev.sergiobelda.foundry.ui.theme.FoundryTheme
 @Composable
 fun FoundryApp() {
     val navController = rememberNavController()
-    val action = remember(navController) { Action(navController) }
-    FoundryNavHost(navController = navController, action = action)
+    FoundryNavHost(navController = navController)
 }
 
 @Preview(showBackground = true)

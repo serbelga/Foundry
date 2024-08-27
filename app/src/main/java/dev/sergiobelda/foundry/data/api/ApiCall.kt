@@ -16,10 +16,12 @@
 
 package dev.sergiobelda.foundry.data.api
 
+import dev.sergiobelda.foundry.data.api.model.UnknownException
 import dev.sergiobelda.foundry.domain.result.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okio.IOException
 import retrofit2.Response
 
 suspend fun <T> safeApiCall(
@@ -32,11 +34,11 @@ suspend fun <T> safeApiCall(
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.Success(it)
-                } ?: Result.Error(exception = Exception())
+                } ?: Result.Error(exception = UnknownException())
             } else {
-                Result.Error(exception = Exception())
+                Result.Error(exception = UnknownException())
             }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             Result.Error(exception = exception)
         }
     }
