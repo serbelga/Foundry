@@ -39,7 +39,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
-import dev.sergiobelda.foundry.ui.provider.GoogleFontProvider.provider
+import dev.sergiobelda.foundry.ui.provider.GoogleFontProvider
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import kotlinx.coroutines.launch
 
@@ -91,7 +91,7 @@ internal fun HomeFontsContent(
         FontFamilyListView(
             lazyListState,
             fonts,
-            provider,
+            GoogleFontProvider.provider,
             onSaveClick = { updateFontSavedState(it) },
             modifier = Modifier.padding(paddingValues),
         )
