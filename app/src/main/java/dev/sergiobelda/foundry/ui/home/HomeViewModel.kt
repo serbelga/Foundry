@@ -24,39 +24,51 @@ import androidx.lifecycle.viewModelScope
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase
-import dev.sergiobelda.foundry.domain.usecase.SaveFontUseCase
+import dev.sergiobelda.foundry.domain.usecase.GetSavedFontFamilyItemsUseCase
 import dev.sergiobelda.foundry.domain.usecase.RemoveSavedFontUseCase
+import dev.sergiobelda.foundry.domain.usecase.SaveFontUseCase
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val fetchFontsUseCase: FetchFontsUseCase,
     private val getFontFamilyItemsUseCase: GetFontFamilyItemsUseCase,
+    private val getSavedFontFamilyItemsUseCase: GetSavedFontFamilyItemsUseCase,
     private val saveFontUseCase: SaveFontUseCase,
     private val removeSavedFontUseCase: RemoveSavedFontUseCase,
 ) : ViewModel() {
-    var homeState: HomeState by mutableStateOf(HomeState(isLoadingFonts = true))
+    var state: HomeState by mutableStateOf(HomeState(isLoadingFonts = true))
         private set
 
     init {
         fetchFonts()
-        getFontItems()
+        getFontFamilyItems()
+        getSavedFontFamilyItems()
     }
 
     private fun fetchFonts() =
         viewModelScope.launch {
             fetchFontsUseCase()
-            homeState =
-                homeState.copy(
+            state =
+                state.copy(
                     isLoadingFonts = false,
                 )
         }
 
-    private fun getFontItems() =
+    private fun getFontFamilyItems() =
         viewModelScope.launch {
             getFontFamilyItemsUseCase().collect { fontItems ->
-                homeState = homeState.copy(
+                state = state.copy(
                     fontItems = fontItems.toPersistentList(),
+                )
+            }
+        }
+
+    private fun getSavedFontFamilyItems() =
+        viewModelScope.launch {
+            getSavedFontFamilyItemsUseCase().collect { savedFontItems ->
+                state = state.copy(
+                    savedFontItems = savedFontItems.toPersistentList(),
                 )
             }
         }

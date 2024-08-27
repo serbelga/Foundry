@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.resources
+package dev.sergiobelda.foundry.domain.usecase
 
-internal const val FAB_VISIBLE_ITEM_INDEX = 1
+import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import kotlinx.coroutines.flow.Flow
+
+class GetSavedFontFamilyItemsUseCase(
+    private val fontRepository: IFontRepository,
+) {
+    operator fun invoke(): Flow<List<FontFamilyItemModel>> =
+        fontRepository.getSavedFontFamilyItems()
+}

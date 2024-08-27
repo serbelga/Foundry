@@ -24,7 +24,7 @@ interface IFontLocalDataSource {
 
     fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
 
-    fun getSavedFontItems(): Flow<List<FontFamilyItemModel>>
+    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
 
     suspend fun insertFonts(fonts: List<FontFamilyModel>)
 

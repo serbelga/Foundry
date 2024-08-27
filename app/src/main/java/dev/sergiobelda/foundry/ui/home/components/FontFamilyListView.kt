@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.components
+package dev.sergiobelda.foundry.ui.home.components
 
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
@@ -47,7 +47,7 @@ import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 
 @Composable
-fun FontListView(
+fun FontFamilyListView(
     listState: LazyListState,
     fonts: List<FontFamilyItemModel>,
     provider: GoogleFont.Provider,

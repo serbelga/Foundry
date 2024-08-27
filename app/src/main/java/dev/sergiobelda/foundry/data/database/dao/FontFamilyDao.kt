@@ -30,7 +30,7 @@ interface FontFamilyDao {
             "CASE WHEN s.name IS NULL THEN 0 ELSE 1 END AS saved " +
             "FROM FontFamily f LEFT JOIN SavedFont s ON (f.name = s.name) " +
             "WHERE saved = 1")
-    fun getSavedFontItems(): Flow<List<FontFamilyItemEntity>>
+    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemEntity>>
 
     @Query("SELECT f.*, " +
             "CASE WHEN s.name IS NULL THEN 0 ELSE 1 END AS saved " +

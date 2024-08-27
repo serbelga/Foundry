@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.home
+package dev.sergiobelda.foundry.ui.home.menu
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons

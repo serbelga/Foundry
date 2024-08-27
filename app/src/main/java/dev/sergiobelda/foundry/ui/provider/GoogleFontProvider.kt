@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.resources
+package dev.sergiobelda.foundry.ui.provider
 
-internal const val FAB_VISIBLE_ITEM_INDEX = 1
+import androidx.compose.ui.text.googlefonts.GoogleFont
+import dev.sergiobelda.foundry.R
+
+internal object GoogleFontProvider {
+
+    val provider: GoogleFont.Provider = GoogleFont.Provider(
+        providerAuthority = "com.google.android.gms.fonts",
+        providerPackage = "com.google.android.gms",
+        certificates = R.array.com_google_android_gms_fonts_certs,
+    )
+}

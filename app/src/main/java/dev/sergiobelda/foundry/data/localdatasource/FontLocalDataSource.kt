@@ -42,8 +42,8 @@ class FontLocalDataSource(
             }
         }
 
-    override fun getSavedFontItems(): Flow<List<FontFamilyItemModel>> =
-        fontFamilyDao.getSavedFontItems().map { list ->
+    override fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
+        fontFamilyDao.getSavedFontFamilyItems().map { list ->
             // TODO: Create mapper
             list.map {
                 FontFamilyItemModel(
