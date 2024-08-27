@@ -32,5 +32,7 @@ interface IFontLocalDataSource {
 
     suspend fun saveFont(name: String)
 
+    suspend fun clearAllFontFamilyItems()
+
     suspend fun clearAllSavedFonts()
 }

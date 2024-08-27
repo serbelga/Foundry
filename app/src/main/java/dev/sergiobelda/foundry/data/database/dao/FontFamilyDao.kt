@@ -39,4 +39,7 @@ interface FontFamilyDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg fontFamilyEntity: FontFamilyEntity)
+
+    @Query("DELETE FROM FontFamily")
+    suspend fun clearAll()
 }

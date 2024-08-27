@@ -69,6 +69,10 @@ class FontLocalDataSource(
         savedFontDao.insert(SavedFontEntity(name = name))
     }
 
+    override suspend fun clearAllFontFamilyItems() {
+        fontFamilyDao.clearAll()
+    }
+
     override suspend fun clearAllSavedFonts() {
         savedFontDao.clearAll()
     }
