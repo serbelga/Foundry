@@ -32,7 +32,7 @@ internal fun FontFamilyModel.resolveFontFamily(): FontFamily =
 private fun FontFamilyModel.toGoogleFontFamily(): FontFamily =
     FontFamily(
         Font(
-            googleFont = GoogleFont(name),
+            googleFont = GoogleFont(family),
             fontProvider = GoogleFontProvider.provider
         ),
     )

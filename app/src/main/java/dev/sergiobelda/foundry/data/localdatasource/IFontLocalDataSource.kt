@@ -26,11 +26,11 @@ interface IFontLocalDataSource {
 
     fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
 
-    suspend fun insertFonts(fonts: List<FontFamilyModel>)
+    suspend fun insertFontFamilies(fonts: List<FontFamilyModel>)
 
-    suspend fun removeSavedFont(name: String)
+    suspend fun removeSavedFont(family: String)
 
-    suspend fun saveFont(name: String)
+    suspend fun saveFontFamily(family: String)
 
     suspend fun clearAllFontFamilyItems()
 

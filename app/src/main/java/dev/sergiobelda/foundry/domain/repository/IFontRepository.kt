@@ -22,9 +22,9 @@ import kotlinx.coroutines.flow.Flow
 interface IFontRepository {
     suspend fun fetchFonts()
 
-    suspend fun removeSavedFont(name: String)
+    suspend fun removeSavedFont(family: String)
 
-    suspend fun saveFont(name: String)
+    suspend fun saveFontFamily(family: String)
 
     fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.data.database.entity
 
-data class FontFamilyModel(
-    val family: String,
-    val category: String,
-    val provider: FontFamilyProvider
+import androidx.room.Embedded
+import androidx.room.Junction
+import androidx.room.Relation
+
+data class FontFamilyGroupListEntity(
+    @Embedded val group: FontFamilyGroupEntity,
+    @Relation(
+        parentColumn = "name",
+        entityColumn = "family",
+        associateBy = Junction(FontFamilyGroupCrossRefEntity::class)
+    )
+    val items: List<FontFamilyEntity>
 )

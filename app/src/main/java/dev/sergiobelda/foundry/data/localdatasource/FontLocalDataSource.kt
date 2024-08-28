@@ -53,7 +53,7 @@ class FontLocalDataSource(
             }
         }
 
-    override suspend fun insertFonts(fonts: List<FontFamilyModel>) {
+    override suspend fun insertFontFamilies(fonts: List<FontFamilyModel>) {
         fonts.forEach {
             fontFamilyDao.insert(
                 it.toFontFamilyEntity()
@@ -61,12 +61,12 @@ class FontLocalDataSource(
         }
     }
 
-    override suspend fun removeSavedFont(name: String) {
-        likedFontFamilyDao.deleteByName(name = name)
+    override suspend fun removeSavedFont(family: String) {
+        likedFontFamilyDao.deleteBy(family = family)
     }
 
-    override suspend fun saveFont(name: String) {
-        likedFontFamilyDao.insert(LikedFontFamilyEntity(name = name))
+    override suspend fun saveFontFamily(family: String) {
+        likedFontFamilyDao.insert(LikedFontFamilyEntity(family = family))
     }
 
     override suspend fun clearAllFontFamilyItems() {

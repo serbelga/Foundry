@@ -22,5 +22,5 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "LikedFontFamily")
 data class LikedFontFamilyEntity(
     @PrimaryKey
-    val name: String,
+    val family: String,
 )

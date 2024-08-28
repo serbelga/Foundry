@@ -21,10 +21,10 @@ import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
 
 @Entity(
     tableName = "FontFamily",
-    primaryKeys = [ "name", "provider" ]
+    primaryKeys = [ "family", "provider" ]
 )
 data class FontFamilyEntity(
-    val name: String,
+    val family: String,
     val category: String,
     val provider: FontFamilyProvider,
 )

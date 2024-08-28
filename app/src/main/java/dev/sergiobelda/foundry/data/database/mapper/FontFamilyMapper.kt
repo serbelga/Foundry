@@ -21,7 +21,7 @@ import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 
 internal fun FontFamilyModel.toFontFamilyEntity(): FontFamilyEntity =
     FontFamilyEntity(
-        name = name,
+        family = family,
         category = category,
         provider = provider
     )
@@ -29,7 +29,7 @@ internal fun FontFamilyModel.toFontFamilyEntity(): FontFamilyEntity =
 
 internal fun FontFamilyEntity.toFontFamilyModel(): FontFamilyModel =
     FontFamilyModel(
-        name = name,
+        family = family,
         category = category,
         provider = provider
     )

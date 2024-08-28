@@ -31,6 +31,7 @@ class FontRemoteDataSource(
             googleFontsApiService.getGoogleFonts()
         }.map {
             response -> response.items.map {
+                // TODO: Create mapper
                 FontFamilyModel(it.family, it.category, FontFamilyProvider.GoogleFonts)
             }
         }

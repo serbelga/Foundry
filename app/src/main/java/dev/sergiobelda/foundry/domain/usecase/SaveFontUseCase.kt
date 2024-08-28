@@ -22,6 +22,6 @@ class SaveFontUseCase(
     private val fontRepository: IFontRepository,
 ) {
     suspend operator fun invoke(name: String) {
-        fontRepository.saveFont(name)
+        fontRepository.saveFontFamily(name)
     }
 }

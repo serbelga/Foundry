@@ -76,9 +76,9 @@ class HomeViewModel(
     fun updateFontSavedState(fontFamilyItemModel: FontFamilyItemModel) =
         viewModelScope.launch {
             if (fontFamilyItemModel.isSaved) {
-                removeSavedFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.name)
+                removeSavedFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.family)
             } else {
-                saveFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.name)
+                saveFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.family)
             }
         }
 }
