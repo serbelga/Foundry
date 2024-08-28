@@ -24,9 +24,14 @@ import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
 import dev.sergiobelda.foundry.data.database.dao.LikedFontFamilyDao
 import dev.sergiobelda.foundry.data.database.entity.FontFamilyEntity
 import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.SavedFontFamilyGroupEntity
 
 @Database(
-    entities = [LikedFontFamilyEntity::class, FontFamilyEntity::class],
+    entities = [
+        LikedFontFamilyEntity::class,
+        FontFamilyEntity::class,
+        SavedFontFamilyGroupEntity::class
+    ],
     version = 1,
     exportSchema = false,
 )
