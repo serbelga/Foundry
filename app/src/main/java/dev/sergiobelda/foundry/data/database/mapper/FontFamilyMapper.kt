@@ -16,7 +16,7 @@
 
 package dev.sergiobelda.foundry.data.database.mapper
 
-import dev.sergiobelda.foundry.data.database.entity.FontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 
 internal fun FontFamilyModel.toFontFamilyEntity(): FontFamilyEntity =

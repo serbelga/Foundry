@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.entity
+package dev.sergiobelda.foundry.data.database.entity.table
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "LikedFontFamily")
-data class LikedFontFamilyEntity(
+@Entity(tableName = "FontFamilyGroup")
+data class FontFamilyGroupEntity(
     @PrimaryKey
-    val family: String,
+    val name: String
 )

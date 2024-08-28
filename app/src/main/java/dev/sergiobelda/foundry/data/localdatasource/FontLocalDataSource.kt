@@ -18,7 +18,7 @@ package dev.sergiobelda.foundry.data.localdatasource
 
 import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
 import dev.sergiobelda.foundry.data.database.dao.LikedFontFamilyDao
-import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyEntity
 import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel

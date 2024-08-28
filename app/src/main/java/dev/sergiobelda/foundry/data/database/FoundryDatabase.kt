@@ -23,10 +23,10 @@ import dev.sergiobelda.foundry.data.database.converter.FontFamilyProviderConvert
 import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
 import dev.sergiobelda.foundry.data.database.dao.FontFamilyGroupDao
 import dev.sergiobelda.foundry.data.database.dao.LikedFontFamilyDao
-import dev.sergiobelda.foundry.data.database.entity.FontFamilyEntity
-import dev.sergiobelda.foundry.data.database.entity.FontFamilyGroupCrossRefEntity
-import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
-import dev.sergiobelda.foundry.data.database.entity.FontFamilyGroupEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupCrossRefEntity
+import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupEntity
 
 @Database(
     entities = [

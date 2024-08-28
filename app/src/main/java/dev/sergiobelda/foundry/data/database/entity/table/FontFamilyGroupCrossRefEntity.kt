@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.entity
+package dev.sergiobelda.foundry.data.database.entity.table
 
 import androidx.room.Entity
-import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
 
 @Entity(
-    tableName = "FontFamily",
-    primaryKeys = [ "family", "provider" ]
+    tableName = "FontFamilyGroupCrossRef",
+    primaryKeys = ["name", "family"]
 )
-data class FontFamilyEntity(
-    val family: String,
-    val category: String,
-    val provider: FontFamilyProvider,
+data class FontFamilyGroupCrossRefEntity(
+    val name: String,
+    val family: String
 )

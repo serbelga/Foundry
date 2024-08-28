@@ -17,6 +17,7 @@
 package dev.sergiobelda.foundry.data.database.entity
 
 import androidx.room.Embedded
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 
 data class FontFamilyItemEntity(
     @Embedded
