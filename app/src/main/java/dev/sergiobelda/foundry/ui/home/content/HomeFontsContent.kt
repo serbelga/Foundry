@@ -19,23 +19,34 @@ package dev.sergiobelda.foundry.ui.home.content
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.rounded.ArrowUpward
+import androidx.compose.material.icons.rounded.SwapVert
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
@@ -60,15 +71,17 @@ internal fun HomeFontsContent(
 
     Scaffold(
         topBar = {
-            Surface(
-                color = MaterialTheme.colorScheme.surfaceContainerLow
+            Column(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                    .padding(horizontal = 12.dp)
             ) {
                 HomeSearchBar(
                     onMenuIconButtonClick = onOpenHomeDrawerClick,
                     modifier = Modifier
-                        .padding(horizontal = 12.dp)
                         .padding(bottom = 12.dp)
                 )
+                HomeFontsListActionsBar()
             }
         },
         floatingActionButton = {
@@ -97,5 +110,48 @@ internal fun HomeFontsContent(
                 .padding(paddingValues),
             contentPadding = PaddingValues(top = 6.dp)
         )
+    }
+}
+
+@Composable
+private fun HomeFontsListActionsBar(
+    appliedFilters: List<String> = emptyList()
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row {
+            IconButton(
+                onClick = {}
+            ) {
+                Icon(
+                    Icons.Rounded.SwapVert,
+                    contentDescription = stringResource(R.string.change_sort_order)
+                )
+            }
+            IconButton(
+                onClick = {},
+                colors = if (appliedFilters.isNotEmpty()) {
+                    IconButtonDefaults.filledTonalIconButtonColors()
+                } else {
+                    IconButtonDefaults.iconButtonColors()
+                }
+            ) {
+                Icon(
+                    Icons.Rounded.Tune,
+                    contentDescription = stringResource(R.string.filters)
+                )
+            }
+        }
+        IconButton(
+            onClick = {}
+        ) {
+            Icon(
+                Icons.Outlined.GridView,
+                contentDescription = null
+            )
+        }
     }
 }
