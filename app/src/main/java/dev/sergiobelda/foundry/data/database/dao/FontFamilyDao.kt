@@ -20,7 +20,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import dev.sergiobelda.foundry.data.database.entity.FontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 import dev.sergiobelda.foundry.data.database.entity.FontFamilyItemEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -28,14 +28,15 @@ import kotlinx.coroutines.flow.Flow
 interface FontFamilyDao {
     // TODO: Return LikedFontFamilies and other custom groups.
     @Query("SELECT f.*, " +
-            "CASE WHEN s.name IS NULL THEN 0 ELSE 1 END AS saved " +
-            "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.name = s.name) " +
-            "WHERE saved = 1")
+            "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
+            "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.family = s.family) " +
+            "WHERE isSaved = 1")
     fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemEntity>>
 
     @Query("SELECT f.*, " +
-            "CASE WHEN s.name IS NULL THEN 0 ELSE 1 END AS saved " +
-            "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.name = s.name) ")
+            "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
+            "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.family = s.family) "
+    )
     fun getFontFamilyItems(): Flow<List<FontFamilyItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

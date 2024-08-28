@@ -17,10 +17,18 @@
 package dev.sergiobelda.foundry.data.database.entity
 
 import androidx.room.Embedded
+import androidx.room.Junction
+import androidx.room.Relation
 import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupCrossRefEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupEntity
 
-data class FontFamilyItemEntity(
-    @Embedded
-    val fontFamilyEntity: FontFamilyEntity,
-    val isSaved: Boolean
+data class FontFamilyGroupListEntity(
+    @Embedded val group: FontFamilyGroupEntity,
+    @Relation(
+        parentColumn = "name",
+        entityColumn = "family",
+        associateBy = Junction(FontFamilyGroupCrossRefEntity::class)
+    )
+    val items: List<FontFamilyEntity>
 )

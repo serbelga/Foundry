@@ -21,12 +21,19 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.sergiobelda.foundry.data.database.converter.FontFamilyProviderConverter
 import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
-import dev.sergiobelda.foundry.data.database.dao.LikedFontFamilyDao
-import dev.sergiobelda.foundry.data.database.entity.FontFamilyEntity
-import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
+import dev.sergiobelda.foundry.data.database.dao.SavedFontFamilyDao
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupCrossRefEntity
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupEntity
+import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 
 @Database(
-    entities = [LikedFontFamilyEntity::class, FontFamilyEntity::class],
+    entities = [
+        LikedFontFamilyEntity::class,
+        FontFamilyEntity::class,
+        FontFamilyGroupEntity::class,
+        FontFamilyGroupCrossRefEntity::class
+    ],
     version = 1,
     exportSchema = false,
 )
@@ -34,5 +41,5 @@ import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
 abstract class FoundryDatabase : RoomDatabase() {
     abstract fun fontFamilyDao(): FontFamilyDao
 
-    abstract fun savedFontsDao(): LikedFontFamilyDao
+    abstract fun savedFontFamilyDao(): SavedFontFamilyDao
 }

@@ -69,14 +69,14 @@ fun HomeScreen(
                 HomeFontsContent(
                     fonts = viewModel.state.fontItems,
                     onOpenHomeDrawerClick = { homeUiState.openDrawer() },
-                    updateFontSavedState = viewModel::updateFontSavedState,
+                    updateFontSavedState = viewModel::updateFontFamilyLikedState,
                 )
             }
             HomeMenuNavigationItem.SavedFontsMenuNavigationItem -> {
                 HomeSavedFontsContent(
                     fonts = viewModel.state.savedFontItems,
                     onOpenHomeDrawerClick = { homeUiState.openDrawer() },
-                    updateFontSavedState = viewModel::updateFontSavedState,
+                    updateFontFamilyLikedState = viewModel::updateFontFamilyLikedState,
                 )
             }
             else -> Unit

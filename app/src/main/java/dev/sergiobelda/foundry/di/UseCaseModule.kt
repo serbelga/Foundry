@@ -19,8 +19,8 @@ package dev.sergiobelda.foundry.di
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetSavedFontFamilyItemsUseCase
-import dev.sergiobelda.foundry.domain.usecase.RemoveSavedFontUseCase
-import dev.sergiobelda.foundry.domain.usecase.SaveFontUseCase
+import dev.sergiobelda.foundry.domain.usecase.RemoveLikedFontFamilyUseCase
+import dev.sergiobelda.foundry.domain.usecase.LikeFontFamilyUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -29,6 +29,6 @@ val useCaseModule =
         singleOf(::FetchFontsUseCase)
         singleOf(::GetFontFamilyItemsUseCase)
         singleOf(::GetSavedFontFamilyItemsUseCase)
-        singleOf(::SaveFontUseCase)
-        singleOf(::RemoveSavedFontUseCase)
+        singleOf(::LikeFontFamilyUseCase)
+        singleOf(::RemoveLikedFontFamilyUseCase)
     }

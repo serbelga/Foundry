@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.usecase
+package dev.sergiobelda.foundry.data.database.entity.table
 
-import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import androidx.room.Entity
 
-class RemoveSavedFontUseCase(
-    private val fontRepository: IFontRepository,
-) {
-    suspend operator fun invoke(name: String) {
-        fontRepository.removeSavedFont(name)
-    }
-}
+@Entity(
+    tableName = "FontFamilyGroupCrossRef",
+    primaryKeys = ["name", "family"]
+)
+data class FontFamilyGroupCrossRefEntity(
+    val name: String,
+    val family: String
+)

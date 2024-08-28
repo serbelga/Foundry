@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Sergio Belda
+ * Copyright 2022 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.entity
+package dev.sergiobelda.foundry.domain.usecase
 
-import androidx.room.Entity
-import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
+import dev.sergiobelda.foundry.domain.repository.IFontRepository
 
-@Entity(
-    tableName = "FontFamily",
-    primaryKeys = [ "name", "provider" ]
-)
-data class FontFamilyEntity(
-    val name: String,
-    val category: String,
-    val provider: FontFamilyProvider,
-)
+class LikeFontFamilyUseCase(
+    private val fontRepository: IFontRepository,
+) {
+    suspend operator fun invoke(name: String) {
+        fontRepository.addLikedFontFamily(name)
+    }
+}

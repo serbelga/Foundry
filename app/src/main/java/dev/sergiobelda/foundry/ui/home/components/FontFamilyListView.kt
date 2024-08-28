@@ -64,7 +64,7 @@ fun FontFamilyListView(
     ) {
         items(
             fonts,
-            key = { it.fontFamilyModel.name },
+            key = { it.fontFamilyModel.family },
             contentType = { it::class },
         ) {
             FontCard(
@@ -103,7 +103,7 @@ fun FontCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = fontFamilyItemModel.fontFamilyModel.name,
+                        text = fontFamilyItemModel.fontFamilyModel.family,
                         style = MaterialTheme.typography.labelMedium,
                     )
                     IconToggleButton(

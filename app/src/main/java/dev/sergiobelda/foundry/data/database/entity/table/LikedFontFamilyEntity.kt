@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.di
+package dev.sergiobelda.foundry.data.database.entity.table
 
-import androidx.room.Room
-import dev.sergiobelda.foundry.data.database.FoundryDatabase
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-val databaseModule =
-    module {
-        single {
-            Room.databaseBuilder(androidContext(), FoundryDatabase::class.java, "FontsDatabase.db")
-                .build()
-        }
-        single {
-            get<FoundryDatabase>().fontFamilyDao()
-        }
-        single {
-            get<FoundryDatabase>().savedFontFamilyDao()
-        }
-    }
+@Entity(tableName = "LikedFontFamily")
+data class LikedFontFamilyEntity(
+    @PrimaryKey
+    val family: String,
+)

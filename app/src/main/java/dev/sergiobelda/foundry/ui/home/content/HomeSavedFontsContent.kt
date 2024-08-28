@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 internal fun HomeSavedFontsContent(
     fonts: List<FontFamilyItemModel>,
     onOpenHomeDrawerClick: () -> Unit,
-    updateFontSavedState: (FontFamilyItemModel) -> Unit,
+    updateFontFamilyLikedState: (FontFamilyItemModel) -> Unit,
 ) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
@@ -104,7 +104,7 @@ internal fun HomeSavedFontsContent(
         FontFamilyListView(
             lazyListState,
             fonts,
-            onSaveClick = { updateFontSavedState(it) },
+            onSaveClick = { updateFontFamilyLikedState(it) },
             modifier = Modifier.padding(paddingValues),
         )
     }

@@ -17,8 +17,8 @@
 package dev.sergiobelda.foundry.data.localdatasource
 
 import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
-import dev.sergiobelda.foundry.data.database.dao.LikedFontFamilyDao
-import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
+import dev.sergiobelda.foundry.data.database.dao.SavedFontFamilyDao
+import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyEntity
 import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class FontLocalDataSource(
-    private val likedFontFamilyDao: LikedFontFamilyDao,
+    private val savedFontFamilyDao: SavedFontFamilyDao,
     private val fontFamilyDao: FontFamilyDao
 ) : IFontLocalDataSource {
 
@@ -37,7 +37,7 @@ class FontLocalDataSource(
             list.map {
                 FontFamilyItemModel(
                     fontFamilyModel = it.fontFamilyEntity.toFontFamilyModel(),
-                    isSaved = it.saved
+                    isSaved = it.isSaved
                 )
             }
         }
@@ -48,12 +48,12 @@ class FontLocalDataSource(
             list.map {
                 FontFamilyItemModel(
                     fontFamilyModel = it.fontFamilyEntity.toFontFamilyModel(),
-                    isSaved = it.saved
+                    isSaved = it.isSaved
                 )
             }
         }
 
-    override suspend fun insertFonts(fonts: List<FontFamilyModel>) {
+    override suspend fun insertFontFamilies(fonts: List<FontFamilyModel>) {
         fonts.forEach {
             fontFamilyDao.insert(
                 it.toFontFamilyEntity()
@@ -61,19 +61,15 @@ class FontLocalDataSource(
         }
     }
 
-    override suspend fun removeSavedFont(name: String) {
-        likedFontFamilyDao.deleteByName(name = name)
+    override suspend fun removeLikedFontFamily(family: String) {
+        savedFontFamilyDao.removeLikedFontFamily(family = family)
     }
 
-    override suspend fun saveFont(name: String) {
-        likedFontFamilyDao.insert(LikedFontFamilyEntity(name = name))
+    override suspend fun addLikedFontFamily(family: String) {
+        savedFontFamilyDao.addLikedFontFamily(LikedFontFamilyEntity(family = family))
     }
 
     override suspend fun clearAllFontFamilyItems() {
         fontFamilyDao.clearAll()
-    }
-
-    override suspend fun clearAllSavedFonts() {
-        likedFontFamilyDao.clearAll()
     }
 }
