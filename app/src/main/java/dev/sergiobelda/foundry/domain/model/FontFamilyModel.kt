@@ -16,6 +16,8 @@
 
 package dev.sergiobelda.foundry.domain.model
 
-sealed interface FontFamilyModel {
-    val name: String
-}
+data class FontFamilyModel(
+    val name: String,
+    val category: String,
+    val provider: FontFamilyProvider
+)

@@ -17,13 +17,14 @@
 package dev.sergiobelda.foundry.data.database.entity
 
 import androidx.room.Entity
+import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
 
 @Entity(
     tableName = "FontFamily",
-    primaryKeys = [ "name", "source" ]
+    primaryKeys = [ "name", "provider" ]
 )
 data class FontFamilyEntity(
     val name: String,
     val category: String,
-    val source: FontFamilySource,
+    val provider: FontFamilyProvider,
 )

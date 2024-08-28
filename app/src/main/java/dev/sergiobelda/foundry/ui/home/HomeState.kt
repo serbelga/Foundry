@@ -24,4 +24,5 @@ data class HomeState(
     val isLoadingFonts: Boolean = false,
     val isSavedFontsSelected: Boolean = false,
     val fontItems: ImmutableList<FontFamilyItemModel> = persistentListOf(),
+    val savedFontItems: ImmutableList<FontFamilyItemModel> = persistentListOf(),
 )

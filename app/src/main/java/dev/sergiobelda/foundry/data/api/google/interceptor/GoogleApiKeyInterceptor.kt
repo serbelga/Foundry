@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.api
+package dev.sergiobelda.foundry.data.api.google.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response

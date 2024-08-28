@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.entity
+package dev.sergiobelda.foundry.data.api.google.service
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import dev.sergiobelda.foundry.data.api.google.model.GoogleFontsResponse
+import retrofit2.Response
+import retrofit2.http.GET
 
-@Entity(tableName = "SavedFont")
-data class SavedFontEntity(
-    @PrimaryKey
-    val name: String,
-)
+interface GoogleFontsApiService {
+    @GET("/webfonts/v1/webfonts")
+    suspend fun getGoogleFonts(): Response<GoogleFontsResponse>
+}

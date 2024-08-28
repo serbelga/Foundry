@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.repository
+package dev.sergiobelda.foundry.data.database.dao
 
-import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
 import kotlinx.coroutines.flow.Flow
 
-interface IFontRepository {
-    suspend fun fetchFonts()
+@Dao
+interface LikedFontFamilyDao {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(vararg font: LikedFontFamilyEntity)
 
-    suspend fun removeSavedFont(name: String)
+    @Query("DELETE FROM LikedFontFamily WHERE name = :name")
+    suspend fun deleteByName(name: String)
 
-    suspend fun saveFont(name: String)
-
-    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
-
-    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
+    @Query("DELETE FROM LikedFontFamily")
+    suspend fun clearAll()
 }

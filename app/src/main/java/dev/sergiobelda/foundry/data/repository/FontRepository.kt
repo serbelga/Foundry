@@ -21,6 +21,7 @@ import dev.sergiobelda.foundry.data.remotedatasource.IFontRemoteDataSource
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.repository.IFontRepository
 import dev.sergiobelda.foundry.domain.result.doIfSuccess
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 
 class FontRepository(
@@ -30,7 +31,7 @@ class FontRepository(
     override suspend fun fetchFonts() {
         val result = fontRemoteDataSource.getFonts()
         result.doIfSuccess {
-            // TODO: Remove and insertAll?
+            fontLocalDataSource.clearAllFontFamilyItems()
             fontLocalDataSource.insertFonts(it)
         }
     }
@@ -46,6 +47,6 @@ class FontRepository(
     override fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
         fontLocalDataSource.getFontFamilyItems()
 
-    override fun getSavedFontItems(): Flow<List<FontFamilyItemModel>> =
-        fontLocalDataSource.getSavedFontItems()
+    override fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
+        fontLocalDataSource.getSavedFontFamilyItems()
 }
