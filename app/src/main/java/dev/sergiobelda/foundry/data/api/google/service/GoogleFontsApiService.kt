@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.api.model.google
+package dev.sergiobelda.foundry.data.api.google.service
 
-import com.squareup.moshi.JsonClass
+import dev.sergiobelda.foundry.data.api.google.model.GoogleFontsResponse
+import retrofit2.Response
+import retrofit2.http.GET
 
-@JsonClass(generateAdapter = true)
-data class GoogleFontApiModel(
-    val family: String,
-    val category: String,
-)
+interface GoogleFontsApiService {
+    @GET("/webfonts/v1/webfonts")
+    suspend fun getGoogleFonts(): Response<GoogleFontsResponse>
+}

@@ -20,20 +20,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import dev.sergiobelda.foundry.data.database.entity.SavedFontEntity
+import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface SavedFontDao {
-    @Query("SELECT * FROM SavedFont")
-    fun getSavedFonts(): Flow<List<SavedFontEntity>>
-
+interface LikedFontFamilyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg font: SavedFontEntity)
+    suspend fun insert(vararg font: LikedFontFamilyEntity)
 
-    @Query("DELETE FROM SavedFont WHERE name = :name")
+    @Query("DELETE FROM LikedFontFamily WHERE name = :name")
     suspend fun deleteByName(name: String)
 
-    @Query("DELETE FROM SavedFont")
+    @Query("DELETE FROM LikedFontFamily")
     suspend fun clearAll()
 }

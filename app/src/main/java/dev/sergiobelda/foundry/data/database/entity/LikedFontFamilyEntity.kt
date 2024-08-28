@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.data.database.entity
 
-data class GoogleFontFamilyModel(
-    override val name: String,
-    val category: String,
-) : FontFamilyModel
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "LikedFontFamily")
+data class LikedFontFamilyEntity(
+    @PrimaryKey
+    val name: String,
+)

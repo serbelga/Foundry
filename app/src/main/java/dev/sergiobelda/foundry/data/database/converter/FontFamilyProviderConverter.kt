@@ -17,17 +17,17 @@
 package dev.sergiobelda.foundry.data.database.converter
 
 import androidx.room.TypeConverter
-import dev.sergiobelda.foundry.data.database.entity.FontFamilySource
+import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
 
-class FontFamilySourceConverter {
+class FontFamilyProviderConverter {
     @TypeConverter
-    fun fromFontFamilySource(source: FontFamilySource): String {
-        return source.name
+    fun fromFontFamilyProvider(provider: FontFamilyProvider): String {
+        return provider.name
     }
 
-    // TODO: Add documentation -> Default FontFamilySource.GoogleFonts
+    // TODO: Add documentation -> Default FontFamilyProvider.Default
     @TypeConverter
-    fun toFontFamilySource(name: String): FontFamilySource =
-        enumValues<FontFamilySource>().firstOrNull { it.name.equals(name, ignoreCase = true) }
-            ?: FontFamilySource.GoogleFonts
+    fun toFontFamilyProvider(name: String): FontFamilyProvider =
+        enumValues<FontFamilyProvider>().firstOrNull { it.name.equals(name, ignoreCase = true) }
+            ?: FontFamilyProvider.Default
 }

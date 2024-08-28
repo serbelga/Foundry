@@ -41,14 +41,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.googlefonts.Font
-import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.ui.provider.GoogleFontProvider
+import dev.sergiobelda.foundry.ui.resolver.resolveFontFamily
 
 @Composable
 fun FontFamilyListView(
@@ -69,14 +67,9 @@ fun FontFamilyListView(
             key = { it.fontFamilyModel.name },
             contentType = { it::class },
         ) {
-            val fontName = GoogleFont(it.fontFamilyModel.name)
-            val fontFamily = FontFamily(
-                Font(googleFont = fontName, fontProvider = GoogleFontProvider.provider),
-            )
-
             FontCard(
                 it,
-                fontFamily = fontFamily,
+                fontFamily = it.fontFamilyModel.resolveFontFamily(),
                 onSaveClick = { onSaveClick(it) },
                 modifier = Modifier.animateItem()
             )

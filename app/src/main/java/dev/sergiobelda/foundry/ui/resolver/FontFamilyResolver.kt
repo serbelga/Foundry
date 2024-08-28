@@ -14,12 +14,30 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.provider
+package dev.sergiobelda.foundry.ui.resolver
 
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import dev.sergiobelda.foundry.R
+import dev.sergiobelda.foundry.domain.model.FontFamilyModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
 
-internal object GoogleFontProvider {
+internal fun FontFamilyModel.resolveFontFamily(): FontFamily =
+    when (provider) {
+        FontFamilyProvider.GoogleFonts -> toGoogleFontFamily()
+        FontFamilyProvider.Default -> FontFamily.Default
+    }
+
+private fun FontFamilyModel.toGoogleFontFamily(): FontFamily =
+    FontFamily(
+        Font(
+            googleFont = GoogleFont(name),
+            fontProvider = GoogleFontProvider.provider
+        ),
+    )
+
+private object GoogleFontProvider {
 
     val provider: GoogleFont.Provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",

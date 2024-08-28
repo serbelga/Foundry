@@ -17,8 +17,8 @@
 package dev.sergiobelda.foundry.data.localdatasource
 
 import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
-import dev.sergiobelda.foundry.data.database.dao.SavedFontDao
-import dev.sergiobelda.foundry.data.database.entity.SavedFontEntity
+import dev.sergiobelda.foundry.data.database.dao.LikedFontFamilyDao
+import dev.sergiobelda.foundry.data.database.entity.LikedFontFamilyEntity
 import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyEntity
 import dev.sergiobelda.foundry.data.database.mapper.toFontFamilyModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class FontLocalDataSource(
-    private val savedFontDao: SavedFontDao,
+    private val likedFontFamilyDao: LikedFontFamilyDao,
     private val fontFamilyDao: FontFamilyDao
 ) : IFontLocalDataSource {
 
@@ -62,11 +62,11 @@ class FontLocalDataSource(
     }
 
     override suspend fun removeSavedFont(name: String) {
-        savedFontDao.deleteByName(name = name)
+        likedFontFamilyDao.deleteByName(name = name)
     }
 
     override suspend fun saveFont(name: String) {
-        savedFontDao.insert(SavedFontEntity(name = name))
+        likedFontFamilyDao.insert(LikedFontFamilyEntity(name = name))
     }
 
     override suspend fun clearAllFontFamilyItems() {
@@ -74,6 +74,6 @@ class FontLocalDataSource(
     }
 
     override suspend fun clearAllSavedFonts() {
-        savedFontDao.clearAll()
+        likedFontFamilyDao.clearAll()
     }
 }
