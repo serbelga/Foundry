@@ -25,8 +25,8 @@ import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetSavedFontFamilyItemsUseCase
-import dev.sergiobelda.foundry.domain.usecase.RemoveSavedFontUseCase
-import dev.sergiobelda.foundry.domain.usecase.SaveFontUseCase
+import dev.sergiobelda.foundry.domain.usecase.RemoveLikedFontFamilyUseCase
+import dev.sergiobelda.foundry.domain.usecase.LikeFontFamilyUseCase
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
@@ -34,8 +34,8 @@ class HomeViewModel(
     private val fetchFontsUseCase: FetchFontsUseCase,
     private val getFontFamilyItemsUseCase: GetFontFamilyItemsUseCase,
     private val getSavedFontFamilyItemsUseCase: GetSavedFontFamilyItemsUseCase,
-    private val saveFontUseCase: SaveFontUseCase,
-    private val removeSavedFontUseCase: RemoveSavedFontUseCase,
+    private val likeFontFamilyUseCase: LikeFontFamilyUseCase,
+    private val removeLikedFontFamilyUseCase: RemoveLikedFontFamilyUseCase,
 ) : ViewModel() {
     var state: HomeState by mutableStateOf(HomeState(isLoadingFonts = true))
         private set
@@ -73,12 +73,14 @@ class HomeViewModel(
             }
         }
 
-    fun updateFontSavedState(fontFamilyItemModel: FontFamilyItemModel) =
+    fun updateFontFamilyLikedState(fontFamilyItemModel: FontFamilyItemModel) =
         viewModelScope.launch {
+            // TODO: This check should change to two different use cases, add/remove to
+            //  liked font families and add/remove to font family group
             if (fontFamilyItemModel.isSaved) {
-                removeSavedFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.family)
+                removeLikedFontFamilyUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.family)
             } else {
-                saveFontUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.family)
+                likeFontFamilyUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.family)
             }
         }
 }

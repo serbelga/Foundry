@@ -28,11 +28,9 @@ interface IFontLocalDataSource {
 
     suspend fun insertFontFamilies(fonts: List<FontFamilyModel>)
 
-    suspend fun removeSavedFont(family: String)
+    suspend fun removeLikedFontFamily(family: String)
 
-    suspend fun saveFontFamily(family: String)
+    suspend fun addLikedFontFamily(family: String)
 
     suspend fun clearAllFontFamilyItems()
-
-    suspend fun clearAllSavedFonts()
 }

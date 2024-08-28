@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Sergio Belda
+ * Copyright 2022 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,23 @@
 package dev.sergiobelda.foundry.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import dev.sergiobelda.foundry.data.database.entity.FontFamilyGroupListEntity
+import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FontFamilyGroupDao {
+interface SavedFontFamilyDao {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addLikedFontFamily(vararg font: LikedFontFamilyEntity)
+
+    @Query("DELETE FROM LikedFontFamily WHERE family = :family")
+    suspend fun removeLikedFontFamily(family: String)
+
+    // TODO: Add addFontFamilyGroup, removeFontFamilyGroup...
 
     @Transaction
     @Query("SELECT * FROM FontFamilyGroup")

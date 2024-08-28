@@ -22,5 +22,5 @@ import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 data class FontFamilyItemEntity(
     @Embedded
     val fontFamilyEntity: FontFamilyEntity,
-    val saved: Boolean
+    val isSaved: Boolean
 )

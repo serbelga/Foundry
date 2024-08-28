@@ -35,12 +35,12 @@ class FontRepository(
         }
     }
 
-    override suspend fun removeSavedFont(family: String) {
-        fontLocalDataSource.removeSavedFont(family = family)
+    override suspend fun removeLikedFontFamily(family: String) {
+        fontLocalDataSource.removeLikedFontFamily(family = family)
     }
 
-    override suspend fun saveFontFamily(family: String) {
-        fontLocalDataSource.saveFontFamily(family = family)
+    override suspend fun addLikedFontFamily(family: String) {
+        fontLocalDataSource.addLikedFontFamily(family = family)
     }
 
     override fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>> =

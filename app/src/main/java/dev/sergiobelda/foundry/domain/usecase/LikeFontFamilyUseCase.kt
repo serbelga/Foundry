@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.dao
+package dev.sergiobelda.foundry.domain.usecase
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
+import dev.sergiobelda.foundry.domain.repository.IFontRepository
 
-@Dao
-interface LikedFontFamilyDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg font: LikedFontFamilyEntity)
-
-    @Query("DELETE FROM LikedFontFamily WHERE family = :family")
-    suspend fun deleteBy(family: String)
-
-    @Query("DELETE FROM LikedFontFamily")
-    suspend fun clearAll()
+class LikeFontFamilyUseCase(
+    private val fontRepository: IFontRepository,
+) {
+    suspend operator fun invoke(name: String) {
+        fontRepository.addLikedFontFamily(name)
+    }
 }

@@ -28,13 +28,13 @@ import kotlinx.coroutines.flow.Flow
 interface FontFamilyDao {
     // TODO: Return LikedFontFamilies and other custom groups.
     @Query("SELECT f.*, " +
-            "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS saved " +
+            "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
             "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.family = s.family) " +
-            "WHERE saved = 1")
+            "WHERE isSaved = 1")
     fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemEntity>>
 
     @Query("SELECT f.*, " +
-            "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS saved " +
+            "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
             "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.family = s.family) "
     )
     fun getFontFamilyItems(): Flow<List<FontFamilyItemEntity>>

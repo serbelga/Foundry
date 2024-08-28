@@ -21,12 +21,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.sergiobelda.foundry.data.database.converter.FontFamilyProviderConverter
 import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
-import dev.sergiobelda.foundry.data.database.dao.FontFamilyGroupDao
-import dev.sergiobelda.foundry.data.database.dao.LikedFontFamilyDao
+import dev.sergiobelda.foundry.data.database.dao.SavedFontFamilyDao
 import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupCrossRefEntity
-import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupEntity
+import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 
 @Database(
     entities = [
@@ -42,7 +41,5 @@ import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyGroupEntity
 abstract class FoundryDatabase : RoomDatabase() {
     abstract fun fontFamilyDao(): FontFamilyDao
 
-    abstract fun fontFamilyGroupDao(): FontFamilyGroupDao
-
-    abstract fun likedFontFamilyDao(): LikedFontFamilyDao
+    abstract fun savedFontFamilyDao(): SavedFontFamilyDao
 }

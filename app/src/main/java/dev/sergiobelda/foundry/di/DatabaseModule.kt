@@ -31,6 +31,6 @@ val databaseModule =
             get<FoundryDatabase>().fontFamilyDao()
         }
         single {
-            get<FoundryDatabase>().likedFontFamilyDao()
+            get<FoundryDatabase>().savedFontFamilyDao()
         }
     }
