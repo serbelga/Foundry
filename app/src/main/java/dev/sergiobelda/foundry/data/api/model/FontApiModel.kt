@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.api.google.model
+package dev.sergiobelda.foundry.data.api.model
 
 /**
  * Represents a generic font model from a remote API.

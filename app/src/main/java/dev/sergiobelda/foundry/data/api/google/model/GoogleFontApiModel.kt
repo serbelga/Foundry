@@ -17,6 +17,7 @@
 package dev.sergiobelda.foundry.data.api.google.model
 
 import com.squareup.moshi.JsonClass
+import dev.sergiobelda.foundry.data.api.model.FontApiModel
 
 /**
  * [FontApiModel] for Google Fonts.

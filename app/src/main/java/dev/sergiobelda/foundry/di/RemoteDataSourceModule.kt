@@ -16,10 +16,10 @@
 
 package dev.sergiobelda.foundry.di
 
-import dev.sergiobelda.foundry.data.remotedatasource.GoogleFontsRemoteDataSource
 import dev.sergiobelda.foundry.data.remotedatasource.FontRemoteDataSource
-import dev.sergiobelda.foundry.data.remotedatasource.mapper.FontsRemoteDataSourceMapper
-import dev.sergiobelda.foundry.data.remotedatasource.mapper.GoogleFontsRemoteDataSourceMapper
+import dev.sergiobelda.foundry.data.remotedatasource.FontsRemoteDataSourceMapper
+import dev.sergiobelda.foundry.data.remotedatasource.google.GoogleFontsRemoteDataSource
+import dev.sergiobelda.foundry.data.remotedatasource.google.GoogleFontsRemoteDataSourceMapper
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module

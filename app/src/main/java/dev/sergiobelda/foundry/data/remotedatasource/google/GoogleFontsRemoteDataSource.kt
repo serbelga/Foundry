@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.remotedatasource
+package dev.sergiobelda.foundry.data.remotedatasource.google
 
 import dev.sergiobelda.foundry.data.api.google.model.GoogleFontApiModel
-import dev.sergiobelda.foundry.data.api.safeApiCall
 import dev.sergiobelda.foundry.data.api.google.service.GoogleFontsApiService
-import dev.sergiobelda.foundry.data.remotedatasource.mapper.FontsRemoteDataSourceMapper
+import dev.sergiobelda.foundry.data.api.safeApiCall
+import dev.sergiobelda.foundry.data.remotedatasource.FontRemoteDataSource
+import dev.sergiobelda.foundry.data.remotedatasource.FontsRemoteDataSourceMapper
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
-import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
 import dev.sergiobelda.foundry.domain.result.Result
 
 class GoogleFontsRemoteDataSource(
