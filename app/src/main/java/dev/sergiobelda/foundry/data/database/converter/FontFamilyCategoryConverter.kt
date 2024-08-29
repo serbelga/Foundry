@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.mapper
+package dev.sergiobelda.foundry.data.database.converter
 
-import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
-import dev.sergiobelda.foundry.domain.model.FontFamilyModel
+import androidx.room.TypeConverter
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 
-internal fun FontFamilyModel.toFontFamilyEntity(): FontFamilyEntity =
-    FontFamilyEntity(
-        family = family,
-        category = category,
-        provider = provider
-    )
+internal class FontFamilyCategoryConverter {
+    @TypeConverter
+    fun fromFontFamilyCategory(category: FontFamilyCategory): String {
+        return category.name
+    }
 
-
-internal fun FontFamilyEntity.toFontFamilyModel(): FontFamilyModel =
-    FontFamilyModel(
-        family = family,
-        category = category,
-        provider = provider
-    )
+    @TypeConverter
+    fun toFontFamilyCategory(name: String): FontFamilyCategory =
+        enumValues<FontFamilyCategory>().firstOrNull { it.name.equals(name, ignoreCase = true) }
+            ?: FontFamilyCategory.Default
+}

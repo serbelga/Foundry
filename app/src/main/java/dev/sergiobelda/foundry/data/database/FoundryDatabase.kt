@@ -19,6 +19,7 @@ package dev.sergiobelda.foundry.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import dev.sergiobelda.foundry.data.database.converter.FontFamilyCategoryConverter
 import dev.sergiobelda.foundry.data.database.converter.FontFamilyProviderConverter
 import dev.sergiobelda.foundry.data.database.dao.FontFamilyDao
 import dev.sergiobelda.foundry.data.database.dao.SavedFontFamilyDao
@@ -37,7 +38,10 @@ import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
     version = 1,
     exportSchema = false,
 )
-@TypeConverters(FontFamilyProviderConverter::class)
+@TypeConverters(
+    FontFamilyCategoryConverter::class,
+    FontFamilyProviderConverter::class,
+)
 abstract class FoundryDatabase : RoomDatabase() {
     abstract fun fontFamilyDao(): FontFamilyDao
 

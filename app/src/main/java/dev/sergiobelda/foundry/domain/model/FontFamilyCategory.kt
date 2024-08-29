@@ -17,6 +17,7 @@
 package dev.sergiobelda.foundry.domain.model
 
 enum class FontFamilyCategory {
+    Default,
     Display,
     Handwriting,
     Monospace,

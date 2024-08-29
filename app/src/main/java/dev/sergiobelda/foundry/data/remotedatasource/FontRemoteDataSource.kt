@@ -16,23 +16,9 @@
 
 package dev.sergiobelda.foundry.data.remotedatasource
 
-import dev.sergiobelda.foundry.data.api.safeApiCall
-import dev.sergiobelda.foundry.data.api.google.service.GoogleFontsApiService
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
-import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
 import dev.sergiobelda.foundry.domain.result.Result
 
-// TODO: Refactor to fetch from multiple sources
-class FontRemoteDataSource(
-    private val googleFontsApiService: GoogleFontsApiService,
-) : IFontRemoteDataSource {
-    override suspend fun getFonts(): Result<List<FontFamilyModel>> =
-        safeApiCall {
-            googleFontsApiService.getGoogleFonts()
-        }.map {
-            response -> response.items.map {
-                // TODO: Create mapper
-                FontFamilyModel(it.family, it.category, FontFamilyProvider.GoogleFonts)
-            }
-        }
+interface FontRemoteDataSource {
+    suspend fun getFonts(): Result<List<FontFamilyModel>>
 }

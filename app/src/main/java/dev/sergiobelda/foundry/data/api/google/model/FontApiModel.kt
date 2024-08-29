@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.usecase
+package dev.sergiobelda.foundry.data.api.google.model
 
-import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.domain.repository.FontRepository
-import kotlinx.coroutines.flow.Flow
-
-class GetFontFamilyItemsUseCase(
-    private val fontRepository: FontRepository,
-) {
-    operator fun invoke(): Flow<List<FontFamilyItemModel>> =
-        fontRepository.getFontFamilyItems()
-}
+interface FontApiModel

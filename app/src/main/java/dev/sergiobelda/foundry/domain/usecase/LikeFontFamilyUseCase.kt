@@ -16,10 +16,10 @@
 
 package dev.sergiobelda.foundry.domain.usecase
 
-import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import dev.sergiobelda.foundry.domain.repository.FontRepository
 
 class LikeFontFamilyUseCase(
-    private val fontRepository: IFontRepository,
+    private val fontRepository: FontRepository,
 ) {
     suspend operator fun invoke(name: String) {
         fontRepository.addLikedFontFamily(name)

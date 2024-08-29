@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.localdatasource
+package dev.sergiobelda.foundry.data.localdatasource.mapper
 
-import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
-import kotlinx.coroutines.flow.Flow
 
-interface IFontLocalDataSource {
+internal fun FontFamilyModel.toFontFamilyEntity(): FontFamilyEntity =
+    FontFamilyEntity(
+        family = family,
+        category = category,
+        provider = provider
+    )
 
-    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
 
-    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
-
-    suspend fun insertFontFamilies(fonts: List<FontFamilyModel>)
-
-    suspend fun removeLikedFontFamily(family: String)
-
-    suspend fun addLikedFontFamily(family: String)
-
-    suspend fun clearAllFontFamilyItems()
-}
+internal fun FontFamilyEntity.toFontFamilyModel(): FontFamilyModel =
+    FontFamilyModel(
+        family = family,
+        category = category,
+        provider = provider
+    )

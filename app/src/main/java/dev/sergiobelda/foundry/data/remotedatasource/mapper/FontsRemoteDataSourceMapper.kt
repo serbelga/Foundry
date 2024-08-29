@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.repository
+package dev.sergiobelda.foundry.data.remotedatasource.mapper
 
-import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import kotlinx.coroutines.flow.Flow
+import dev.sergiobelda.foundry.data.api.google.model.FontApiModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 
-interface IFontRepository {
-    suspend fun fetchFonts()
-
-    suspend fun removeLikedFontFamily(family: String)
-
-    suspend fun addLikedFontFamily(family: String)
-
-    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
-
-    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
+interface FontsRemoteDataSourceMapper<T : FontApiModel> {
+    fun map(fontApiModel: T): FontFamilyModel
 }

@@ -19,7 +19,7 @@ package dev.sergiobelda.foundry.data.database.converter
 import androidx.room.TypeConverter
 import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
 
-class FontFamilyProviderConverter {
+internal class FontFamilyProviderConverter {
     @TypeConverter
     fun fromFontFamilyProvider(provider: FontFamilyProvider): String {
         return provider.name

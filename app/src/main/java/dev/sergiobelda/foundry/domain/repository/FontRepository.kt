@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.usecase
+package dev.sergiobelda.foundry.domain.repository
 
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.domain.repository.FontRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetFontFamilyItemsUseCase(
-    private val fontRepository: FontRepository,
-) {
-    operator fun invoke(): Flow<List<FontFamilyItemModel>> =
-        fontRepository.getFontFamilyItems()
+interface FontRepository {
+    suspend fun fetchFonts()
+
+    suspend fun removeLikedFontFamily(family: String)
+
+    suspend fun addLikedFontFamily(family: String)
+
+    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
+
+    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
 }

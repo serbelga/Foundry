@@ -16,22 +16,22 @@
 
 package dev.sergiobelda.foundry.data.repository
 
-import dev.sergiobelda.foundry.data.localdatasource.IFontLocalDataSource
-import dev.sergiobelda.foundry.data.remotedatasource.IFontRemoteDataSource
+import dev.sergiobelda.foundry.data.localdatasource.FontLocalDataSource
+import dev.sergiobelda.foundry.data.remotedatasource.FontRemoteDataSource
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import dev.sergiobelda.foundry.domain.repository.FontRepository
 import dev.sergiobelda.foundry.domain.result.doIfSuccess
 import kotlinx.coroutines.flow.Flow
 
-class FontRepository(
-    private val fontRemoteDataSource: IFontRemoteDataSource,
-    private val fontLocalDataSource: IFontLocalDataSource,
-) : IFontRepository {
+class FontRepositoryImpl(
+    private val fontRemoteDataSource: FontRemoteDataSource,
+    private val fontLocalDataSource: FontLocalDataSource,
+) : FontRepository {
     override suspend fun fetchFonts() {
         val result = fontRemoteDataSource.getFonts()
         result.doIfSuccess {
             fontLocalDataSource.clearAllFontFamilyItems()
-            fontLocalDataSource.insertFontFamilies(it)
+            //fontLocalDataSource.insertFontFamilies(it)
         }
     }
 

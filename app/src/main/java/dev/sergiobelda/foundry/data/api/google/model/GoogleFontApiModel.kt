@@ -22,4 +22,4 @@ import com.squareup.moshi.JsonClass
 data class GoogleFontApiModel(
     val family: String,
     val category: String,
-)
+) : FontApiModel
