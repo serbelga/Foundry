@@ -58,6 +58,7 @@ internal fun HomeFontsContent(
     fonts: List<FontFamilyItemModel>,
     onOpenHomeDrawerClick: () -> Unit,
     updateFontSavedState: (FontFamilyItemModel) -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
 
@@ -81,7 +82,9 @@ internal fun HomeFontsContent(
                     modifier = Modifier
                         .padding(bottom = 12.dp)
                 )
-                HomeFontsListActionsBar()
+                HomeFontsListActionsBar(
+                    onFiltersClick = onFiltersClick
+                )
             }
         },
         floatingActionButton = {
@@ -115,7 +118,8 @@ internal fun HomeFontsContent(
 
 @Composable
 private fun HomeFontsListActionsBar(
-    appliedFilters: List<String> = emptyList()
+    onFiltersClick: () -> Unit,
+    appliedFilters: List<String> = emptyList(),
 ) {
     Row(
         modifier = Modifier
@@ -132,7 +136,7 @@ private fun HomeFontsListActionsBar(
                 )
             }
             IconButton(
-                onClick = {},
+                onClick = onFiltersClick,
                 colors = if (appliedFilters.isNotEmpty()) {
                     IconButtonDefaults.filledTonalIconButtonColors()
                 } else {

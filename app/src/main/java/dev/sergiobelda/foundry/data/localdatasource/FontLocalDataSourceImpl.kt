@@ -21,6 +21,8 @@ import dev.sergiobelda.foundry.data.database.dao.SavedFontFamilyDao
 import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 import dev.sergiobelda.foundry.data.localdatasource.mapper.toFontFamilyEntity
 import dev.sergiobelda.foundry.data.localdatasource.mapper.toFontFamilyModel
+import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 import kotlinx.coroutines.flow.Flow
@@ -31,8 +33,12 @@ class FontLocalDataSourceImpl(
     private val fontFamilyDao: FontFamilyDao
 ) : FontLocalDataSource {
 
-    override fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
-        fontFamilyDao.getFontFamilyItems().map { list ->
+    override fun getFontFamilyItems(
+        appliedFiltersModel: AppliedFiltersModel
+    ): Flow<List<FontFamilyItemModel>> =
+        fontFamilyDao.getFontFamilyItems(
+            fontFamilyCategories = appliedFiltersModel.fontFamilyCategories
+        ).map { list ->
             // TODO: Create mapper
             list.map {
                 FontFamilyItemModel(
@@ -43,7 +49,7 @@ class FontLocalDataSourceImpl(
         }
 
     override fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
-        fontFamilyDao.getSavedFontFamilyItems().map { list ->
+        savedFontFamilyDao.getSavedFontFamilyItems().map { list ->
             // TODO: Create mapper
             list.map {
                 FontFamilyItemModel(

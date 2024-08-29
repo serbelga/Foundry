@@ -21,6 +21,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase
@@ -83,4 +85,19 @@ class HomeViewModel(
                 likeFontFamilyUseCase.invoke(name = fontFamilyItemModel.fontFamilyModel.family)
             }
         }
+
+    fun updateAppliedFilters() {
+        // TODO: Update this sample code.
+        viewModelScope.launch {
+            getFontFamilyItemsUseCase(
+                appliedFiltersModel = AppliedFiltersModel(
+                    fontFamilyCategories = setOf(FontFamilyCategory.entries.random())
+                )
+            ).collect { fontItems ->
+                state = state.copy(
+                    fontItems = fontItems.toPersistentList(),
+                )
+            }
+        }
+    }
 }

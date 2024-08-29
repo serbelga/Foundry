@@ -22,11 +22,19 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import dev.sergiobelda.foundry.data.database.entity.FontFamilyGroupListEntity
+import dev.sergiobelda.foundry.data.database.entity.FontFamilyItemEntity
 import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SavedFontFamilyDao {
+    // TODO: Return LikedFontFamilies and other custom groups.
+    @Query("SELECT f.*, " +
+            "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
+            "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.family = s.family) " +
+            "WHERE isSaved = 1")
+    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemEntity>>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addLikedFontFamily(vararg font: LikedFontFamilyEntity)
 

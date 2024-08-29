@@ -18,6 +18,7 @@ package dev.sergiobelda.foundry.data.repository
 
 import dev.sergiobelda.foundry.data.localdatasource.FontLocalDataSource
 import dev.sergiobelda.foundry.data.remotedatasource.FontRemoteDataSource
+import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.repository.FontRepository
 import dev.sergiobelda.foundry.domain.result.doIfSuccess
@@ -43,8 +44,10 @@ class FontRepositoryImpl(
         fontLocalDataSource.addLikedFontFamily(family = family)
     }
 
-    override fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
-        fontLocalDataSource.getFontFamilyItems()
+    override fun getFontFamilyItems(
+        appliedFiltersModel: AppliedFiltersModel
+    ): Flow<List<FontFamilyItemModel>> =
+        fontLocalDataSource.getFontFamilyItems(appliedFiltersModel = appliedFiltersModel)
 
     override fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
         fontLocalDataSource.getSavedFontFamilyItems()

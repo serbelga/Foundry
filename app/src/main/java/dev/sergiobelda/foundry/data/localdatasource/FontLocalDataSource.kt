@@ -16,13 +16,16 @@
 
 package dev.sergiobelda.foundry.data.localdatasource
 
+import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 import kotlinx.coroutines.flow.Flow
 
 interface FontLocalDataSource {
 
-    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
+    fun getFontFamilyItems(
+        appliedFiltersModel: AppliedFiltersModel
+    ): Flow<List<FontFamilyItemModel>>
 
     fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
 
