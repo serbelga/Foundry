@@ -31,7 +31,7 @@ class FontRepositoryImpl(
         val result = fontRemoteDataSource.getFonts()
         result.doIfSuccess {
             fontLocalDataSource.clearAllFontFamilyItems()
-            //fontLocalDataSource.insertFontFamilies(it)
+            fontLocalDataSource.insertFontFamilies(it)
         }
     }
 
