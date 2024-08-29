@@ -16,4 +16,7 @@
 
 package dev.sergiobelda.foundry.data.api.google.model
 
+/**
+ * Represents a generic font model from a remote API.
+ */
 interface FontApiModel

@@ -18,6 +18,9 @@ package dev.sergiobelda.foundry.data.api.google.model
 
 import com.squareup.moshi.JsonClass
 
+/**
+ * [FontApiModel] for Google Fonts.
+ */
 @JsonClass(generateAdapter = true)
 data class GoogleFontApiModel(
     val family: String,

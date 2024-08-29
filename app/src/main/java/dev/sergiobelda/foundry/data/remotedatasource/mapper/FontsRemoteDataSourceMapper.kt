@@ -19,6 +19,9 @@ package dev.sergiobelda.foundry.data.remotedatasource.mapper
 import dev.sergiobelda.foundry.data.api.google.model.FontApiModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 
+/**
+ * Interface for mapping a [FontApiModel] to a [FontFamilyModel].
+ */
 interface FontsRemoteDataSourceMapper<T : FontApiModel> {
     fun map(fontApiModel: T): FontFamilyModel
 }
