@@ -20,8 +20,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.room.RoomRawQuery
 import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 import dev.sergiobelda.foundry.data.database.entity.FontFamilyItemEntity
+import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
+import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
+import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -33,11 +39,27 @@ interface FontFamilyDao {
             "WHERE isSaved = 1")
     fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemEntity>>
 
-    @Query("SELECT f.*, " +
-            "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
-            "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.family = s.family) "
-    )
-    fun getFontFamilyItems(): Flow<List<FontFamilyItemEntity>>
+    fun getFontFamilyItems(
+        fontFamilyCategories: Set<FontFamilyCategory> = emptySet()
+    ): Flow<List<FontFamilyItemEntity>> {
+        val query = buildString {
+            append("SELECT f.*, " +
+                    "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
+                    "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.family = s.family) ")
+
+            if (fontFamilyCategories.isNotEmpty()) {
+                append("WHERE f.category IN (${fontFamilyCategories.joinToString(prefix = "'", postfix = "'")})")
+            }
+        }
+        return getFontFamilyItems(
+            RoomRawQuery(query)
+        )
+    }
+
+    @RawQuery(observedEntities = [ FontFamilyEntity::class, LikedFontFamilyEntity::class ])
+    fun getFontFamilyItems(
+        query: RoomRawQuery
+    ): Flow<List<FontFamilyItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg fontFamilyEntity: FontFamilyEntity)

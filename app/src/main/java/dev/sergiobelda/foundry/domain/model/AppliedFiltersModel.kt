@@ -17,5 +17,5 @@
 package dev.sergiobelda.foundry.domain.model
 
 data class AppliedFiltersModel(
-    val fontFamilyCategory: Set<FontFamilyCategory> = emptySet(),
+    val fontFamilyCategories: Set<FontFamilyCategory> = emptySet(),
 )
