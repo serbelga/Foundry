@@ -25,7 +25,7 @@ class GetFontFamilyItemsUseCase(
     private val fontRepository: FontRepository,
 ) {
     operator fun invoke(
-        appliedFiltersModel: AppliedFiltersModel = AppliedFiltersModel()
+        appliedFiltersModel: AppliedFiltersModel
     ): Flow<List<FontFamilyItemModel>> =
         fontRepository.getFontFamilyItems(appliedFiltersModel = appliedFiltersModel)
 }
