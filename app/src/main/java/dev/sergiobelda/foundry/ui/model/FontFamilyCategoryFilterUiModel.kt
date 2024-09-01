@@ -19,6 +19,7 @@ package dev.sergiobelda.foundry.ui.model
 import androidx.annotation.StringRes
 import dev.sergiobelda.foundry.R
 import dev.sergiobelda.foundry.domain.model.FilterUpdateData
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterElementUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
 
@@ -27,14 +28,14 @@ data class FontFamilyCategoryFilterUiModel(
 ) : FilterUiModel<FontFamilyCategoryFilterModel> {
 
     @StringRes
-    override val stringResourceId: Int = R.string.filters
+    override val titleStringResId: Int = R.string.font_family_category
 
     override fun toFilterElementChips(
         onClick: (FilterUpdateData) -> Unit
     ): List<FilterElementChip> =
         filterModel.elements.map { element ->
             FilterElementChip(
-                label = element.category.name,
+                labelStringResId = element.category.toStringResId(),
                 isSelected = element.isSelected,
                 onClick = {
                     onClick(
@@ -46,4 +47,16 @@ data class FontFamilyCategoryFilterUiModel(
                 }
             )
         }
+
+    private fun FontFamilyCategory.toStringResId(): Int =
+        when (this) {
+            FontFamilyCategory.Display -> R.string.display
+            FontFamilyCategory.Handwriting -> R.string.handwriting
+            FontFamilyCategory.Monospace -> R.string.monospace
+            FontFamilyCategory.SansSerif -> R.string.sans_serif
+            FontFamilyCategory.Serif -> R.string.serif
+            // TODO: Remove
+            FontFamilyCategory.Default -> R.string.serif
+        }
+
 }

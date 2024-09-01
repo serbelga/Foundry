@@ -22,7 +22,7 @@ import dev.sergiobelda.foundry.domain.model.FiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
 
 interface FilterUiModel<F : FilterModel> {
-    val stringResourceId: Int
+    val titleStringResId: Int
 
     val filterModel: F
 

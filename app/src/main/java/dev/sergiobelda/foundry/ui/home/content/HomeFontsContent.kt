@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -157,14 +158,15 @@ private fun HomeFontsListActionsBar(
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                itemsIndexed(
-                    key = { _, item -> item.label },
+                items(
+                    // TODO: Use key
+                    // key = { item -> item },
                     items = filters
-                ) { _, item  ->
+                ) { item  ->
                     InputChip(
                         selected = item.isSelected,
                         onClick = item.onClick,
-                        label = { Text(text = item.label) },
+                        label = { Text(text = stringResource(item.labelStringResId)) },
                         trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
                         shape = CircleShape,
                         modifier = Modifier
