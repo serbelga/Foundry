@@ -52,12 +52,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterElementUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
 import dev.sergiobelda.foundry.ui.model.FilterElementChip
-import dev.sergiobelda.foundry.ui.model.FontFamilyCategoryFilterElementChip
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import kotlinx.coroutines.launch
 
@@ -165,18 +163,7 @@ private fun HomeFontsListActionsBar(
                 ) { _, item  ->
                     InputChip(
                         selected = item.isSelected,
-                        onClick = {
-                            when (item) {
-                                is FontFamilyCategoryFilterElementChip -> {
-                                    item.onClick(
-                                        FontFamilyCategoryFilterElementUpdateData(
-                                            item.label,
-                                            !item.isSelected
-                                        )
-                                    )
-                                }
-                            }
-                        },
+                        onClick = item.onClick,
                         label = { Text(text = item.label) },
                         trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
                         shape = CircleShape,

@@ -16,43 +16,10 @@
 
 package dev.sergiobelda.foundry.ui.model
 
-import androidx.annotation.StringRes
-import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FilterModel
+import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
-
-fun FiltersModel.toFilterUiModels(): List<FilterUiModel<*>> =
-    filters.map { filterModel ->
-        when (filterModel) {
-            is FontFamilyCategoryFilterModel -> FontFamilyCategoryFilterUiModel(filterModel)
-        }
-    }
-
-data class FontFamilyCategoryFilterUiModel(
-    override val filterModel: FontFamilyCategoryFilterModel
-) : FilterUiModel<FontFamilyCategoryFilterModel> {
-
-    @StringRes override val stringResourceId: Int = R.string.filters
-
-    override fun toFilterElementChips(
-        onClick: (FilterUpdateData) -> Unit
-    ): List<FilterElementChip> =
-        filterModel.elements.map { element ->
-            FontFamilyCategoryFilterElementChip(
-                label = element.category.name,
-                isSelected = element.isSelected,
-                onClick = onClick
-            )
-        }
-}
-
-data class FontFamilyCategoryFilterElementChip(
-    override val label: String,
-    override val isSelected: Boolean,
-    override val onClick: (FilterUpdateData) -> Unit
-) : FilterElementChip
 
 interface FilterUiModel<F : FilterModel> {
     val stringResourceId: Int
@@ -64,10 +31,20 @@ interface FilterUiModel<F : FilterModel> {
     ): List<FilterElementChip>
 }
 
-sealed interface FilterElementChip {
-    val label: String
-
-    val isSelected: Boolean
-
-    val onClick: (FilterUpdateData) -> Unit
+data class FiltersUiModel(
+    val filters: List<FilterUiModel<*>>
+) {
+    fun toFilterElementChips(
+        onClick: (FilterUpdateData) -> Unit
+    ): List<FilterElementChip> =
+        filters.flatMap { it.toFilterElementChips(onClick) }
 }
+
+fun FiltersModel.toFilterUiModels(): FiltersUiModel =
+    FiltersUiModel(
+        filters = filters.map { filterModel ->
+            when (filterModel) {
+                is FontFamilyCategoryFilterModel -> FontFamilyCategoryFilterUiModel(filterModel)
+            }
+        }
+    )

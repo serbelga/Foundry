@@ -31,7 +31,7 @@ data class FontFamilyCategoryFilterModel(
         (data as? FontFamilyCategoryFilterElementUpdateData)?.let {
             this.copy(
                 elements = elements.map {
-                    if (it.category.name == data.category) {
+                    if (it.category == data.category) {
                         it.copy(isSelected = data.isSelected)
                     } else {
                         it
@@ -44,9 +44,9 @@ data class FontFamilyCategoryFilterModel(
 data class FontFamilyCategoryFilterElementModel(
     val category: FontFamilyCategory,
     val isSelected: Boolean
-)
+) : FilterElementModel
 
 data class FontFamilyCategoryFilterElementUpdateData(
-    val category: String,
+    val category: FontFamilyCategory,
     val isSelected: Boolean
 ) : FilterUpdateData

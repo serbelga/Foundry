@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.ui.model
 
-// TODO: Remove
-data class AppliedFiltersModel(
-    val fontFamilyCategories: Set<FontFamilyCategory> = emptySet(),
+data class FilterElementChip(
+    val label: String,
+    val isSelected: Boolean,
+    val onClick: () -> Unit
 )
