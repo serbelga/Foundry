@@ -27,18 +27,21 @@ data class FontFamilyCategoryFilterModel(
 ) : FilterModel {
 
     override fun updateData(data: FilterUpdateData): FilterModel =
-        // TODO: Not use cast here
-        (data as? FontFamilyCategoryFilterElementUpdateData)?.let {
-            this.copy(
-                elements = elements.map {
-                    if (it.category == data.category) {
-                        it.copy(isSelected = data.isSelected)
-                    } else {
-                        it
+        when (data) {
+            is FontFamilyCategoryFilterElementUpdateData -> {
+                this.copy(
+                    elements = elements.map {
+                        if (it.category == data.category) {
+                            it.copy(isSelected = data.isSelected)
+                        } else {
+                            it
+                        }
                     }
-                }
-            )
-        } ?: this
+                )
+            }
+
+            else -> this
+        }
 }
 
 data class FontFamilyCategoryFilterElementModel(
@@ -46,7 +49,9 @@ data class FontFamilyCategoryFilterElementModel(
     val isSelected: Boolean
 ) : FilterElementModel
 
+interface FontFamilyCategoryFilterUpdateData : FilterUpdateData
+
 data class FontFamilyCategoryFilterElementUpdateData(
     val category: FontFamilyCategory,
     val isSelected: Boolean
-) : FilterUpdateData
+) : FontFamilyCategoryFilterUpdateData
