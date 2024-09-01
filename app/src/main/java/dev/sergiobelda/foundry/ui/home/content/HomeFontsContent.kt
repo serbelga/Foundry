@@ -26,18 +26,23 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.rounded.ArrowUpward
-import androidx.compose.material.icons.rounded.SwapVert
+import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -47,15 +52,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.sergiobelda.foundry.R
+import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
+import dev.sergiobelda.foundry.ui.model.FilterElementChip
+import dev.sergiobelda.foundry.ui.model.FiltersUiModel
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun HomeFontsContent(
     fonts: List<FontFamilyItemModel>,
+    filters: FiltersUiModel,
     onOpenHomeDrawerClick: () -> Unit,
     updateFontSavedState: (FontFamilyItemModel) -> Unit,
     onFiltersClick: () -> Unit,
@@ -83,7 +93,8 @@ internal fun HomeFontsContent(
                         .padding(bottom = 12.dp)
                 )
                 HomeFontsListActionsBar(
-                    onFiltersClick = onFiltersClick
+                    filters = filters.toFilterElementChips(),
+                    onFiltersClick = onFiltersClick,
                 )
             }
         },
@@ -111,42 +122,70 @@ internal fun HomeFontsContent(
             onSaveClick = { updateFontSavedState(it) },
             modifier = Modifier
                 .padding(paddingValues),
-            contentPadding = PaddingValues(top = 6.dp)
+            contentPadding = PaddingValues(top = 4.dp)
         )
     }
 }
 
 @Composable
 private fun HomeFontsListActionsBar(
+    filters: List<FilterElementChip>,
     onFiltersClick: () -> Unit,
-    appliedFilters: List<String> = emptyList(),
 ) {
+    /*val filters = remember(appliedFilters) {
+        appliedFilters?.fontFamilyCategories?.map {
+            it.name
+        }.orEmpty()
+    }*/
     Row(
         modifier = Modifier
+            .padding(bottom = 2.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        // horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row {
-            IconButton(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            /*IconButton(
                 onClick = {}
             ) {
                 Icon(
                     Icons.Rounded.SwapVert,
                     contentDescription = stringResource(R.string.change_sort_order)
                 )
-            }
+            }*/
             IconButton(
                 onClick = onFiltersClick,
-                colors = if (appliedFilters.isNotEmpty()) {
-                    IconButtonDefaults.filledTonalIconButtonColors()
-                } else {
+                colors = if (filters.isEmpty()) {
                     IconButtonDefaults.iconButtonColors()
+                } else {
+                    IconButtonDefaults.filledTonalIconButtonColors()
                 }
             ) {
                 Icon(
                     Icons.Rounded.Tune,
                     contentDescription = stringResource(R.string.filters)
                 )
+            }
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                itemsIndexed(
+                    key = { _, item -> item.label },
+                    items = filters
+                ) { _, item  ->
+                    InputChip(
+                        selected = item.isSelected,
+                        onClick = item.onClick,
+                        label = { Text(text = item.label) },
+                        trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
+                        shape = CircleShape,
+                        modifier = Modifier
+                            .animateItem()
+                    )
+                }
             }
         }
         IconButton(
