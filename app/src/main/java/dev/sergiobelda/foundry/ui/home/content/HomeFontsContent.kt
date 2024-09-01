@@ -52,20 +52,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterElementUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
 import dev.sergiobelda.foundry.ui.model.FilterElementChip
-import dev.sergiobelda.foundry.ui.model.FiltersUiModel
+import dev.sergiobelda.foundry.ui.model.FontFamilyCategoryFilterElementChip
 import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun HomeFontsContent(
     fonts: List<FontFamilyItemModel>,
-    filters: FiltersUiModel,
+    filters: List<FilterElementChip>,
     onOpenHomeDrawerClick: () -> Unit,
     updateFontSavedState: (FontFamilyItemModel) -> Unit,
     onFiltersClick: () -> Unit,
@@ -93,7 +92,7 @@ internal fun HomeFontsContent(
                         .padding(bottom = 12.dp)
                 )
                 HomeFontsListActionsBar(
-                    filters = filters.toFilterElementChips(),
+                    filters = filters,
                     onFiltersClick = onFiltersClick,
                 )
             }
@@ -127,35 +126,23 @@ internal fun HomeFontsContent(
     }
 }
 
+// TODO: Remove this suppress
+@Suppress("LongMethod")
 @Composable
 private fun HomeFontsListActionsBar(
     filters: List<FilterElementChip>,
     onFiltersClick: () -> Unit,
 ) {
-    /*val filters = remember(appliedFilters) {
-        appliedFilters?.fontFamilyCategories?.map {
-            it.name
-        }.orEmpty()
-    }*/
     Row(
         modifier = Modifier
             .padding(bottom = 2.dp)
             .fillMaxWidth(),
-        // horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            /*IconButton(
-                onClick = {}
-            ) {
-                Icon(
-                    Icons.Rounded.SwapVert,
-                    contentDescription = stringResource(R.string.change_sort_order)
-                )
-            }*/
             IconButton(
                 onClick = onFiltersClick,
                 colors = if (filters.isEmpty()) {
@@ -178,7 +165,18 @@ private fun HomeFontsListActionsBar(
                 ) { _, item  ->
                     InputChip(
                         selected = item.isSelected,
-                        onClick = item.onClick,
+                        onClick = {
+                            when (item) {
+                                is FontFamilyCategoryFilterElementChip -> {
+                                    item.onClick(
+                                        FontFamilyCategoryFilterElementUpdateData(
+                                            item.label,
+                                            !item.isSelected
+                                        )
+                                    )
+                                }
+                            }
+                        },
                         label = { Text(text = item.label) },
                         trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
                         shape = CircleShape,

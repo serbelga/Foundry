@@ -17,10 +17,16 @@
 package dev.sergiobelda.foundry.domain.model
 
 data class FontFamilyCategoryFilterModel(
-    val elements: List<FontFamilyCategoryFilterElementModel>
+    val elements: List<FontFamilyCategoryFilterElementModel> =
+        FontFamilyCategory.entries.map {
+            FontFamilyCategoryFilterElementModel(
+                category = it,
+                isSelected = false
+            )
+        }
 ) : FilterModel {
 
-    override fun updateData(data: FilterElementUpdateData): FilterModel =
+    override fun updateData(data: FilterUpdateData): FilterModel =
         // TODO: Not use cast here
         (data as? FontFamilyCategoryFilterElementUpdateData)?.let {
             this.copy(
@@ -43,4 +49,4 @@ data class FontFamilyCategoryFilterElementModel(
 data class FontFamilyCategoryFilterElementUpdateData(
     val category: String,
     val isSelected: Boolean
-) : FilterElementUpdateData
+) : FilterUpdateData

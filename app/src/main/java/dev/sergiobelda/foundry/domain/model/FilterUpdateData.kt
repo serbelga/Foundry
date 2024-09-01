@@ -16,4 +16,4 @@
 
 package dev.sergiobelda.foundry.domain.model
 
-interface FilterElementUpdateData
+interface FilterUpdateData

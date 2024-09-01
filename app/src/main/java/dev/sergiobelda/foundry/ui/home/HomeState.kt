@@ -16,8 +16,9 @@
 
 package dev.sergiobelda.foundry.ui.home
 
+import dev.sergiobelda.foundry.domain.model.FiltersModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.ui.model.FiltersUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -25,6 +26,10 @@ data class HomeState(
     val isLoadingFonts: Boolean = false,
     val isSavedFontsSelected: Boolean = false,
     val fontItems: ImmutableList<FontFamilyItemModel> = persistentListOf(),
-    val filters: FiltersUiModel = FiltersUiModel(),
+    val filters: FiltersModel = FiltersModel(
+        filters = persistentListOf(
+            FontFamilyCategoryFilterModel()
+        )
+    ),
     val savedFontItems: ImmutableList<FontFamilyItemModel> = persistentListOf(),
 )

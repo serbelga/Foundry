@@ -22,10 +22,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
 import dev.sergiobelda.foundry.ui.home.content.HomeFontsContent
 import dev.sergiobelda.foundry.ui.home.content.HomeSavedFontsContent
 import dev.sergiobelda.foundry.ui.home.menu.HomeMenuContent
 import dev.sergiobelda.foundry.ui.home.menu.HomeMenuNavigationItem
+import dev.sergiobelda.foundry.ui.model.toFilterUiModels
 import org.koin.compose.koinInject
 
 @Composable
@@ -68,7 +70,9 @@ fun HomeScreen(
             HomeMenuNavigationItem.FontsMenuNavigationItem -> {
                 HomeFontsContent(
                     fonts = viewModel.state.fontItems,
-                    filters = viewModel.state.filters,
+                    filters = viewModel.state.filters.toFilterUiModels().flatMap {
+                        it.toFilterElementChips(viewModel::updateFilters)
+                    },
                     onOpenHomeDrawerClick = { homeUiState.openDrawer() },
                     updateFontSavedState = viewModel::updateFontFamilyLikedState,
                     onFiltersClick = {} // viewModel::updateAppliedFilters

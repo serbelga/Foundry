@@ -17,72 +17,57 @@
 package dev.sergiobelda.foundry.ui.model
 
 import androidx.annotation.StringRes
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import dev.sergiobelda.foundry.R
+import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FilterModel
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterElementModel
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterElementUpdateData
+import dev.sergiobelda.foundry.domain.model.FiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
-data class FiltersUiModel(
-    val filters: ImmutableList<FilterUiModel<*>> = persistentListOf(
-        FontFamilyCategoryFilterUiModel()
-    )
-) {
+fun FiltersModel.toFilterUiModels(): List<FilterUiModel<*>> =
+    filters.map { filterModel ->
+        when (filterModel) {
+            is FontFamilyCategoryFilterModel -> FontFamilyCategoryFilterUiModel(filterModel)
+        }
+    }
 
-    fun toFilterElementChips(): List<FilterElementChip> =
-        filters.flatMap { it.toFilterElementChips() }
-}
-
-class FontFamilyCategoryFilterUiModel : FilterUiModel<FontFamilyCategoryFilterModel> {
+data class FontFamilyCategoryFilterUiModel(
+    override val filterModel: FontFamilyCategoryFilterModel
+) : FilterUiModel<FontFamilyCategoryFilterModel> {
 
     @StringRes override val stringResourceId: Int = R.string.filters
 
-    override var filterModel: MutableState<FontFamilyCategoryFilterModel> =
-        mutableStateOf(
-            FontFamilyCategoryFilterModel(
-                elements = FontFamilyCategory.entries.map {
-                    FontFamilyCategoryFilterElementModel(
-                        category = it,
-                        isSelected = false
-                    )
-                }
-            )
-        )
-
-    override fun toFilterElementChips(): List<FilterElementChip> =
-        filterModel.value.elements.map {
-            FilterElementChip(
-                label = it.category.name,
-                isSelected = it.isSelected,
-                onClick = {
-                    filterModel.value = filterModel.value.updateData(
-                        FontFamilyCategoryFilterElementUpdateData(
-                            category = it.category.name,
-                            isSelected = !it.isSelected
-                        )
-                        // TODO: Not use cast here
-                    ) as FontFamilyCategoryFilterModel
-                }
+    override fun toFilterElementChips(
+        onClick: (FilterUpdateData) -> Unit
+    ): List<FilterElementChip> =
+        filterModel.elements.map { element ->
+            FontFamilyCategoryFilterElementChip(
+                label = element.category.name,
+                isSelected = element.isSelected,
+                onClick = onClick
             )
         }
 }
 
+data class FontFamilyCategoryFilterElementChip(
+    override val label: String,
+    override val isSelected: Boolean,
+    override val onClick: (FilterUpdateData) -> Unit
+) : FilterElementChip
 
 interface FilterUiModel<F : FilterModel> {
     val stringResourceId: Int
 
-    var filterModel: MutableState<F>
+    val filterModel: F
 
-    fun toFilterElementChips(): List<FilterElementChip>
+    fun toFilterElementChips(
+        onClick: (FilterUpdateData) -> Unit
+    ): List<FilterElementChip>
 }
 
-data class FilterElementChip(
-    val label: String,
-    val isSelected: Boolean,
-    val onClick: () -> Unit
-)
+sealed interface FilterElementChip {
+    val label: String
+
+    val isSelected: Boolean
+
+    val onClick: (FilterUpdateData) -> Unit
+}

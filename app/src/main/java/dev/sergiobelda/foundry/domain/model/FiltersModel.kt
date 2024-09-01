@@ -16,7 +16,14 @@
 
 package dev.sergiobelda.foundry.domain.model
 
-sealed interface FilterModel {
+data class FiltersModel(
+    val filters: List<FilterModel> = emptyList()
+) {
 
-    fun updateData(data: FilterUpdateData): FilterModel
+    fun updateData(data: FilterUpdateData): FiltersModel =
+        copy(
+            filters = filters.map {
+                it.updateData(data)
+            }
+        )
 }

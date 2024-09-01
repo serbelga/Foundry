@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
+import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase
@@ -96,5 +97,11 @@ class HomeViewModel(
 
     fun updateAppliedFilters(appliedFiltersModel: AppliedFiltersModel) {
         appliedFilters.value = appliedFiltersModel
+    }
+
+    fun updateFilters(data: FilterUpdateData) {
+        state = state.copy(
+            filters = state.filters.updateData(data)
+        )
     }
 }
