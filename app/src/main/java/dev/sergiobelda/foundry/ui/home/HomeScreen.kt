@@ -22,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
 import dev.sergiobelda.foundry.ui.home.content.HomeFontsContent
 import dev.sergiobelda.foundry.ui.home.content.HomeSavedFontsContent
 import dev.sergiobelda.foundry.ui.home.menu.HomeMenuContent
@@ -70,12 +69,10 @@ fun HomeScreen(
             HomeMenuNavigationItem.FontsMenuNavigationItem -> {
                 HomeFontsContent(
                     fonts = viewModel.state.fontItems,
-                    filters = viewModel.state.filters.toFilterUiModels().toFilterElementChips(
-                        viewModel::updateFilters
-                    ),
+                    filters = viewModel.state.filters.toFilterUiModels(),
                     onOpenHomeDrawerClick = { homeUiState.openDrawer() },
                     updateFontSavedState = viewModel::updateFontFamilyLikedState,
-                    onFiltersClick = {} // viewModel::updateAppliedFilters
+                    updateFilters = viewModel::updateFilters,
                 )
             }
             HomeMenuNavigationItem.SavedFontsMenuNavigationItem -> {

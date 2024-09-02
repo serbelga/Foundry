@@ -28,14 +28,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Tune
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,38 +44,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.sergiobelda.foundry.R
+import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
-import dev.sergiobelda.foundry.ui.model.FilterElementChip
-import dev.sergiobelda.foundry.ui.resources.FAB_VISIBLE_ITEM_INDEX
-import kotlinx.coroutines.launch
+import dev.sergiobelda.foundry.ui.model.FilterElementChipUiModel
+import dev.sergiobelda.foundry.ui.model.FiltersUiModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeFontsContent(
     fonts: List<FontFamilyItemModel>,
-    filters: List<FilterElementChip>,
+    filters: FiltersUiModel,
     onOpenHomeDrawerClick: () -> Unit,
     updateFontSavedState: (FontFamilyItemModel) -> Unit,
-    onFiltersClick: () -> Unit,
+    updateFilters: (FilterUpdateData) -> Unit,
 ) {
-    val lazyListState = rememberLazyListState()
-
-    val fabVisible by remember {
-        derivedStateOf {
-            lazyListState.firstVisibleItemIndex >= FAB_VISIBLE_ITEM_INDEX
-        }
-    }
-
-    val coroutineScope = rememberCoroutineScope()
+    val homeFontsUiState = rememberHomeFontsUiState()
 
     Scaffold(
         topBar = {
@@ -91,22 +79,24 @@ internal fun HomeFontsContent(
                         .padding(bottom = 12.dp)
                 )
                 HomeFontsListActionsBar(
-                    filters = filters,
-                    onFiltersClick = onFiltersClick,
+                    filterElementChips = filters.toFilterElementChips {
+                        updateFilters(it)
+                    },
+                    onFiltersClick = {
+                        homeFontsUiState.openBottomSheet()
+                    },
                 )
             }
         },
         floatingActionButton = {
             AnimatedVisibility(
-                visible = fabVisible,
+                visible = homeFontsUiState.fabVisible,
                 enter = scaleIn(),
                 exit = scaleOut(),
             ) {
                 FloatingActionButton(
                     onClick = {
-                        coroutineScope.launch {
-                            lazyListState.animateScrollToItem(0)
-                        }
+                        homeFontsUiState.animateScrollToTop()
                     },
                 ) {
                     Icon(Icons.Rounded.ArrowUpward, contentDescription = null)
@@ -115,13 +105,21 @@ internal fun HomeFontsContent(
         },
     ) { paddingValues ->
         FontFamilyListView(
-            lazyListState,
+            homeFontsUiState.lazyListState,
             fonts,
             onSaveClick = { updateFontSavedState(it) },
             modifier = Modifier
                 .padding(paddingValues),
             contentPadding = PaddingValues(top = 4.dp)
         )
+        if (homeFontsUiState.openBottomSheet) {
+            FiltersModalBottomSheet(
+                filters = filters,
+                updateFilters = updateFilters,
+                onDismissRequest = { homeFontsUiState.closeBottomSheet() },
+                sheetState = homeFontsUiState.sheetState
+            )
+        }
     }
 }
 
@@ -129,7 +127,7 @@ internal fun HomeFontsContent(
 @Suppress("LongMethod")
 @Composable
 private fun HomeFontsListActionsBar(
-    filters: List<FilterElementChip>,
+    filterElementChips: List<FilterElementChipUiModel>,
     onFiltersClick: () -> Unit,
 ) {
     Row(
@@ -144,7 +142,7 @@ private fun HomeFontsListActionsBar(
         ) {
             IconButton(
                 onClick = onFiltersClick,
-                colors = if (filters.isEmpty()) {
+                colors = if (filterElementChips.isEmpty()) {
                     IconButtonDefaults.iconButtonColors()
                 } else {
                     IconButtonDefaults.filledTonalIconButtonColors()
@@ -161,16 +159,11 @@ private fun HomeFontsListActionsBar(
                 items(
                     // TODO: Use key
                     // key = { item -> item },
-                    items = filters
+                    items = filterElementChips
                 ) { item  ->
-                    InputChip(
-                        selected = item.isSelected,
-                        onClick = item.onClick,
-                        label = { Text(text = stringResource(item.labelStringResId)) },
-                        trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
-                        shape = CircleShape,
-                        modifier = Modifier
-                            .animateItem()
+                    FilterInputChip(
+                        filterInputElementChip = item,
+                        modifier = Modifier.animateItem()
                     )
                 }
             }
@@ -184,4 +177,19 @@ private fun HomeFontsListActionsBar(
             )
         }
     }
+}
+
+@Composable
+private fun FilterInputChip(
+    filterInputElementChip: FilterElementChipUiModel,
+    modifier: Modifier = Modifier
+) {
+    InputChip(
+        selected = filterInputElementChip.isSelected,
+        onClick = filterInputElementChip.onClick,
+        label = { Text(text = stringResource(filterInputElementChip.labelStringResId)) },
+        trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
+        shape = CircleShape,
+        modifier = modifier
+    )
 }

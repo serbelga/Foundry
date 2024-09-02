@@ -16,13 +16,14 @@
 
 package dev.sergiobelda.foundry.ui.model
 
-import dev.sergiobelda.foundry.domain.model.FilterUpdateData
+import dev.sergiobelda.foundry.domain.model.FiltersModel
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
 
-data class FiltersUiModel(
-    val filters: List<FilterUiModel<*>>
-) {
-    fun toFilterElementChips(
-        onClick: (FilterUpdateData) -> Unit
-    ): List<FilterElementChipUiModel> =
-        filters.flatMap { it.toFilterElementChips(onClick) }
-}
+fun FiltersModel.toFilterUiModels(): FiltersUiModel =
+    FiltersUiModel(
+        filters = filters.map { filterModel ->
+            when (filterModel) {
+                is FontFamilyCategoryFilterModel -> FontFamilyCategoryFilterUiModel(filterModel)
+            }
+        }
+    )

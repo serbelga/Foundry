@@ -16,13 +16,15 @@
 
 package dev.sergiobelda.foundry.ui.model
 
+import dev.sergiobelda.foundry.domain.model.FilterModel
 import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 
-data class FiltersUiModel(
-    val filters: List<FilterUiModel<*>>
-) {
+interface FilterUiModel<F : FilterModel> {
+    val titleStringResId: Int
+
+    val filterModel: F
+
     fun toFilterElementChips(
         onClick: (FilterUpdateData) -> Unit
-    ): List<FilterElementChipUiModel> =
-        filters.flatMap { it.toFilterElementChips(onClick) }
+    ): List<FilterElementChipUiModel>
 }

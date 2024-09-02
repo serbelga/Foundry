@@ -32,16 +32,16 @@ data class FontFamilyCategoryFilterUiModel(
 
     override fun toFilterElementChips(
         onClick: (FilterUpdateData) -> Unit
-    ): List<FilterElementChip> =
+    ): List<FilterElementChipUiModel> =
         filterModel.elements.map { element ->
-            FilterElementChip(
+            FilterElementChipUiModel(
                 labelStringResId = element.category.toStringResId(),
                 isSelected = element.isSelected,
                 onClick = {
                     onClick(
                         FontFamilyCategoryFilterElementUpdateData(
-                            element.category,
-                            !element.isSelected
+                            category = element.category,
+                            isSelected = !element.isSelected
                         )
                     )
                 }
@@ -58,5 +58,4 @@ data class FontFamilyCategoryFilterUiModel(
             // TODO: Remove
             FontFamilyCategory.Default -> R.string.serif
         }
-
 }
