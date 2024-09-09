@@ -24,7 +24,7 @@ interface FilterUiModel<F : FilterModel> {
 
     val filterModel: F
 
-    fun toFilterElementChips(
+    fun toSelectedFilterChips(
         onClick: (FilterUpdateData) -> Unit
-    ): List<FilterElementChipUiModel>
+    ): List<SelectedFilterChipUiModel>
 }

@@ -21,8 +21,8 @@ import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 data class FiltersUiModel(
     val filters: List<FilterUiModel<*>>
 ) {
-    fun toFilterElementChips(
+    fun toSelectedFilterChips(
         onClick: (FilterUpdateData) -> Unit
-    ): List<FilterElementChipUiModel> =
-        filters.flatMap { it.toFilterElementChips(onClick) }
+    ): List<SelectedFilterChipUiModel> =
+        filters.flatMap { it.toSelectedFilterChips(onClick) }
 }

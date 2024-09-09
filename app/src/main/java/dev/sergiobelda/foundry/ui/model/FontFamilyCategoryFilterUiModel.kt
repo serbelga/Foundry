@@ -22,6 +22,8 @@ import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterElementUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 data class FontFamilyCategoryFilterUiModel(
     override val filterModel: FontFamilyCategoryFilterModel
@@ -30,11 +32,28 @@ data class FontFamilyCategoryFilterUiModel(
     @StringRes
     override val titleStringResId: Int = R.string.font_family_category
 
-    override fun toFilterElementChips(
+    override fun toSelectedFilterChips(
         onClick: (FilterUpdateData) -> Unit
-    ): List<FilterElementChipUiModel> =
+    ): List<SelectedFilterChipUiModel> =
+        filterModel.elements.filter { it.isSelected }.map { element ->
+            SelectedFilterChipUiModel(
+                labelStringResId = element.category.toStringResId(),
+                onClick = {
+                    onClick(
+                        FontFamilyCategoryFilterElementUpdateData(
+                            category = element.category,
+                            isSelected = !element.isSelected
+                        )
+                    )
+                }
+            )
+        }
+
+    internal fun toFilterChips(
+        onClick: (FilterUpdateData) -> Unit
+    ): ImmutableList<FontFamilyCategoryFilterChipUiModel> =
         filterModel.elements.map { element ->
-            FilterElementChipUiModel(
+            FontFamilyCategoryFilterChipUiModel(
                 labelStringResId = element.category.toStringResId(),
                 isSelected = element.isSelected,
                 onClick = {
@@ -46,7 +65,7 @@ data class FontFamilyCategoryFilterUiModel(
                     )
                 }
             )
-        }
+        }.toPersistentList()
 
     private fun FontFamilyCategory.toStringResId(): Int =
         when (this) {
@@ -59,3 +78,9 @@ data class FontFamilyCategoryFilterUiModel(
             FontFamilyCategory.Default -> R.string.serif
         }
 }
+
+internal data class FontFamilyCategoryFilterChipUiModel(
+    @StringRes val labelStringResId: Int,
+    val isSelected: Boolean,
+    val onClick: () -> Unit
+)

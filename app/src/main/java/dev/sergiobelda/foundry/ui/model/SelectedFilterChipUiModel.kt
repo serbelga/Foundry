@@ -18,8 +18,7 @@ package dev.sergiobelda.foundry.ui.model
 
 import androidx.annotation.StringRes
 
-data class FilterElementChipUiModel(
+data class SelectedFilterChipUiModel(
     @StringRes val labelStringResId: Int,
-    val isSelected: Boolean,
     val onClick: () -> Unit
 )

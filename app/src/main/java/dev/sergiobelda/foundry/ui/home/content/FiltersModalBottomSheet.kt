@@ -17,14 +17,14 @@
 package dev.sergiobelda.foundry.ui.home.content
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.InputChip
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -33,13 +33,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.sergiobelda.foundry.domain.model.FilterUpdateData
-import dev.sergiobelda.foundry.ui.model.FilterElementChipUiModel
 import dev.sergiobelda.foundry.ui.model.FiltersUiModel
+import dev.sergiobelda.foundry.ui.model.FontFamilyCategoryFilterChipUiModel
+import dev.sergiobelda.foundry.ui.model.FontFamilyCategoryFilterUiModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun FiltersModalBottomSheet(
-    filters: FiltersUiModel,
+    filtersUiModel: FiltersUiModel,
     updateFilters: (FilterUpdateData) -> Unit,
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
@@ -50,19 +51,44 @@ internal fun FiltersModalBottomSheet(
         sheetState = sheetState,
         modifier = modifier,
     ) {
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
             items(
                 // TODO: Use key
                 // key = { item -> item },
-                items = filters.toFilterElementChips {
-                    updateFilters(it)
+                items = filtersUiModel.filters,
+                contentType = { it::class }
+            ) { filter  ->
+                when (filter) {
+                    is FontFamilyCategoryFilterUiModel -> {
+                        FontFamilyCategoryFilterSelector(
+                            filterUiModel = filter,
+                            updateFilters = updateFilters
+                        )
+                    }
                 }
-            ) { item  ->
-                FilterInputChip(
-                    filterInputElementChip = item,
-                    modifier = Modifier.animateItem()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun FontFamilyCategoryFilterSelector(
+    filterUiModel: FontFamilyCategoryFilterUiModel,
+    updateFilters: (FilterUpdateData) -> Unit,
+) {
+    val segmentedButtons = filterUiModel.toFilterChips {
+        updateFilters(it)
+    }
+    Column {
+        Text(text = stringResource(filterUiModel.titleStringResId))
+        FlowRow {
+            segmentedButtons.forEach {
+                FontFamilyCategorySegmentedButton(
+                    filterChipUiModel = it
                 )
             }
         }
@@ -70,16 +96,14 @@ internal fun FiltersModalBottomSheet(
 }
 
 @Composable
-private fun FilterInputChip(
-    filterInputElementChip: FilterElementChipUiModel,
+private fun FontFamilyCategorySegmentedButton(
+    filterChipUiModel: FontFamilyCategoryFilterChipUiModel,
     modifier: Modifier = Modifier
 ) {
-    InputChip(
-        selected = filterInputElementChip.isSelected,
-        onClick = filterInputElementChip.onClick,
-        label = { Text(text = stringResource(filterInputElementChip.labelStringResId)) },
-        trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
-        shape = CircleShape,
+    FilterChip(
+        selected = filterChipUiModel.isSelected,
+        onClick = filterChipUiModel.onClick,
+        label = { Text(text = stringResource(filterChipUiModel.labelStringResId)) },
         modifier = modifier
     )
 }

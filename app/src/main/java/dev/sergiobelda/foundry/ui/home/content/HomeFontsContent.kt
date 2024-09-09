@@ -28,18 +28,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -52,14 +51,14 @@ import dev.sergiobelda.foundry.domain.model.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
-import dev.sergiobelda.foundry.ui.model.FilterElementChipUiModel
 import dev.sergiobelda.foundry.ui.model.FiltersUiModel
+import dev.sergiobelda.foundry.ui.model.SelectedFilterChipUiModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeFontsContent(
     fonts: List<FontFamilyItemModel>,
-    filters: FiltersUiModel,
+    filtersUiModel: FiltersUiModel,
     onOpenHomeDrawerClick: () -> Unit,
     updateFontSavedState: (FontFamilyItemModel) -> Unit,
     updateFilters: (FilterUpdateData) -> Unit,
@@ -79,7 +78,7 @@ internal fun HomeFontsContent(
                         .padding(bottom = 12.dp)
                 )
                 HomeFontsListActionsBar(
-                    filterElementChips = filters.toFilterElementChips {
+                    selectedFilterChipUiModelList = filtersUiModel.toSelectedFilterChips {
                         updateFilters(it)
                     },
                     onFiltersClick = {
@@ -114,7 +113,7 @@ internal fun HomeFontsContent(
         )
         if (homeFontsUiState.openBottomSheet) {
             FiltersModalBottomSheet(
-                filters = filters,
+                filtersUiModel = filtersUiModel,
                 updateFilters = updateFilters,
                 onDismissRequest = { homeFontsUiState.closeBottomSheet() },
                 sheetState = homeFontsUiState.sheetState
@@ -127,7 +126,7 @@ internal fun HomeFontsContent(
 @Suppress("LongMethod")
 @Composable
 private fun HomeFontsListActionsBar(
-    filterElementChips: List<FilterElementChipUiModel>,
+    selectedFilterChipUiModelList: List<SelectedFilterChipUiModel>,
     onFiltersClick: () -> Unit,
 ) {
     Row(
@@ -142,7 +141,7 @@ private fun HomeFontsListActionsBar(
         ) {
             IconButton(
                 onClick = onFiltersClick,
-                colors = if (filterElementChips.isEmpty()) {
+                colors = if (selectedFilterChipUiModelList.isEmpty()) {
                     IconButtonDefaults.iconButtonColors()
                 } else {
                     IconButtonDefaults.filledTonalIconButtonColors()
@@ -159,10 +158,10 @@ private fun HomeFontsListActionsBar(
                 items(
                     // TODO: Use key
                     // key = { item -> item },
-                    items = filterElementChips
+                    items = selectedFilterChipUiModelList
                 ) { item  ->
-                    FilterInputChip(
-                        filterInputElementChip = item,
+                    SelectedFilterChip(
+                        selectedFilterChipUiModel = item,
                         modifier = Modifier.animateItem()
                     )
                 }
@@ -180,16 +179,15 @@ private fun HomeFontsListActionsBar(
 }
 
 @Composable
-private fun FilterInputChip(
-    filterInputElementChip: FilterElementChipUiModel,
+private fun SelectedFilterChip(
+    selectedFilterChipUiModel: SelectedFilterChipUiModel,
     modifier: Modifier = Modifier
 ) {
-    InputChip(
-        selected = filterInputElementChip.isSelected,
-        onClick = filterInputElementChip.onClick,
-        label = { Text(text = stringResource(filterInputElementChip.labelStringResId)) },
+    FilterChip(
+        selected = true,
+        onClick = selectedFilterChipUiModel.onClick,
+        label = { Text(text = stringResource(selectedFilterChipUiModel.labelStringResId)) },
         trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
-        shape = CircleShape,
         modifier = modifier
     )
 }
