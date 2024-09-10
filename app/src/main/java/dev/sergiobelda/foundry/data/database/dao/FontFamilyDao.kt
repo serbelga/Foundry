@@ -25,25 +25,27 @@ import androidx.room.RoomRawQuery
 import dev.sergiobelda.foundry.data.database.entity.FontFamilyItemEntity
 import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
+import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class FontFamilyDao {
 
+    // TODO: Consider replace FiltersModel by list List<FilterModel>
     fun getFontFamilyItems(
         filters: FiltersModel
     ): Flow<List<FontFamilyItemEntity>> {
         val query = buildString {
             append(FONT_FAMILY_ITEMS_QUERY)
 
-            // TODO: Create a FontFamilyItemsQueryBuilder
-//             if (fontFamilyCategories.isNotEmpty()) {
-//                 append(
-//                     "WHERE f.category IN (${FontFamilyCategory.entries.joinToString(prefix = "'", postfix = "'")})"
-//                 )
-//             }
+            // TODO: Improve this code
+            FontFamilyItemsQueryBuilder.getConditions(filters).forEachIndexed { index, condition ->
+                if (index == 0) {
+                    append("WHERE ")
+                }
+                append(condition)
+            }
         }
 
         return getFontFamilyItems(
@@ -51,7 +53,7 @@ abstract class FontFamilyDao {
         )
     }
 
-    @RawQuery(observedEntities = [ FontFamilyEntity::class, LikedFontFamilyEntity::class ])
+    @RawQuery(observedEntities = [FontFamilyEntity::class, LikedFontFamilyEntity::class])
     protected abstract fun getFontFamilyItems(
         query: RoomRawQuery
     ): Flow<List<FontFamilyItemEntity>>
@@ -65,7 +67,31 @@ abstract class FontFamilyDao {
     companion object {
         private const val FONT_FAMILY_ITEMS_QUERY =
             "SELECT f.*, " +
-                "CASE WHEN s.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
-                "FROM FontFamily f LEFT JOIN LikedFontFamily s ON (f.family = s.family) "
+                    "CASE WHEN l.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
+                    "FROM FontFamily f LEFT JOIN LikedFontFamily l ON (f.family = l.family) "
+    }
+}
+
+private object FontFamilyItemsQueryBuilder {
+
+    // TODO: Improve this code
+    fun getConditions(
+        filters: FiltersModel,
+    ): List<String> = buildList {
+        filters.filters.forEach {
+            when (it) {
+                is FontFamilyCategoryFilterModel -> {
+                    it.elements.filter { it.isSelected }.takeIf { it.isNotEmpty() }?.let { elements ->
+                        val condition =
+                            "f.category IN (" +
+                                    elements
+                                        .map { it.category }
+                                        .joinToString(prefix = "'", postfix = "'", separator = "', '") +
+                                    ")"
+                        add(condition)
+                    }
+                }
+            }
+        }
     }
 }
