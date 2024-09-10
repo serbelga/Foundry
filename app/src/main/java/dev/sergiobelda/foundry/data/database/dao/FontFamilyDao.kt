@@ -26,21 +26,24 @@ import dev.sergiobelda.foundry.data.database.entity.FontFamilyItemEntity
 import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
 import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class FontFamilyDao {
 
     fun getFontFamilyItems(
-        fontFamilyCategories: Set<FontFamilyCategory> = emptySet()
+        filters: FiltersModel
     ): Flow<List<FontFamilyItemEntity>> {
         val query = buildString {
             append(FONT_FAMILY_ITEMS_QUERY)
 
             // TODO: Create a FontFamilyItemsQueryBuilder
-            if (fontFamilyCategories.isNotEmpty()) {
-                append("WHERE f.category IN (${fontFamilyCategories.joinToString(prefix = "'", postfix = "'")})")
-            }
+//             if (fontFamilyCategories.isNotEmpty()) {
+//                 append(
+//                     "WHERE f.category IN (${FontFamilyCategory.entries.joinToString(prefix = "'", postfix = "'")})"
+//                 )
+//             }
         }
 
         return getFontFamilyItems(

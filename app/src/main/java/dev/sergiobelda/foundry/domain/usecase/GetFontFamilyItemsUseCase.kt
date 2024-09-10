@@ -16,8 +16,9 @@
 
 package dev.sergiobelda.foundry.domain.usecase
 
-import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.domain.model.filter.FilterModel
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
 import dev.sergiobelda.foundry.domain.repository.FontRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -25,7 +26,7 @@ class GetFontFamilyItemsUseCase(
     private val fontRepository: FontRepository,
 ) {
     operator fun invoke(
-        appliedFiltersModel: AppliedFiltersModel
+        filters: FiltersModel
     ): Flow<List<FontFamilyItemModel>> =
-        fontRepository.getFontFamilyItems(appliedFiltersModel = appliedFiltersModel)
+        fontRepository.getFontFamilyItems(filters = filters)
 }

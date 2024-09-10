@@ -16,8 +16,8 @@
 
 package dev.sergiobelda.foundry.domain.repository
 
-import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
 import kotlinx.coroutines.flow.Flow
 
 interface FontRepository {
@@ -28,7 +28,7 @@ interface FontRepository {
     suspend fun addLikedFontFamily(family: String)
 
     fun getFontFamilyItems(
-        appliedFiltersModel: AppliedFiltersModel
+        filters: FiltersModel
     ): Flow<List<FontFamilyItemModel>>
 
     fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>

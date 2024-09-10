@@ -16,14 +16,10 @@
 
 package dev.sergiobelda.foundry.ui.home
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
-import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetSavedFontFamilyItemsUseCase
@@ -32,6 +28,7 @@ import dev.sergiobelda.foundry.domain.usecase.RemoveLikedFontFamilyUseCase
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
@@ -42,10 +39,9 @@ class HomeViewModel(
     private val likeFontFamilyUseCase: LikeFontFamilyUseCase,
     private val removeLikedFontFamilyUseCase: RemoveLikedFontFamilyUseCase,
 ) : ViewModel() {
-    var state: HomeState by mutableStateOf(HomeState(isLoadingFonts = true))
-        private set
-
-    private val appliedFilters = MutableStateFlow(AppliedFiltersModel())
+    val state: StateFlow<HomeState> get() = _state
+    private val _state: MutableStateFlow<HomeState> =
+        MutableStateFlow(HomeState(isLoadingFonts = true))
 
     init {
         fetchFonts()
@@ -56,7 +52,7 @@ class HomeViewModel(
     private fun fetchFonts() =
         viewModelScope.launch {
             fetchFontsUseCase()
-            state = state.copy(
+            _state.value = _state.value.copy(
                 isLoadingFonts = false,
             )
         }
@@ -64,21 +60,19 @@ class HomeViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun getFontFamilyItems() =
         viewModelScope.launch {
-            appliedFilters
-                .flatMapLatest {
-                    getFontFamilyItemsUseCase(it)
-                }
-                .collect {
-                    state = state.copy(
-                        fontItems = it.toPersistentList(),
-                    )
-                }
+            state.flatMapLatest {
+                getFontFamilyItemsUseCase(it.filters)
+            }.collect {
+                _state.value = _state.value.copy(
+                    fontItems = it.toPersistentList(),
+                )
+            }
         }
 
     private fun getSavedFontFamilyItems() =
         viewModelScope.launch {
             getSavedFontFamilyItemsUseCase().collect { savedFontItems ->
-                state = state.copy(
+                _state.value = _state.value.copy(
                     savedFontItems = savedFontItems.toPersistentList(),
                 )
             }
@@ -95,13 +89,9 @@ class HomeViewModel(
             }
         }
 
-    fun updateAppliedFilters(appliedFiltersModel: AppliedFiltersModel) {
-        appliedFilters.value = appliedFiltersModel
-    }
-
     fun updateFilters(data: FilterUpdateData) {
-        state = state.copy(
-            filters = state.filters.updateData(data)
+        _state.value = _state.value.copy(
+            filters = _state.value.filters.updateData(data)
         )
     }
 }

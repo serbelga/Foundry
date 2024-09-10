@@ -18,11 +18,12 @@ package dev.sergiobelda.foundry.data.repository
 
 import dev.sergiobelda.foundry.data.localdatasource.FontLocalDataSource
 import dev.sergiobelda.foundry.data.remotedatasource.FontRemoteDataSource
-import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
 import dev.sergiobelda.foundry.domain.repository.FontRepository
 import dev.sergiobelda.foundry.domain.result.doIfSuccess
 import kotlinx.coroutines.flow.Flow
+import java.util.logging.Filter
 
 class FontRepositoryImpl(
     private val fontRemoteDataSource: FontRemoteDataSource,
@@ -45,9 +46,9 @@ class FontRepositoryImpl(
     }
 
     override fun getFontFamilyItems(
-        appliedFiltersModel: AppliedFiltersModel
+        filters: FiltersModel
     ): Flow<List<FontFamilyItemModel>> =
-        fontLocalDataSource.getFontFamilyItems(appliedFiltersModel = appliedFiltersModel)
+        fontLocalDataSource.getFontFamilyItems(filters = filters)
 
     override fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
         fontLocalDataSource.getSavedFontFamilyItems()

@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.sergiobelda.foundry.ui.home.content.HomeFontsContent
 import dev.sergiobelda.foundry.ui.home.content.HomeSavedFontsContent
 import dev.sergiobelda.foundry.ui.home.menu.HomeMenuContent
@@ -39,6 +40,7 @@ fun HomeScreen(
         )
     }
     val homeUiState = rememberHomeUiState()
+    val homeState by viewModel.state.collectAsStateWithLifecycle()
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -68,8 +70,8 @@ fun HomeScreen(
         when (selectedHomeMenuNavigationItem) {
             HomeMenuNavigationItem.FontsMenuNavigationItem -> {
                 HomeFontsContent(
-                    fonts = viewModel.state.fontItems,
-                    filtersUiModel = viewModel.state.filters.toFilterUiModels(),
+                    fonts = homeState.fontItems,
+                    filtersUiModel = homeState.filters.toFilterUiModels(),
                     onOpenHomeDrawerClick = { homeUiState.openDrawer() },
                     updateFontSavedState = viewModel::updateFontFamilyLikedState,
                     updateFilters = viewModel::updateFilters,
@@ -77,7 +79,7 @@ fun HomeScreen(
             }
             HomeMenuNavigationItem.SavedFontsMenuNavigationItem -> {
                 HomeSavedFontsContent(
-                    fonts = viewModel.state.savedFontItems,
+                    fonts = homeState.savedFontItems,
                     onOpenHomeDrawerClick = { homeUiState.openDrawer() },
                     updateFontFamilyLikedState = viewModel::updateFontFamilyLikedState,
                 )

@@ -21,10 +21,10 @@ import dev.sergiobelda.foundry.data.database.dao.SavedFontFamilyDao
 import dev.sergiobelda.foundry.data.database.entity.table.LikedFontFamilyEntity
 import dev.sergiobelda.foundry.data.localdatasource.mapper.toFontFamilyEntity
 import dev.sergiobelda.foundry.data.localdatasource.mapper.toFontFamilyModel
-import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyModel
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -34,10 +34,10 @@ class FontLocalDataSourceImpl(
 ) : FontLocalDataSource {
 
     override fun getFontFamilyItems(
-        appliedFiltersModel: AppliedFiltersModel
+        filters: FiltersModel
     ): Flow<List<FontFamilyItemModel>> =
         fontFamilyDao.getFontFamilyItems(
-            fontFamilyCategories = appliedFiltersModel.fontFamilyCategories
+            filters = filters
         ).map { list ->
             // TODO: Create mapper
             list.map {
