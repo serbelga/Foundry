@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.model
+package dev.sergiobelda.foundry.ui.model.filter
 
 import androidx.annotation.StringRes
 import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.FilterUpdateData
+import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterElementUpdateData
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
+import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterElementUpdateData
+import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 

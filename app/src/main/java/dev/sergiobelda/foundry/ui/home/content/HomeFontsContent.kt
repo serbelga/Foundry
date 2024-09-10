@@ -20,19 +20,18 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Tune
+import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
@@ -40,19 +39,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.sergiobelda.foundry.R
-import dev.sergiobelda.foundry.domain.model.FilterUpdateData
+import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.ui.home.components.FontFamilyListView
+import dev.sergiobelda.foundry.ui.home.content.filtersmodal.FiltersModalBottomSheet
 import dev.sergiobelda.foundry.ui.home.search.HomeSearchBar
-import dev.sergiobelda.foundry.ui.model.FiltersUiModel
-import dev.sergiobelda.foundry.ui.model.SelectedFilterChipUiModel
+import dev.sergiobelda.foundry.ui.model.filter.FiltersUiModel
+import dev.sergiobelda.foundry.ui.model.filter.SelectedFilterChipUiModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,30 +141,28 @@ private fun HomeFontsListActionsBar(
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            IconButton(
-                onClick = onFiltersClick,
-                colors = if (selectedFilterChipUiModelList.isEmpty()) {
-                    IconButtonDefaults.iconButtonColors()
-                } else {
-                    IconButtonDefaults.filledTonalIconButtonColors()
+            Box {
+                OutlinedIconButton(
+                    onClick = onFiltersClick,
+                    border = IconButtonDefaults.outlinedIconButtonBorder(
+                        selectedFilterChipUiModelList.isNotEmpty()
+                    )
+                ) {
+                    Icon(
+                        Icons.Rounded.Tune,
+                        contentDescription = stringResource(R.string.filters)
+                    )
                 }
-            ) {
-                Icon(
-                    Icons.Rounded.Tune,
-                    contentDescription = stringResource(R.string.filters)
-                )
-            }
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                items(
-                    // TODO: Use key
-                    // key = { item -> item },
-                    items = selectedFilterChipUiModelList
-                ) { item  ->
-                    SelectedFilterChip(
-                        selectedFilterChipUiModel = item,
-                        modifier = Modifier.animateItem()
+                if (selectedFilterChipUiModelList.isNotEmpty()) {
+                    Badge(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(end = 2.dp),
+                        content = {
+                            Text(text = selectedFilterChipUiModelList.size.toString())
+                        },
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -176,18 +176,4 @@ private fun HomeFontsListActionsBar(
             )
         }
     }
-}
-
-@Composable
-private fun SelectedFilterChip(
-    selectedFilterChipUiModel: SelectedFilterChipUiModel,
-    modifier: Modifier = Modifier
-) {
-    FilterChip(
-        selected = true,
-        onClick = selectedFilterChipUiModel.onClick,
-        label = { Text(text = stringResource(selectedFilterChipUiModel.labelStringResId)) },
-        trailingIcon = { Icon(Icons.Rounded.Clear, contentDescription = null) },
-        modifier = modifier
-    )
 }

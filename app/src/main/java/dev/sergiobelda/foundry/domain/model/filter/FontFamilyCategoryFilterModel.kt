@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.domain.model.filter
+
+import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
 
 data class FontFamilyCategoryFilterModel(
     val elements: List<FontFamilyCategoryFilterElementModel> =

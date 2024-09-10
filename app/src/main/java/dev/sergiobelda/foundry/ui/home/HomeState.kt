@@ -16,8 +16,8 @@
 
 package dev.sergiobelda.foundry.ui.home
 
-import dev.sergiobelda.foundry.domain.model.FiltersModel
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategoryFilterModel
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
+import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterModel
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

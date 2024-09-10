@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.domain.model.filter
 
 interface FilterUpdateData

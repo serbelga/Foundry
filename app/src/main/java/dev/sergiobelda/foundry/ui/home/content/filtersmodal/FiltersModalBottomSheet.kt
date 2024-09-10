@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.home.content
+package dev.sergiobelda.foundry.ui.home.content.filtersmodal
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -32,10 +31,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import dev.sergiobelda.foundry.domain.model.FilterUpdateData
-import dev.sergiobelda.foundry.ui.model.FiltersUiModel
-import dev.sergiobelda.foundry.ui.model.FontFamilyCategoryFilterChipUiModel
-import dev.sergiobelda.foundry.ui.model.FontFamilyCategoryFilterUiModel
+import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
+import dev.sergiobelda.foundry.ui.model.filter.FilterUiModel
+import dev.sergiobelda.foundry.ui.model.filter.FiltersUiModel
+import dev.sergiobelda.foundry.ui.model.filter.FontFamilyCategoryFilterUiModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,35 +59,10 @@ internal fun FiltersModalBottomSheet(
                 // key = { item -> item },
                 items = filtersUiModel.filters,
                 contentType = { it::class }
-            ) { filter  ->
-                when (filter) {
-                    is FontFamilyCategoryFilterUiModel -> {
-                        FontFamilyCategoryFilterSelector(
-                            filterUiModel = filter,
-                            updateFilters = updateFilters
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun FontFamilyCategoryFilterSelector(
-    filterUiModel: FontFamilyCategoryFilterUiModel,
-    updateFilters: (FilterUpdateData) -> Unit,
-) {
-    val segmentedButtons = filterUiModel.toFilterChips {
-        updateFilters(it)
-    }
-    Column {
-        Text(text = stringResource(filterUiModel.titleStringResId))
-        FlowRow {
-            segmentedButtons.forEach {
-                FontFamilyCategorySegmentedButton(
-                    filterChipUiModel = it
+            ) { filter ->
+                FilterItem(
+                    filterUiModel = filter,
+                    updateFilters = updateFilters
                 )
             }
         }
@@ -96,14 +70,37 @@ private fun FontFamilyCategoryFilterSelector(
 }
 
 @Composable
-private fun FontFamilyCategorySegmentedButton(
-    filterChipUiModel: FontFamilyCategoryFilterChipUiModel,
-    modifier: Modifier = Modifier
+private fun FilterItem(
+    filterUiModel: FilterUiModel<*>,
+    updateFilters: (FilterUpdateData) -> Unit
 ) {
-    FilterChip(
-        selected = filterChipUiModel.isSelected,
-        onClick = filterChipUiModel.onClick,
-        label = { Text(text = stringResource(filterChipUiModel.labelStringResId)) },
-        modifier = modifier
-    )
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = stringResource(filterUiModel.titleStringResId),
+            style = MaterialTheme.typography.titleMedium
+        )
+        FilterContent(
+            filterUiModel = filterUiModel,
+            updateFilters = updateFilters
+        )
+    }
+}
+
+@Composable
+private fun FilterContent(
+    filterUiModel: FilterUiModel<*>,
+    updateFilters: (FilterUpdateData) -> Unit
+) {
+    when (filterUiModel) {
+        is FontFamilyCategoryFilterUiModel -> {
+            FontFamilyCategoryFilterSelector(
+                filterUiModel = filterUiModel,
+                updateFilters = updateFilters
+            )
+        }
+    }
 }

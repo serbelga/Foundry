@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.domain.model.filter
 
 sealed interface FilterModel {
 

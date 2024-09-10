@@ -26,7 +26,7 @@ import dev.sergiobelda.foundry.ui.home.content.HomeFontsContent
 import dev.sergiobelda.foundry.ui.home.content.HomeSavedFontsContent
 import dev.sergiobelda.foundry.ui.home.menu.HomeMenuContent
 import dev.sergiobelda.foundry.ui.home.menu.HomeMenuNavigationItem
-import dev.sergiobelda.foundry.ui.model.toFilterUiModels
+import dev.sergiobelda.foundry.ui.model.filter.toFilterUiModels
 import org.koin.compose.koinInject
 
 @Composable

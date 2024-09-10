@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.model
+package dev.sergiobelda.foundry.ui.model.filter
 
-data class FiltersModel(
-    val filters: List<FilterModel> = emptyList()
+import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
+
+data class FiltersUiModel(
+    val filters: List<FilterUiModel<*>>
 ) {
-
-    fun updateData(data: FilterUpdateData): FiltersModel =
-        copy(
-            filters = filters.map {
-                it.updateData(data)
-            }
-        )
+    fun toSelectedFilterChips(
+        onClick: (FilterUpdateData) -> Unit
+    ): List<SelectedFilterChipUiModel> =
+        filters.flatMap { it.toSelectedFilterChips(onClick) }
 }

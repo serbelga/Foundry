@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.model
+package dev.sergiobelda.foundry.ui.model.filter
 
-import dev.sergiobelda.foundry.domain.model.FilterModel
-import dev.sergiobelda.foundry.domain.model.FilterUpdateData
+import androidx.annotation.StringRes
 
-interface FilterUiModel<F : FilterModel> {
-    val titleStringResId: Int
-
-    val filterModel: F
-
-    fun toSelectedFilterChips(
-        onClick: (FilterUpdateData) -> Unit
-    ): List<SelectedFilterChipUiModel>
-}
+data class SelectedFilterChipUiModel(
+    @StringRes val labelStringResId: Int,
+    val onClick: () -> Unit
+)

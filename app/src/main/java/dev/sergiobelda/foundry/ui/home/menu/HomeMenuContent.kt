@@ -100,8 +100,7 @@ private fun HomeMenuNavigationDrawerItem(
         },
         selected = selected,
         onClick = onClick,
-        modifier =
-        modifier.padding(
+        modifier = modifier.padding(
             start = HomeMenuNavigationDrawerItemPadding,
             end = HomeMenuNavigationDrawerItemPadding,
         ),

@@ -22,7 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.sergiobelda.foundry.domain.model.AppliedFiltersModel
-import dev.sergiobelda.foundry.domain.model.FilterUpdateData
+import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.usecase.FetchFontsUseCase
 import dev.sergiobelda.foundry.domain.usecase.GetFontFamilyItemsUseCase

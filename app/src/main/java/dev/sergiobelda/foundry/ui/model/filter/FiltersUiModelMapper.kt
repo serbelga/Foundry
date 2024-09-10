@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.ui.model
+package dev.sergiobelda.foundry.ui.model.filter
 
-import dev.sergiobelda.foundry.domain.model.FilterUpdateData
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
+import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterModel
 
-data class FiltersUiModel(
-    val filters: List<FilterUiModel<*>>
-) {
-    fun toSelectedFilterChips(
-        onClick: (FilterUpdateData) -> Unit
-    ): List<SelectedFilterChipUiModel> =
-        filters.flatMap { it.toSelectedFilterChips(onClick) }
-}
+fun FiltersModel.toFilterUiModels(): FiltersUiModel =
+    FiltersUiModel(
+        filters = filters.map { filterModel ->
+            when (filterModel) {
+                is FontFamilyCategoryFilterModel -> FontFamilyCategoryFilterUiModel(filterModel)
+            }
+        }
+    )
