@@ -17,12 +17,15 @@
 package dev.sergiobelda.foundry.di
 
 import dev.sergiobelda.foundry.data.remotedatasource.FontRemoteDataSource
-import dev.sergiobelda.foundry.data.remotedatasource.IFontRemoteDataSource
+import dev.sergiobelda.foundry.data.remotedatasource.FontsRemoteDataSourceMapper
+import dev.sergiobelda.foundry.data.remotedatasource.google.GoogleFontsRemoteDataSource
+import dev.sergiobelda.foundry.data.remotedatasource.google.GoogleFontsRemoteDataSourceMapper
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val remoteDataSourceModule =
     module {
-        singleOf(::FontRemoteDataSource) bind IFontRemoteDataSource::class
+        singleOf(::GoogleFontsRemoteDataSourceMapper) bind FontsRemoteDataSourceMapper::class
+        singleOf(::GoogleFontsRemoteDataSource) bind FontRemoteDataSource::class
     }

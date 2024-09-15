@@ -16,17 +16,19 @@
 
 package dev.sergiobelda.foundry.data.repository
 
-import dev.sergiobelda.foundry.data.localdatasource.IFontLocalDataSource
-import dev.sergiobelda.foundry.data.remotedatasource.IFontRemoteDataSource
+import dev.sergiobelda.foundry.data.localdatasource.FontLocalDataSource
+import dev.sergiobelda.foundry.data.remotedatasource.FontRemoteDataSource
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
+import dev.sergiobelda.foundry.domain.repository.FontRepository
 import dev.sergiobelda.foundry.domain.result.doIfSuccess
 import kotlinx.coroutines.flow.Flow
+import java.util.logging.Filter
 
-class FontRepository(
-    private val fontRemoteDataSource: IFontRemoteDataSource,
-    private val fontLocalDataSource: IFontLocalDataSource,
-) : IFontRepository {
+class FontRepositoryImpl(
+    private val fontRemoteDataSource: FontRemoteDataSource,
+    private val fontLocalDataSource: FontLocalDataSource,
+) : FontRepository {
     override suspend fun fetchFonts() {
         val result = fontRemoteDataSource.getFonts()
         result.doIfSuccess {
@@ -43,8 +45,10 @@ class FontRepository(
         fontLocalDataSource.addLikedFontFamily(family = family)
     }
 
-    override fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
-        fontLocalDataSource.getFontFamilyItems()
+    override fun getFontFamilyItems(
+        filters: FiltersModel
+    ): Flow<List<FontFamilyItemModel>> =
+        fontLocalDataSource.getFontFamilyItems(filters = filters)
 
     override fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>> =
         fontLocalDataSource.getSavedFontFamilyItems()

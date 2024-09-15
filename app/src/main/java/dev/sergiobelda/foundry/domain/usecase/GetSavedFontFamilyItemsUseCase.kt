@@ -17,11 +17,11 @@
 package dev.sergiobelda.foundry.domain.usecase
 
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.domain.repository.IFontRepository
+import dev.sergiobelda.foundry.domain.repository.FontRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetSavedFontFamilyItemsUseCase(
-    private val fontRepository: IFontRepository,
+    private val fontRepository: FontRepository,
 ) {
     operator fun invoke(): Flow<List<FontFamilyItemModel>> =
         fontRepository.getSavedFontFamilyItems()

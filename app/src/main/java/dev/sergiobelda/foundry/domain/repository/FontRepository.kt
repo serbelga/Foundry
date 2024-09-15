@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.localdatasource
+package dev.sergiobelda.foundry.domain.repository
 
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.domain.model.FontFamilyModel
+import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
 import kotlinx.coroutines.flow.Flow
 
-interface IFontLocalDataSource {
-
-    fun getFontFamilyItems(): Flow<List<FontFamilyItemModel>>
-
-    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
-
-    suspend fun insertFontFamilies(fonts: List<FontFamilyModel>)
+interface FontRepository {
+    suspend fun fetchFonts()
 
     suspend fun removeLikedFontFamily(family: String)
 
     suspend fun addLikedFontFamily(family: String)
 
-    suspend fun clearAllFontFamilyItems()
+    fun getFontFamilyItems(
+        filters: FiltersModel
+    ): Flow<List<FontFamilyItemModel>>
+
+    fun getSavedFontFamilyItems(): Flow<List<FontFamilyItemModel>>
 }

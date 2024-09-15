@@ -18,6 +18,6 @@ package dev.sergiobelda.foundry.domain.model
 
 data class FontFamilyModel(
     val family: String,
-    val category: String,
+    val category: FontFamilyCategory,
     val provider: FontFamilyProvider
 )

@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.database.entity.table
+package dev.sergiobelda.foundry.data.localdatasource.mapper
 
-import androidx.room.Entity
-import dev.sergiobelda.foundry.domain.model.FontFamilyCategory
-import dev.sergiobelda.foundry.domain.model.FontFamilyProvider
+import dev.sergiobelda.foundry.data.database.entity.table.FontFamilyEntity
+import dev.sergiobelda.foundry.domain.model.FontFamilyModel
 
-@Entity(
-    tableName = "FontFamily",
-    primaryKeys = [ "family", "provider" ]
-)
-data class FontFamilyEntity(
-    val family: String,
-    val category: FontFamilyCategory,
-    val provider: FontFamilyProvider,
-)
+internal fun FontFamilyModel.toFontFamilyEntity(): FontFamilyEntity =
+    FontFamilyEntity(
+        family = family,
+        category = category,
+        provider = provider
+    )
+
+
+internal fun FontFamilyEntity.toFontFamilyModel(): FontFamilyModel =
+    FontFamilyModel(
+        family = family,
+        category = category,
+        provider = provider
+    )

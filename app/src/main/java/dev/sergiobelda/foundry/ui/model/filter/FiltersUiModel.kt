@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.api.google.model
+package dev.sergiobelda.foundry.ui.model.filter
 
-import com.squareup.moshi.JsonClass
-import dev.sergiobelda.foundry.data.api.model.FontApiModel
+import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
 
-/**
- * [FontApiModel] for Google Fonts.
- */
-@JsonClass(generateAdapter = true)
-data class GoogleFontApiModel(
-    val family: String,
-    val category: String,
-) : FontApiModel
+data class FiltersUiModel(
+    val filters: List<FilterUiModel<*>>
+) {
+    fun toSelectedFilterChips(
+        onClick: (FilterUpdateData) -> Unit
+    ): List<SelectedFilterChipUiModel> =
+        filters.flatMap { it.toSelectedFilterChips(onClick) }
+}

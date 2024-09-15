@@ -16,13 +16,13 @@
 
 package dev.sergiobelda.foundry.di
 
+import dev.sergiobelda.foundry.data.localdatasource.FontLocalDataSourceImpl
 import dev.sergiobelda.foundry.data.localdatasource.FontLocalDataSource
-import dev.sergiobelda.foundry.data.localdatasource.IFontLocalDataSource
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val localDataSourceModule =
     module {
-        singleOf(::FontLocalDataSource) bind IFontLocalDataSource::class
+        singleOf(::FontLocalDataSourceImpl) bind FontLocalDataSource::class
     }

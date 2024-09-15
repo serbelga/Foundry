@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.domain.usecase
+package dev.sergiobelda.foundry.ui.model.filter
 
-import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
-import dev.sergiobelda.foundry.domain.model.filter.FilterModel
 import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
-import dev.sergiobelda.foundry.domain.repository.FontRepository
-import kotlinx.coroutines.flow.Flow
+import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterModel
 
-class GetFontFamilyItemsUseCase(
-    private val fontRepository: FontRepository,
-) {
-    operator fun invoke(
-        filters: FiltersModel
-    ): Flow<List<FontFamilyItemModel>> =
-        fontRepository.getFontFamilyItems(filters = filters)
-}
+fun FiltersModel.toFilterUiModels(): FiltersUiModel =
+    FiltersUiModel(
+        filters = filters.map { filterModel ->
+            when (filterModel) {
+                is FontFamilyCategoryFilterModel -> FontFamilyCategoryFilterUiModel(filterModel)
+            }
+        }
+    )

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Sergio Belda
+ * Copyright 2024 Sergio Belda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.foundry.data.remotedatasource
+package dev.sergiobelda.foundry.domain.model.filter
 
-import dev.sergiobelda.foundry.domain.model.FontFamilyModel
-import dev.sergiobelda.foundry.domain.result.Result
-
-interface IFontRemoteDataSource {
-    suspend fun getFonts(): Result<List<FontFamilyModel>>
-}
+interface FilterElementModel
