@@ -43,6 +43,8 @@ abstract class FontFamilyDao {
             FontFamilyItemsQueryBuilder.getConditions(filters).forEachIndexed { index, condition ->
                 if (index == 0) {
                     append("WHERE ")
+                } else {
+                    append(" AND ")
                 }
                 append(condition)
             }
@@ -65,6 +67,7 @@ abstract class FontFamilyDao {
     abstract suspend fun clearAll()
 
     companion object {
+
         private const val FONT_FAMILY_ITEMS_QUERY =
             "SELECT f.*, " +
                     "CASE WHEN l.family IS NULL THEN 0 ELSE 1 END AS isSaved " +
