@@ -61,6 +61,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.di)
+
     implementation(libs.androidx.activityCompose)
 
     implementation(platform(libs.androidx.compose.composeBom))
@@ -74,27 +76,9 @@ dependencies {
     implementation(libs.androidx.coreKtx)
     implementation(libs.androidx.lifecycle.runtime)
 
-    implementation(libs.androidx.navigation.compose)
-
     testImplementation(libs.junit)
-
-    implementation(libs.squareup.moshi.moshi)
-    ksp(libs.squareup.moshi.moshiKotlinCodegen)
-    implementation(libs.squareup.okhttp3.okhttp)
-    implementation(libs.squareup.okhttp3.loggingInterceptor)
-    implementation(libs.squareup.retrofit2.converterMoshi)
-    implementation(libs.squareup.retrofit2.converterScalars)
-    implementation(libs.squareup.retrofit2.retrofit)
-
-    implementation(libs.androidx.room.roomKtx)
-    implementation(libs.androidx.room.roomPaging)
-    implementation(libs.androidx.room.roomRuntime)
-    ksp(libs.androidx.room.roomCompiler)
-    androidTestImplementation(libs.androidx.room.roomTesting)
 
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.core)
-
-    implementation(libs.kotlin.collections.immutable)
 }

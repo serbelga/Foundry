@@ -14,4 +14,11 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Foundry"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 include(":app")
+include(":data")
+include(":di")
+include(":domain")
+include(":presentation")
