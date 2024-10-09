@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "dev.sergiobelda.foundry.presentation"
-    compileSdk = 34
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        compileSdk = libs.versions.androidMinSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -40,7 +40,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.compose.ui.uiTextGoogleFonts)
     implementation(libs.androidx.compose.ui.toolingPreview)
-
+    implementation(libs.androidx.activityCompose)
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.kotlin.collections.immutable)

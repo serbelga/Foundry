@@ -12,10 +12,10 @@ val publicApiKey: String = gradleLocalProperties(
 
 android {
     namespace = "dev.sergiobelda.foundry.di"
-    compileSdk = 34
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        compileSdk = libs.versions.androidMinSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

@@ -10,11 +10,11 @@ plugins {
 
 android {
     namespace = "dev.sergiobelda.foundry"
-    compileSdk = 34
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "dev.sergiobelda.foundry"
-        minSdk = 24
+        minSdk = libs.versions.androidMinSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
