@@ -17,7 +17,7 @@
 package dev.sergiobelda.foundry.di
 
 import dev.sergiobelda.foundry.presentation.ui.home.HomeViewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule =
