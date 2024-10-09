@@ -1,11 +1,11 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidApplication)
-    id("org.jetbrains.kotlin.android")
-    id("dev.sergiobelda.gradle.spotless")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
+    id("dev.sergiobelda.gradle.spotless")
+    kotlin("android")
 }
 
 android {
