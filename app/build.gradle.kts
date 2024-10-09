@@ -50,20 +50,8 @@ dependencies {
     implementation(projects.di)
     implementation(projects.presentation)
 
-    implementation(libs.androidx.activityCompose)
-
-    implementation(platform(libs.androidx.compose.composeBom))
-    implementation(libs.androidx.compose.animation.graphics)
-    implementation(libs.androidx.compose.material.iconsExtended)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui.ui)
-    implementation(libs.androidx.compose.ui.uiTextGoogleFonts)
-    implementation(libs.androidx.compose.ui.toolingPreview)
-
     implementation(libs.androidx.coreKtx)
     implementation(libs.androidx.lifecycle.runtime)
-
-    testImplementation(libs.junit)
 
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
