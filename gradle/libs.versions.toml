@@ -1,16 +1,16 @@
 [versions]
-activity = "1.9.1"
+activity = "1.9.2"
 androidCore = "1.13.1"
 androidGradlePlugin = "8.6.0"
-composeBom = "2024.08.00"
+composeBom = "2024.09.01"
 detekt = "1.23.7"
 junit = "4.13.2"
 koin = "3.5.6"
-kotlin = "2.0.0"
+kotlin = "2.0.20"
 kotlinCollectionsImmutable = "0.3.8"
-ksp = "2.0.0-1.0.23"
-lifecycle = "2.8.4"
-material3 = "1.3.0-rc01"
+kotlinCoroutines = "1.8.1"
+ksp = "2.0.20-1.0.24"
+lifecycle = "2.8.5"
 moshi = "1.15.1"
 navigation = "2.8.0"
 okhttp3 = "4.12.0"
@@ -38,7 +38,7 @@ androidx-activityCompose = { module = "androidx.activity:activity-compose", vers
 androidx-compose-composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-compose-animation-graphics = { module = "androidx.compose.animation:animation-graphics" }
 androidx-compose-material-iconsExtended = { module = "androidx.compose.material:material-icons-extended" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-ui-ui = { module = "androidx.compose.ui:ui" }
 androidx-compose-ui-uiTextGoogleFonts = { module = "androidx.compose.ui:ui-text-google-fonts" }
 androidx-compose-ui-toolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
@@ -54,6 +54,7 @@ koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 
 kotlin-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinCollectionsImmutable" }
+kotlin-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 
 squareup-moshi-moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 squareup-moshi-moshiKotlinCodegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }

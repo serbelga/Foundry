@@ -1,18 +1,12 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.androidApplication)
     id("org.jetbrains.kotlin.android")
     id("dev.sergiobelda.gradle.spotless")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
 }
-
-val publicApiKey: String = gradleLocalProperties(
-    rootDir, providers
-).getProperty("google_fonts_api_key") ?: "\"\""
 
 android {
     namespace = "dev.sergiobelda.foundry"
@@ -31,11 +25,7 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField("String", "GOOGLE_FONTS_API_KEY", publicApiKey)
-        }
         release {
-            buildConfigField("String", "GOOGLE_FONTS_API_KEY", publicApiKey)
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -49,10 +39,6 @@ android {
     kotlin {
         jvmToolchain(17)
     }
-    buildFeatures {
-        buildConfig = true
-        compose = true
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -62,6 +48,7 @@ android {
 
 dependencies {
     implementation(projects.di)
+    implementation(projects.presentation)
 
     implementation(libs.androidx.activityCompose)
 

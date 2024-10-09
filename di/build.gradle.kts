@@ -1,8 +1,14 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.ksp)
 }
+
+val publicApiKey: String = gradleLocalProperties(
+    rootDir, providers
+).getProperty("google_fonts_api_key") ?: "\"\""
 
 android {
     namespace = "dev.sergiobelda.foundry.di"
@@ -16,7 +22,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "GOOGLE_FONTS_API_KEY", publicApiKey)
+        }
         release {
+            buildConfigField("String", "GOOGLE_FONTS_API_KEY", publicApiKey)
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -30,6 +40,9 @@ android {
     }
     kotlin {
         jvmToolchain(17)
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
