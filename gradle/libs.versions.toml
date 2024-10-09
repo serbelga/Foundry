@@ -1,11 +1,11 @@
 [versions]
 activity = "1.9.2"
 androidCore = "1.13.1"
-androidGradlePlugin = "8.6.0"
+androidGradlePlugin = "8.7.0"
 composeBom = "2024.09.01"
 detekt = "1.23.7"
 junit = "4.13.2"
-koin = "3.5.6"
+koin = "4.0.0"
 kotlin = "2.0.20"
 kotlinCollectionsImmutable = "0.3.8"
 kotlinCoroutines = "1.8.1"
