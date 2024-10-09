@@ -2,7 +2,7 @@
 activity = "1.9.2"
 androidCore = "1.13.1"
 androidGradlePlugin = "8.7.0"
-composeBom = "2024.08.00"
+composeBom = "2024.09.03"
 detekt = "1.23.7"
 junit = "4.13.2"
 koin = "4.0.0"
