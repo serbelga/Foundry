@@ -1,6 +1,6 @@
 [versions]
 activity = "1.9.3"
-androidCore = "1.13.1"
+androidCore = "1.15.0"
 androidGradlePlugin = "8.7.2"
 androidCompileSdk = "35"
 androidMinSdk = "24"
