@@ -2,7 +2,7 @@
 activity = "1.9.3"
 androidCore = "1.13.1"
 androidGradlePlugin = "8.7.2"
-androidCompileSdk = "34"
+androidCompileSdk = "35"
 androidMinSdk = "24"
 composeBom = "2024.11.00"
 detekt = "1.23.7"
