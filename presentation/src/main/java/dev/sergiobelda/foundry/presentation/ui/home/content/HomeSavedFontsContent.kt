@@ -42,12 +42,13 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.presentation.ui.home.components.FontFamilyListView
 import dev.sergiobelda.foundry.presentation.ui.resources.FAB_VISIBLE_ITEM_INDEX
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeSavedFontsContent(
-    fonts: List<FontFamilyItemModel>,
+    fonts: ImmutableList<FontFamilyItemModel>,
     onOpenHomeDrawerClick: () -> Unit,
     updateFontFamilyLikedState: (FontFamilyItemModel) -> Unit,
 ) {

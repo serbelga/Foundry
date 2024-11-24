@@ -17,12 +17,16 @@
 package dev.sergiobelda.foundry.presentation.ui.model.filter
 
 import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 data class FiltersUiModel(
-    val filters: List<FilterUiModel<*>>
+    val filters: ImmutableList<FilterUiModel<*>>
 ) {
     fun toSelectedFilterChips(
         onClick: (FilterUpdateData) -> Unit
-    ): List<SelectedFilterChipUiModel> =
-        filters.flatMap { it.toSelectedFilterChips(onClick) }
+    ): ImmutableList<SelectedFilterChipUiModel> =
+        filters.flatMap {
+            it.toSelectedFilterChips(onClick)
+        }.toPersistentList()
 }

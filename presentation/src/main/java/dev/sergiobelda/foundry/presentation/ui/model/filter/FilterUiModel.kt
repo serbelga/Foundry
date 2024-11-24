@@ -18,6 +18,7 @@ package dev.sergiobelda.foundry.presentation.ui.model.filter
 
 import dev.sergiobelda.foundry.domain.model.filter.FilterModel
 import dev.sergiobelda.foundry.domain.model.filter.FilterUpdateData
+import kotlinx.collections.immutable.ImmutableList
 
 interface FilterUiModel<F : FilterModel> {
     val titleStringResId: Int
@@ -26,5 +27,5 @@ interface FilterUiModel<F : FilterModel> {
 
     fun toSelectedFilterChips(
         onClick: (FilterUpdateData) -> Unit
-    ): List<SelectedFilterChipUiModel>
+    ): ImmutableList<SelectedFilterChipUiModel>
 }

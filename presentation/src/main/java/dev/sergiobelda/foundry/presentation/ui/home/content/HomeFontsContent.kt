@@ -53,11 +53,12 @@ import dev.sergiobelda.foundry.presentation.ui.home.content.filtersmodal.Filters
 import dev.sergiobelda.foundry.presentation.ui.home.search.HomeSearchBar
 import dev.sergiobelda.foundry.presentation.ui.model.filter.FiltersUiModel
 import dev.sergiobelda.foundry.presentation.ui.model.filter.SelectedFilterChipUiModel
+import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeFontsContent(
-    fonts: List<FontFamilyItemModel>,
+    fonts: ImmutableList<FontFamilyItemModel>,
     filtersUiModel: FiltersUiModel,
     onOpenHomeDrawerClick: () -> Unit,
     updateFontSavedState: (FontFamilyItemModel) -> Unit,

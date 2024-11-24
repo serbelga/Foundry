@@ -23,6 +23,7 @@ import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterEleme
 import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterModel
 import dev.sergiobelda.foundry.presentation.R
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 data class FontFamilyCategoryFilterUiModel(
@@ -34,7 +35,7 @@ data class FontFamilyCategoryFilterUiModel(
 
     override fun toSelectedFilterChips(
         onClick: (FilterUpdateData) -> Unit
-    ): List<SelectedFilterChipUiModel> =
+    ): ImmutableList<SelectedFilterChipUiModel> =
         filterModel.elements.filter { it.isSelected }.map { element ->
             SelectedFilterChipUiModel(
                 labelStringResId = element.category.toStringResId(),
@@ -47,7 +48,7 @@ data class FontFamilyCategoryFilterUiModel(
                     )
                 }
             )
-        }
+        }.toImmutableList()
 
     internal fun toFilterChips(
         onClick: (FilterUpdateData) -> Unit

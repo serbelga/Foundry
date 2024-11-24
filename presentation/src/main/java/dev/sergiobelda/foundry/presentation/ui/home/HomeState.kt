@@ -16,12 +16,14 @@
 
 package dev.sergiobelda.foundry.presentation.ui.home
 
+import androidx.compose.runtime.Immutable
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
 import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+@Immutable
 data class HomeState(
     val isLoadingFonts: Boolean = false,
     val isSavedFontsSelected: Boolean = false,

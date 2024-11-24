@@ -47,11 +47,12 @@ import androidx.compose.ui.unit.sp
 import dev.sergiobelda.foundry.domain.model.FontFamilyItemModel
 import dev.sergiobelda.foundry.presentation.R
 import dev.sergiobelda.foundry.presentation.ui.resolver.resolveFontFamily
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun FontFamilyListView(
     listState: LazyListState,
-    fonts: List<FontFamilyItemModel>,
+    fonts: ImmutableList<FontFamilyItemModel>,
     onSaveClick: (FontFamilyItemModel) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),

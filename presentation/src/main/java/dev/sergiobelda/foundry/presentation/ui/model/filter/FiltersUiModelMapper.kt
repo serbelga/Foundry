@@ -18,6 +18,7 @@ package dev.sergiobelda.foundry.presentation.ui.model.filter
 
 import dev.sergiobelda.foundry.domain.model.filter.FiltersModel
 import dev.sergiobelda.foundry.domain.model.filter.FontFamilyCategoryFilterModel
+import kotlinx.collections.immutable.toImmutableList
 
 fun FiltersModel.toFilterUiModels(): FiltersUiModel =
     FiltersUiModel(
@@ -25,5 +26,5 @@ fun FiltersModel.toFilterUiModels(): FiltersUiModel =
             when (filterModel) {
                 is FontFamilyCategoryFilterModel -> FontFamilyCategoryFilterUiModel(filterModel)
             }
-        }
+        }.toImmutableList()
     )
