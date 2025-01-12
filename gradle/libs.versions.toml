@@ -1,7 +1,7 @@
 [versions]
 activity = "1.9.3"
 androidCore = "1.15.0"
-androidGradlePlugin = "8.7.3"
+androidGradlePlugin = "8.8.0"
 androidCompileSdk = "35"
 androidMinSdk = "24"
 composeBom = "2024.12.01"
