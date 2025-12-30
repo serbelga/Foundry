@@ -38,15 +38,14 @@ import dev.sergiobelda.foundry.presentation.ui.theme.pacificoFontFamily
 internal fun HomeMenuContent(
     onHomeMenuNavigationItemClick: (HomeMenuNavigationItem) -> Unit,
     homeMenuNavigationItemSelected: HomeMenuNavigationItem,
-) {
+) { 
     ModalDrawerSheet {
         Text(
             text = stringResource(id = R.string.app_name),
             fontFamily = pacificoFontFamily,
             color = MaterialTheme.colorScheme.primary,
             fontSize = 24.sp,
-            modifier =
-            Modifier.padding(
+            modifier =  Modifier.padding(
                 start = 24.dp,
                 top = 8.dp,
                 end = 8.dp,

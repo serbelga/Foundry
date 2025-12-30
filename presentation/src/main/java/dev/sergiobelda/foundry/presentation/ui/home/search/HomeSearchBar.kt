@@ -51,12 +51,12 @@ internal fun HomeSearchBar(
     val avdMenuToArrowBackPainter = rememberAnimatedVectorPainter(avdMenuToArrowBack, active)
     val focusManager = LocalFocusManager.current
     val onActiveChange: (Boolean) -> Unit = {
-        active = it
-        if (!active) focusManager.clearFocus()
+        // active = it
+        // if (!active) focusManager.clearFocus()
     }
     fun closeSearchBar() {
-        focusManager.clearFocus()
-        active = false
+        // focusManager.clearFocus()
+        // active = false
         searchText = ""
     }
     SearchBar(
