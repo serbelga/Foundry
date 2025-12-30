@@ -38,10 +38,9 @@ class HomeViewModel(
     private val likeFontFamilyUseCase: LikeFontFamilyUseCase,
     private val removeLikedFontFamilyUseCase: RemoveLikedFontFamilyUseCase,
 ) : ViewModel() {
-    val state: StateFlow<HomeState> get() = _state
-    private val _state: MutableStateFlow<HomeState> =
-        MutableStateFlow(HomeState(isLoadingFonts = true))
-
+    val state: StateFlow<HomeState>
+        field = MutableStateFlow(HomeState(isLoadingFonts = true))
+    
     init {
         fetchFonts()
         getFontFamilyItems()
@@ -51,7 +50,7 @@ class HomeViewModel(
     private fun fetchFonts() =
         viewModelScope.launch {
             fetchFontsUseCase()
-            _state.value = _state.value.copy(
+            state.value = state.value.copy(
                 isLoadingFonts = false,
             )
         }
@@ -62,7 +61,7 @@ class HomeViewModel(
             state.flatMapLatest {
                 getFontFamilyItemsUseCase(it.filters)
             }.collect {
-                _state.value = _state.value.copy(
+                state.value = state.value.copy(
                     fontItems = it.toPersistentList(),
                 )
             }
@@ -71,7 +70,7 @@ class HomeViewModel(
     private fun getSavedFontFamilyItems() =
         viewModelScope.launch {
             getSavedFontFamilyItemsUseCase().collect { savedFontItems ->
-                _state.value = _state.value.copy(
+                state.value = state.value.copy(
                     savedFontItems = savedFontItems.toPersistentList(),
                 )
             }
@@ -89,8 +88,8 @@ class HomeViewModel(
         }
 
     fun updateFilters(data: FilterUpdateData) {
-        _state.value = _state.value.copy(
-            filters = _state.value.filters.updateData(data)
+        state.value = state.value.copy(
+            filters = state.value.filters.updateData(data)
         )
     }
 }

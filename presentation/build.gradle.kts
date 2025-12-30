@@ -26,6 +26,9 @@ android {
     }
     kotlin {
         jvmToolchain(17)
+        compilerOptions {
+            freeCompilerArgs.add("-Xexplicit-backing-fields")
+        }
     }
 }
 
